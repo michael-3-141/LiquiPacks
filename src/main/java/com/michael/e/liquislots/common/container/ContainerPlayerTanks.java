@@ -92,11 +92,13 @@ public class ContainerPlayerTanks extends Container implements OnInventoryChange
         ItemStack input = tankInterface.getStackInSlot(0);
         ItemStack result = tankInterface.getStackInSlot(1);
         FluidTank tank = tanks.getTankForStack(selectedTank);
+        boolean success = false;
         if(input == null || result != null)return;
         if(FluidContainerRegistry.isFilledContainer(input)){
             if(tank.fill(new FluidStack(FluidContainerRegistry.getFluidForFilledItem(input), FluidContainerRegistry.BUCKET_VOLUME), false) == FluidContainerRegistry.BUCKET_VOLUME) {
                 tank.fill(new FluidStack(FluidContainerRegistry.getFluidForFilledItem(input), FluidContainerRegistry.BUCKET_VOLUME), true);
                 result = new ItemStack(input.getItem().getContainerItem(), 1);
+                success = true;
             }
         }
         else if(FluidContainerRegistry.isEmptyContainer(input))
@@ -104,12 +106,15 @@ public class ContainerPlayerTanks extends Container implements OnInventoryChange
             if(tank.drain(FluidContainerRegistry.BUCKET_VOLUME, false).amount == FluidContainerRegistry.BUCKET_VOLUME){
                 result = FluidContainerRegistry.fillFluidContainer(tank.getFluid(), input);
                 tank.drain(FluidContainerRegistry.BUCKET_VOLUME, true);
+                success = true;
             }
 
         }
-        tankInterface.setInventorySlotContents(1, result);
-        tankInterface.decrStackSize(0, 1);
-        tanks.setTankInStack(tank, selectedTank);
+        if(success) {
+            tankInterface.setInventorySlotContents(1, result);
+            tankInterface.decrStackSize(0, 1);
+            tanks.setTankInStack(tank, selectedTank);
+        }
     }
 
     private class InventoryTankInterface implements IInventory{

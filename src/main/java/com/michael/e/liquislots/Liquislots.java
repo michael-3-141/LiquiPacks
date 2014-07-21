@@ -4,6 +4,7 @@ import com.michael.e.liquislots.block.BlocksRef;
 import com.michael.e.liquislots.common.GuiHandler;
 import com.michael.e.liquislots.config.ConfigHander;
 import com.michael.e.liquislots.item.ItemsRef;
+import com.michael.e.liquislots.network.ChangeLiquipackIOOptionMessageHandler;
 import com.michael.e.liquislots.network.KeyPressMessageHandler;
 import com.michael.e.liquislots.network.SelectedTankChangeMessageHandler;
 import com.michael.e.liquislots.network.proxy.CommonProxy;
@@ -48,6 +49,7 @@ public class Liquislots {
         netHandler = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.MOD_ID);
         netHandler.registerMessage(KeyPressMessageHandler.class, KeyPressMessageHandler.KeyPressMessage.class, 0, Side.SERVER);
         netHandler.registerMessage(SelectedTankChangeMessageHandler.class, SelectedTankChangeMessageHandler.SelectedTankChangeMessage.class, 1, Side.SERVER);
+        netHandler.registerMessage(ChangeLiquipackIOOptionMessageHandler.class, ChangeLiquipackIOOptionMessageHandler.ChangeLiquipackIOOptionMessage.class, 2, Side.SERVER);
 
         FMLCommonHandler.instance().bus().register(new LiquislotClientEventHandler());
         MinecraftForge.EVENT_BUS.register(new LiquislotServerEventHandler());
@@ -84,6 +86,8 @@ public class Liquislots {
                 't', new ItemStack(ItemsRef.smallTank),
                 'l', new ItemStack(ItemsRef.liquipack, 1, 0)
                 );
+
+        proxy.initRenderers();
     }
 
     @Mod.EventHandler

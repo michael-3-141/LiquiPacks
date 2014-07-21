@@ -7,4 +7,8 @@ public class CommonProxy{
     public ModelLiquipack getModel(){
         return null;
     }
+
+    public void initRenderers(){
+
+    }
 }
