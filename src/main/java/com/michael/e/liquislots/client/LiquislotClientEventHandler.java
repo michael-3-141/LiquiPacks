@@ -6,14 +6,13 @@ import com.michael.e.liquislots.network.message.KeyPressMessageHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.InputEvent;
 import net.minecraft.client.Minecraft;
-import org.lwjgl.input.Keyboard;
 
 public class LiquislotClientEventHandler{
 
     @SubscribeEvent
     public void keyPressInput(InputEvent.KeyInputEvent e)
     {
-        if(Keyboard.isKeyDown(Keyboard.KEY_L) && Minecraft.getMinecraft().thePlayer.inventory.armorItemInSlot(2) != null && Minecraft.getMinecraft().thePlayer.inventory.getStackInSlot(38).getItem() instanceof ItemLiquipack)
+        if(KeybindHandler.liquipackInventoryKey.isPressed() && Minecraft.getMinecraft().thePlayer.inventory.armorItemInSlot(2) != null && Minecraft.getMinecraft().thePlayer.inventory.armorItemInSlot(2).getItem() instanceof ItemLiquipack)
         {
             Liquislots.INSTANCE.netHandler.sendToServer(new KeyPressMessageHandler.KeyPressMessage('l'));
         }

@@ -90,7 +90,7 @@ public class TileEntityLiquipackIO extends TileEntity implements IFluidHandler{
                 if(isDrainingMode) {
                     if (fluidTank.getFluid() != null) {
                         int left = fluidTank.getFluid().amount - ((TileEntityLiquipackIO) tile).buffer.fill(fluidTank.getFluid(), true);
-                        fluidTank.setFluid(new FluidStack(fluidTank.getFluid().getFluid(), left));
+                        fluidTank.setFluid(left == 0 ? null : new FluidStack(fluidTank.getFluid().getFluid(), left));
                         tank.setTankInStack(fluidTank, this.tank);
                     }
                 }
