@@ -1,6 +1,6 @@
 package com.michael.e.liquislots.common.container;
 
-import com.michael.e.liquislots.TankStack;
+import com.michael.e.liquislots.common.TankStack;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;

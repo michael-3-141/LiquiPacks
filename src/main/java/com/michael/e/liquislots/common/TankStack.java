@@ -1,4 +1,4 @@
-package com.michael.e.liquislots;
+package com.michael.e.liquislots.common;
 
 import com.michael.e.liquislots.item.ItemLiquipack;
 import net.minecraft.item.ItemStack;

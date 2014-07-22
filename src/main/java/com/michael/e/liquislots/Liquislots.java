@@ -1,12 +1,14 @@
 package com.michael.e.liquislots;
 
 import com.michael.e.liquislots.block.BlocksRef;
+import com.michael.e.liquislots.client.LiquislotClientEventHandler;
 import com.michael.e.liquislots.common.GuiHandler;
 import com.michael.e.liquislots.config.ConfigHander;
 import com.michael.e.liquislots.item.ItemsRef;
-import com.michael.e.liquislots.network.ChangeLiquipackIOOptionMessageHandler;
-import com.michael.e.liquislots.network.KeyPressMessageHandler;
-import com.michael.e.liquislots.network.SelectedTankChangeMessageHandler;
+import com.michael.e.liquislots.network.message.ChangeLiquipackIOOptionMessageHandler;
+import com.michael.e.liquislots.network.message.KeyPressMessageHandler;
+import com.michael.e.liquislots.server.LiquislotServerEventHandler;
+import com.michael.e.liquislots.network.message.SelectedTankChangeMessageHandler;
 import com.michael.e.liquislots.network.proxy.CommonProxy;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;

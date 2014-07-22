@@ -4,7 +4,7 @@ import com.michael.e.liquislots.Liquislots;
 import com.michael.e.liquislots.Reference;
 import com.michael.e.liquislots.block.TileEntityLiquipackIO;
 import com.michael.e.liquislots.common.container.ContainerLiquipackIO;
-import com.michael.e.liquislots.network.ChangeLiquipackIOOptionMessageHandler;
+import com.michael.e.liquislots.network.message.ChangeLiquipackIOOptionMessageHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;

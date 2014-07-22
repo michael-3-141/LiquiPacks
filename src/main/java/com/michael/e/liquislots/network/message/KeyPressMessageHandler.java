@@ -1,4 +1,4 @@
-package com.michael.e.liquislots.network;
+package com.michael.e.liquislots.network.message;
 
 import com.michael.e.liquislots.Liquislots;
 import cpw.mods.fml.common.network.internal.FMLNetworkHandler;

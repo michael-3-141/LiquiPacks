@@ -2,9 +2,9 @@ package com.michael.e.liquislots.client.gui;
 
 import com.michael.e.liquislots.Liquislots;
 import com.michael.e.liquislots.Reference;
-import com.michael.e.liquislots.TankStack;
+import com.michael.e.liquislots.common.TankStack;
 import com.michael.e.liquislots.common.container.ContainerPlayerTanks;
-import com.michael.e.liquislots.network.SelectedTankChangeMessageHandler;
+import com.michael.e.liquislots.network.message.SelectedTankChangeMessageHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;

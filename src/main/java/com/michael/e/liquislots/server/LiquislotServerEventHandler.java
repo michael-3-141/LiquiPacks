@@ -1,4 +1,4 @@
-package com.michael.e.liquislots;
+package com.michael.e.liquislots.server;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.event.entity.EntityEvent;

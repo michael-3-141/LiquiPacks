@@ -2,7 +2,7 @@ package com.michael.e.liquislots.item;
 
 import com.michael.e.liquislots.Liquislots;
 import com.michael.e.liquislots.Reference;
-import com.michael.e.liquislots.TankStack;
+import com.michael.e.liquislots.common.TankStack;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;

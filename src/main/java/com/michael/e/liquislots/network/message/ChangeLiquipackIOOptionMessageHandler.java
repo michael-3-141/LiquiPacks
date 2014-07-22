@@ -1,4 +1,4 @@
-package com.michael.e.liquislots.network;
+package com.michael.e.liquislots.network.message;
 
 import com.michael.e.liquislots.block.TileEntityLiquipackIO;
 import com.michael.e.liquislots.common.container.ContainerLiquipackIO;
