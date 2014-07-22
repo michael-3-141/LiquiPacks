@@ -67,6 +67,7 @@ public class ContainerLiquipackIO extends Container {
         switch (id){
             case 0:
                 te.setTank(data);
+                break;
             case 1:
                 te.setDrainingMode(data == 1);
         }
