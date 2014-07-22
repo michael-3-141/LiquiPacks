@@ -49,6 +49,8 @@ public class GuiLiquipackIO extends GuiContainer{
 
         fontRendererObj.drawString("Tank:", guiLeft + 68, guiTop + 17, 4210752);
         fontRendererObj.drawString(Integer.toString(te.getTank()+1), guiLeft + 78, guiTop + 30, 4210752);
+
+        refreshButtons();
     }
 
     @Override
