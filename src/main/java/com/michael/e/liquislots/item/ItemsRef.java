@@ -9,6 +9,7 @@ public class ItemsRef {
 
     public static Item liquipack;
     public static Item smallTank;
+    public static Item liquipackBucket;
 
     public static void init()
     {
@@ -18,6 +19,9 @@ public class ItemsRef {
         smallTank = new Item().setUnlocalizedName("smallTank").setCreativeTab(CreativeTabs.tabMaterials);
         smallTank.setTextureName(Reference.MOD_ID + ":" + smallTank.getUnlocalizedName().substring(5));
         regItem(smallTank);
+
+        liquipackBucket = new ItemliquipackBucket();
+        regItem(liquipackBucket);
     }
 
     public static void regItem(Item item)
