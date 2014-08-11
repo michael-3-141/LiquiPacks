@@ -1,5 +1,6 @@
 package com.michael.e.liquislots.common.container;
 
+import com.michael.e.liquislots.common.SFluidTank;
 import com.michael.e.liquislots.common.TankStack;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,7 +12,6 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
 
 public class ContainerPlayerTanks extends Container implements OnInventoryChangedListener{
 
@@ -26,6 +26,11 @@ public class ContainerPlayerTanks extends Container implements OnInventoryChange
         InventoryPlayer invPlayer = player.inventory;
         tanks = new TankStack(player.inventory.armorItemInSlot(2));
 
+        for (int i = 0; i < 9; ++i)
+        {
+            this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 165));
+        }
+
         for (int i = 0; i < 3; ++i)
         {
             for (int j = 0; j < 9; ++j)
@@ -34,13 +39,10 @@ public class ContainerPlayerTanks extends Container implements OnInventoryChange
             }
         }
 
-        for (int i = 0; i < 9; ++i)
-        {
-            this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 165));
-        }
 
-        addSlotToContainer(new Slot(tankInterface, 0, 61, 80));
-        addSlotToContainer(new Slot(tankInterface, 1, 106, 80));
+
+        addSlotToContainer(new BucketSlot(tankInterface, 0, 61, 80));
+        addSlotToContainer(new BucketResultSlot(tankInterface, 1, 106, 80));
     }
 
     @Override
@@ -84,6 +86,31 @@ public class ContainerPlayerTanks extends Container implements OnInventoryChange
 
     @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int i) {
+        Slot slot = getSlot(i);
+
+        if (slot != null && slot.getHasStack()) {
+            ItemStack stack = slot.getStack();
+            ItemStack result = stack.copy();
+
+            if (i >= 36) {
+                if (!mergeItemStack(stack, 0, 36, false)) {
+                    return null;
+                }
+            }else if(!FluidContainerRegistry.isContainer(stack) || !mergeItemStack(stack, 36, 37, false)) {
+                return null;
+            }
+
+            if (stack.stackSize == 0) {
+                slot.putStack(null);
+            }else{
+                slot.onSlotChanged();
+            }
+
+            slot.onPickupFromSlot(player, stack);
+
+            return result;
+        }
+
         return null;
     }
 
@@ -91,7 +118,7 @@ public class ContainerPlayerTanks extends Container implements OnInventoryChange
     public void onInventoryChanged() {
         ItemStack input = tankInterface.getStackInSlot(0);
         ItemStack result = tankInterface.getStackInSlot(1);
-        FluidTank tank = tanks.getTankForStack(selectedTank);
+        SFluidTank tank = tanks.getTankForStack(selectedTank);
         boolean success = false;
         if(input == null || result != null)return;
         if(FluidContainerRegistry.isFilledContainer(input)){
@@ -103,7 +130,7 @@ public class ContainerPlayerTanks extends Container implements OnInventoryChange
         }
         else if(FluidContainerRegistry.isEmptyContainer(input))
         {
-            if(tank.drain(FluidContainerRegistry.BUCKET_VOLUME, false).amount == FluidContainerRegistry.BUCKET_VOLUME){
+            if(tank.drain(FluidContainerRegistry.BUCKET_VOLUME, false) != null && tank.drain(FluidContainerRegistry.BUCKET_VOLUME, false).amount == FluidContainerRegistry.BUCKET_VOLUME){
                 result = FluidContainerRegistry.fillFluidContainer(tank.getFluid(), input);
                 tank.drain(FluidContainerRegistry.BUCKET_VOLUME, true);
                 success = true;
@@ -224,6 +251,30 @@ public class ContainerPlayerTanks extends Container implements OnInventoryChange
                     return true;
                 }
             }
+            return false;
+        }
+    }
+
+    public static class BucketSlot extends Slot{
+
+        public BucketSlot(IInventory p_i1824_1_, int p_i1824_2_, int p_i1824_3_, int p_i1824_4_) {
+            super(p_i1824_1_, p_i1824_2_, p_i1824_3_, p_i1824_4_);
+        }
+
+        @Override
+        public boolean isItemValid(ItemStack stack) {
+            return FluidContainerRegistry.isContainer(stack);
+        }
+    }
+
+    public static class BucketResultSlot extends Slot{
+
+        public BucketResultSlot(IInventory p_i1824_1_, int p_i1824_2_, int p_i1824_3_, int p_i1824_4_) {
+            super(p_i1824_1_, p_i1824_2_, p_i1824_3_, p_i1824_4_);
+        }
+
+        @Override
+        public boolean isItemValid(ItemStack stack) {
             return false;
         }
     }

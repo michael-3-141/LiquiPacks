@@ -1,5 +1,6 @@
 package com.michael.e.liquislots.block;
 
+import com.michael.e.liquislots.common.SFluidTank;
 import com.michael.e.liquislots.common.TankStack;
 import com.michael.e.liquislots.item.ItemLiquipack;
 import net.minecraft.entity.player.EntityPlayer;
@@ -8,18 +9,21 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
 
 import java.util.List;
 
 public class TileEntityLiquipackIO extends TileEntity implements IFluidHandler{
 
-    public FluidTank buffer;
+    public SFluidTank buffer;
     private int tank;
     private boolean isDrainingMode;
 
     public TileEntityLiquipackIO() {
-        buffer = new FluidTank(10000);
+        buffer = new SFluidTank(10000);
         tank = 0;
         isDrainingMode = true;
     }
@@ -86,7 +90,10 @@ public class TileEntityLiquipackIO extends TileEntity implements IFluidHandler{
             if(player.inventory.armorItemInSlot(2) != null && player.inventory.armorItemInSlot(2).getItem() instanceof ItemLiquipack && tile instanceof TileEntityLiquipackIO){
                 ItemStack stack = player.inventory.armorItemInSlot(2);
                 TankStack tank = new TankStack(stack);
-                FluidTank fluidTank = tank.getTankForStack(this.tank);
+                if(this.tank >= tank.getTanks().length){
+                    return;
+                }
+                SFluidTank fluidTank = tank.getTankForStack(this.tank);
                 if(isDrainingMode) {
                     if (fluidTank.getFluid() != null) {
                         int left = fluidTank.getFluid().amount - ((TileEntityLiquipackIO) tile).buffer.fill(fluidTank.getFluid(), true);

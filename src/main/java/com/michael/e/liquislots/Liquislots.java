@@ -4,9 +4,11 @@ import com.michael.e.liquislots.block.BlocksRef;
 import com.michael.e.liquislots.client.KeybindHandler;
 import com.michael.e.liquislots.client.LiquislotClientEventHandler;
 import com.michael.e.liquislots.common.GuiHandler;
+import com.michael.e.liquislots.common.RecipeLiquipack;
 import com.michael.e.liquislots.config.ConfigHander;
 import com.michael.e.liquislots.item.ItemsRef;
-import com.michael.e.liquislots.network.message.ChangeLiquipackIOOptionMessageHandler;
+import com.michael.e.liquislots.network.message.ChangeLiquipackIOOptionsMessageHandler;
+import com.michael.e.liquislots.network.message.ChangeTankOptionsMessageHandler;
 import com.michael.e.liquislots.network.message.KeyPressMessageHandler;
 import com.michael.e.liquislots.network.message.SelectedTankChangeMessageHandler;
 import com.michael.e.liquislots.network.proxy.CommonProxy;
@@ -52,7 +54,9 @@ public class Liquislots {
         netHandler = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.MOD_ID);
         netHandler.registerMessage(KeyPressMessageHandler.class, KeyPressMessageHandler.KeyPressMessage.class, 0, Side.SERVER);
         netHandler.registerMessage(SelectedTankChangeMessageHandler.class, SelectedTankChangeMessageHandler.SelectedTankChangeMessage.class, 1, Side.SERVER);
-        netHandler.registerMessage(ChangeLiquipackIOOptionMessageHandler.class, ChangeLiquipackIOOptionMessageHandler.ChangeLiquipackIOOptionMessage.class, 2, Side.SERVER);
+        netHandler.registerMessage(ChangeLiquipackIOOptionsMessageHandler.class, ChangeLiquipackIOOptionsMessageHandler.ChangeLiquipackIOOptionsMessage.class, 2, Side.SERVER);
+        netHandler.registerMessage(ChangeTankOptionsMessageHandler.class, ChangeTankOptionsMessageHandler.ChangeTankOptionsMessage.class, 3, Side.SERVER);
+
 
         FMLCommonHandler.instance().bus().register(new LiquislotClientEventHandler());
         MinecraftForge.EVENT_BUS.register(new LiquislotServerEventHandler());
@@ -62,33 +66,66 @@ public class Liquislots {
     @Mod.EventHandler
     public void init(FMLInitializationEvent e)
     {
-        GameRegistry.addRecipe(new ItemStack(ItemsRef.smallTank),
-                "iii",
-                "igi",
-                "iii",
+        GameRegistry.addRecipe(new ItemStack(ItemsRef.tank, 1, 0),
+                "ggg",
+                "gig",
+                "ggg",
 
-                'i',new ItemStack(Items.iron_ingot),
+                'i',new ItemStack(Blocks.iron_block),
                 'g',new ItemStack(Blocks.glass)
         );
 
+        GameRegistry.addRecipe(new ItemStack(ItemsRef.tank, 1, 1),
+                "gig",
+                "gtg",
+                "gig",
+
+                'i',new ItemStack(Blocks.iron_block),
+                'g',new ItemStack(Blocks.glass),
+                't', new ItemStack(ItemsRef.tank, 1, 0)
+        );
+
+        GameRegistry.addRecipe(new ItemStack(ItemsRef.tank, 1, 2),
+                "gig",
+                "dtd",
+                "gig",
+
+                'i',new ItemStack(Blocks.iron_block),
+                'g',new ItemStack(Blocks.glass),
+                'd',new ItemStack(Items.diamond),
+                't', new ItemStack(ItemsRef.tank, 1, 0)
+        );
+
         GameRegistry.addRecipe(new ItemStack(ItemsRef.liquipack, 1 , 0),
-                "iii",
-                " i ",
-                "tit",
+                "ili",
+                "ibi",
+                "lll",
 
                 'i', new ItemStack(Items.iron_ingot),
-                't', new ItemStack(ItemsRef.smallTank)
+                'l', new ItemStack(Items.leather),
+                'b', new ItemStack(Blocks.iron_block)
             );
 
-        GameRegistry.addRecipe(new ItemStack(ItemsRef.liquipack, 1 , 1),
-                "iii",
-                " i ",
-                "tlt",
+        GameRegistry.addRecipe(new ItemStack(BlocksRef.liquipackIO),
+                "iri",
+                "rtr",
+                "iri",
 
                 'i', new ItemStack(Items.iron_ingot),
-                't', new ItemStack(ItemsRef.smallTank),
-                'l', new ItemStack(ItemsRef.liquipack, 1, 0)
+                'r', new ItemStack(Items.redstone),
+                't', new ItemStack(ItemsRef.tank, 1, 0)
                 );
+
+        GameRegistry.addRecipe(new ItemStack(ItemsRef.liquipackBucket),
+                "rtr",
+                " b ",
+
+                'r', new ItemStack(Items.redstone),
+                't', new ItemStack(ItemsRef.tank, 1, 0),
+                'b', new ItemStack(Items.bucket)
+                );
+
+        GameRegistry.addRecipe(new RecipeLiquipack());
 
         proxy.initRenderers();
         KeybindHandler.init();

@@ -16,6 +16,6 @@ public class BlocksRef {
     }
 
     private static void registerBlock(Block block){
-        GameRegistry.registerBlock(block, Reference.MOD_ID + "_" + block.getUnlocalizedName());
+        GameRegistry.registerBlock(block, Reference.MOD_ID + "_" + block.getUnlocalizedName().substring(5));
     }
 }

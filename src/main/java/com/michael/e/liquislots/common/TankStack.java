@@ -1,24 +1,22 @@
 package com.michael.e.liquislots.common;
 
-import com.michael.e.liquislots.item.ItemLiquipack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.fluids.FluidTank;
 
 public class TankStack {
 
     private ItemStack stack;
 
-    public TankStack(ItemStack stack, int tankCount) {
+    public TankStack(ItemStack stack, int tankCount, int... capacities) {
         this.stack = stack;
 
         if(stack.getTagCompound() == null)stack.setTagCompound(new NBTTagCompound());
         if(!stack.getTagCompound().hasKey("tanks")){
             NBTTagList nbtTanks = new NBTTagList();
             for(int i = 0; i < tankCount; i++){
-                FluidTank tank = new FluidTank(ItemLiquipack.tankCapacities[stack.getItemDamage()]);
+                SFluidTank tank = new SFluidTank(capacities[stack.getItemDamage()]);
                 NBTTagCompound compound = new NBTTagCompound();
                 tank.writeToNBT(compound);
                 nbtTanks.appendTag(compound);
@@ -28,28 +26,35 @@ public class TankStack {
     }
 
     public TankStack(ItemStack stack){
-        this(stack, 2);
+        this(stack, 0);
     }
 
-    public FluidTank getTankForStack(int tank)
+    public SFluidTank getTankForStack(int tank)
     {
-        return (new FluidTank(ItemLiquipack.tankCapacities[stack.getItemDamage()])).readFromNBT(stack.getTagCompound().getTagList("tanks", Constants.NBT.TAG_COMPOUND).getCompoundTagAt(tank));
+        return new SFluidTank(10000).readFromNBT(stack.getTagCompound().getTagList("tanks", Constants.NBT.TAG_COMPOUND).getCompoundTagAt(tank));
     }
 
-    public FluidTank[] getTanks(){
-        FluidTank[] tanks = new FluidTank[stack.getTagCompound().getTagList("tanks", Constants.NBT.TAG_COMPOUND).tagCount()];
+    public SFluidTank[] getTanks(){
+        SFluidTank[] tanks = new SFluidTank[stack.getTagCompound().getTagList("tanks", Constants.NBT.TAG_COMPOUND).tagCount()];
         for(int i = 0; i < tanks.length; i++){
-            tanks[i] = new FluidTank(0);
-            tanks[i].readFromNBT(stack.getTagCompound().getTagList("tanks", Constants.NBT.TAG_COMPOUND).getCompoundTagAt(i));
+            tanks[i] = SFluidTank.loadFromNBT(stack.getTagCompound().getTagList("tanks", Constants.NBT.TAG_COMPOUND).getCompoundTagAt(i));
         }
         return tanks;
     }
 
-    public ItemStack setTankInStack(FluidTank tank, int tankIndex)
+    public ItemStack setTankInStack(SFluidTank tank, int tankIndex)
     {
         NBTTagCompound compound = new NBTTagCompound();
         tank.writeToNBT(compound);
         stack.getTagCompound().getTagList("tanks", Constants.NBT.TAG_COMPOUND).func_150304_a(tankIndex, compound);
+        return stack;
+    }
+
+    public ItemStack addTankTankToStack(SFluidTank tank)
+    {
+        NBTTagCompound compound = new NBTTagCompound();
+        tank.writeToNBT(compound);
+        stack.getTagCompound().getTagList("tanks", Constants.NBT.TAG_COMPOUND).appendTag(compound);
         return stack;
     }
 }

@@ -8,10 +8,10 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.inventory.Container;
 
-public class ChangeLiquipackIOOptionMessageHandler implements IMessageHandler<ChangeLiquipackIOOptionMessageHandler.ChangeLiquipackIOOptionMessage, IMessage> {
+public class ChangeLiquipackIOOptionsMessageHandler implements IMessageHandler<ChangeLiquipackIOOptionsMessageHandler.ChangeLiquipackIOOptionsMessage, IMessage> {
 
     @Override
-    public IMessage onMessage(ChangeLiquipackIOOptionMessage message, MessageContext ctx) {
+    public IMessage onMessage(ChangeLiquipackIOOptionsMessage message, MessageContext ctx) {
         Container container = ctx.getServerHandler().playerEntity.openContainer;
         if(container instanceof ContainerLiquipackIO){
             TileEntityLiquipackIO te = ((ContainerLiquipackIO) container).getTe();
@@ -21,13 +21,13 @@ public class ChangeLiquipackIOOptionMessageHandler implements IMessageHandler<Ch
         return null;
     }
 
-    public static class ChangeLiquipackIOOptionMessage implements IMessage{
+    public static class ChangeLiquipackIOOptionsMessage implements IMessage{
 
-        public ChangeLiquipackIOOptionMessage(){
+        public ChangeLiquipackIOOptionsMessage(){
 
         }
 
-        public ChangeLiquipackIOOptionMessage(int tank, boolean isDrainMode) {
+        public ChangeLiquipackIOOptionsMessage(int tank, boolean isDrainMode) {
             this.tank = tank;
             this.isDrainMode = isDrainMode;
         }

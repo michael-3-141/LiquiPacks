@@ -17,7 +17,7 @@ public class GuiPlayerTanks extends GuiContainer{
     private EntityPlayer player;
     private TankStack tanks;
 
-    private GuiTank[] guiTanks = new GuiTank[2];
+    private GuiTank[] guiTanks;
 
     private int selectedTank = 0;
 
@@ -28,8 +28,10 @@ public class GuiPlayerTanks extends GuiContainer{
         xSize = 176;
         ySize = 189;
 
-        guiTanks[0] = new GuiTank(23, 14, 16, 58);
-        guiTanks[1] = new GuiTank(53, 14, 16, 58);
+        guiTanks = new GuiTank[tanks.getTanks().length];
+        for(int i = 0; i < guiTanks.length; i++){
+            guiTanks[i] = new GuiTank(36 + (30 * i), 14, 16, 58);
+        }
     }
 
     @Override
@@ -38,9 +40,15 @@ public class GuiPlayerTanks extends GuiContainer{
         Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
         drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 
-        for(int i = 0; i < guiTanks.length; i++) {
-            float level = ((float) tanks.getTankForStack(i).getFluidAmount()) / ((float) tanks.getTankForStack(i).getCapacity()) * 58;
-            guiTanks[i].render(tanks.getTankForStack(i).getFluid(), (int) level, guiLeft, guiTop);
+        for(int i = 0; i < 4; i++) {
+            if(i < guiTanks.length) {
+                float level = ((float) tanks.getTankForStack(i).getFluidAmount()) / ((float) tanks.getTankForStack(i).getCapacity()) * 58;
+                guiTanks[i].render(tanks.getTankForStack(i).getFluid(), (int) level, guiLeft, guiTop);
+            }
+            else {
+                mc.renderEngine.bindTexture(texture);
+                drawTexturedModalRect(34 + (i * 30) + guiLeft, 12 + guiTop, 0, ySize, 20, 61);
+            }
         }
 
         mc.renderEngine.bindTexture(texture);
