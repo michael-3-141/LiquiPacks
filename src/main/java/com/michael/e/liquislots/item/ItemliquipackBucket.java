@@ -9,6 +9,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -195,7 +196,7 @@ public class ItemLiquipackBucket extends Item {
                         world.func_147480_a(x, y, z, true);
                     }
 
-                    world.setBlock(x, y, z, fluidStack.getFluid().getBlock(), 0, 3);
+                    world.setBlock(x, y, z, fluidStack.getFluid() == FluidRegistry.WATER ? Blocks.flowing_water : fluidStack.getFluid() == FluidRegistry.LAVA ? Blocks.flowing_lava : fluidStack.getFluid().getBlock(), 0, 3);
                     world.markBlockForUpdate(x, y, z);
                 }
 

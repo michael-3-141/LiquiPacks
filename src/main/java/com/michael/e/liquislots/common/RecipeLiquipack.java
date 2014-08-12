@@ -32,6 +32,7 @@ public class RecipeLiquipack implements IRecipe {
         }
         if(foundLiquipacks == 1 && foundTanks == 1){
             TankStack tankStack = new TankStack(foundLiquipack.copy());
+            if(tankStack.getTanks().length >= 4)return false;
             result = tankStack.addTankTankToStack(ItemTank.getFluidTankFromStack(foundTank));
             return true;
         }
