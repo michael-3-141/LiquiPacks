@@ -49,12 +49,12 @@ public class ItemLiquipack extends ItemArmor implements ISpecialArmor{
     public void addInformation(ItemStack stack, EntityPlayer player, List info, boolean debug) {
         if(!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
             info.add("<Press SHIFT for more info>");
-            if(debug && stack.getTagCompound() != null){
+            /*if(debug && stack.getTagCompound() != null){
                 String[] nbt = stack.getTagCompound().toString().split("(?<=\\G.{80})");
                 for(String line : nbt){
                     info.add(line);
                 }
-            }
+            }*/
         }
         else {
             LiquipackStack liquipackStack = new LiquipackStack(stack);
@@ -70,6 +70,10 @@ public class ItemLiquipack extends ItemArmor implements ISpecialArmor{
                 if (tank == null) return;
                 String containsText = tank.getFluid() == null ? "Nothing" : tank.getFluidAmount() + "x" + tank.getFluid().getFluid().getLocalizedName(tank.getFluid());
                 info.add("Tank " + (i + 1) + " | Capacity: " + tank.getCapacity() + "mb | Contains: " + containsText);
+            }
+            ItemStack protection = liquipackStack.getProtection();
+            if(protection != null){
+                info.add("Armor damage: " + protection.getItemDamage() + "/" + protection.getMaxDamage());
             }
         }
     }
@@ -90,7 +94,10 @@ public class ItemLiquipack extends ItemArmor implements ISpecialArmor{
 
     @Override
     public int getArmorDisplay(EntityPlayer player, ItemStack armor, int slot) {
-        return 0;
+        LiquipackStack liquipackStack = new LiquipackStack(armor);
+        if(liquipackStack.getProtection() == null)return 0;
+        ArmorProperties protection = ((ILiquipackProtection)liquipackStack.getProtection().getItem()).getProtectionProps(armor);
+        return ((int)(protection.AbsorbMax * protection.AbsorbRatio))/30;
     }
 
     @Override
@@ -99,13 +106,18 @@ public class ItemLiquipack extends ItemArmor implements ISpecialArmor{
         ItemStack protectorStack = liquipackStack.getProtection();
         if(protectorStack != null) {
             protectorStack.damageItem(damage, entity);
-            liquipackStack.setProtection(protectorStack);
+            if(protectorStack.getItemDamage() < protectorStack.getMaxDamage()) {
+                liquipackStack.setProtection(protectorStack);
+            }
+            else{
+                liquipackStack.removeProtection();
+            }
         }
     }
 
     @Override
     public double getDurabilityForDisplay(ItemStack stack) {
         ItemStack protection = new LiquipackStack(stack).getProtection();
-        return protection != null ? protection.getItemDamageForDisplay() / protection.getItemDamage() : 0;
+        return protection != null ? 1.0 - (protection.getItemDamageForDisplay() / protection.getItemDamage()) : 0;
     }
 }

@@ -3,7 +3,6 @@ package com.michael.e.liquislots.item;
 import com.michael.e.liquislots.Reference;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.item.Item;
-import net.minecraftforge.common.ISpecialArmor;
 
 public class ItemsRef {
 
@@ -23,7 +22,7 @@ public class ItemsRef {
         liquipackBucket = new ItemLiquipackBucket();
         regItem(liquipackBucket);
 
-        liquipackProtector = new ItemLiquipackProtector(new ISpecialArmor.ArmorProperties(1, 6, 15));
+        liquipackProtector = new ItemLiquipackProtector(6D / 25D, 90);
         regItem(liquipackProtector);
     }
 

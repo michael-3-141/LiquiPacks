@@ -70,4 +70,9 @@ public class LiquipackStack {
     public ItemStack getProtection(){
         return ItemStack.loadItemStackFromNBT(stack.getTagCompound().getCompoundTag("protection"));
     }
+
+    public ItemStack removeProtection(){
+        stack.getTagCompound().removeTag("protection");
+        return stack;
+    }
 }

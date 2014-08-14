@@ -7,13 +7,13 @@ import net.minecraftforge.common.ISpecialArmor;
 
 public class ItemLiquipackProtector extends Item implements ILiquipackProtection {
 
-    private ISpecialArmor.ArmorProperties properties;
+    private double absorbAmount;
 
-    public ItemLiquipackProtector(ISpecialArmor.ArmorProperties properties) {
+    public ItemLiquipackProtector(double absorbAmount, int maxDamage) {
         setUnlocalizedName("liquipackProtector");
         setCreativeTab(CreativeTabs.tabCombat);
-        setMaxDamage((int) (properties.AbsorbMax * properties.AbsorbRatio));
-        this.properties = properties;
+        setMaxDamage(maxDamage);
+        this.absorbAmount = absorbAmount;
     }
 
     @Override
@@ -23,6 +23,6 @@ public class ItemLiquipackProtector extends Item implements ILiquipackProtection
 
     @Override
     public ISpecialArmor.ArmorProperties getProtectionProps(ItemStack stack) {
-        return properties;
+        return new ISpecialArmor.ArmorProperties(0, absorbAmount, getMaxDamage() + 1 - stack.getItemDamage());
     }
 }
