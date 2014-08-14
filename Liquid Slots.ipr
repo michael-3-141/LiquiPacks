@@ -183,6 +183,14 @@
       </item>
     </group>
   </component>
+  <component name="ProjectDictionaryState">
+    <dictionary name="Michael">
+      <words>
+        <w>liquipack</w>
+        <w>liquipacks</w>
+      </words>
+    </dictionary>
+  </component>
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/LiquiPacks.iml" filepath="$PROJECT_DIR$/LiquiPacks.iml" />

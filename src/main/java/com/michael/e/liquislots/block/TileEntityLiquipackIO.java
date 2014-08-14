@@ -1,7 +1,7 @@
 package com.michael.e.liquislots.block;
 
+import com.michael.e.liquislots.common.LiquipackStack;
 import com.michael.e.liquislots.common.SFluidTank;
-import com.michael.e.liquislots.common.TankStack;
 import com.michael.e.liquislots.item.ItemLiquipack;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -89,7 +89,7 @@ public class TileEntityLiquipackIO extends TileEntity implements IFluidHandler{
             TileEntity tile = worldObj.getTileEntity(xCoord, yCoord, zCoord);
             if(player.inventory.armorItemInSlot(2) != null && player.inventory.armorItemInSlot(2).getItem() instanceof ItemLiquipack && tile instanceof TileEntityLiquipackIO){
                 ItemStack stack = player.inventory.armorItemInSlot(2);
-                TankStack tank = new TankStack(stack);
+                LiquipackStack tank = new LiquipackStack(stack);
                 if(this.tank >= tank.getTanks().length){
                     return;
                 }

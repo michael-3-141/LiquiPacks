@@ -2,20 +2,24 @@ package com.michael.e.liquislots.client.gui;
 
 import com.michael.e.liquislots.Liquislots;
 import com.michael.e.liquislots.Reference;
-import com.michael.e.liquislots.common.TankStack;
+import com.michael.e.liquislots.common.LiquipackStack;
 import com.michael.e.liquislots.common.container.ContainerPlayerTanks;
 import com.michael.e.liquislots.network.message.SelectedTankChangeMessageHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.opengl.GL11;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GuiPlayerTanks extends GuiContainer{
 
     private static final ResourceLocation texture = new ResourceLocation(Reference.MOD_ID, "textures/gui/tankinv.png");
     private EntityPlayer player;
-    private TankStack tanks;
+    private LiquipackStack tanks;
 
     private GuiTank[] guiTanks;
 
@@ -24,7 +28,7 @@ public class GuiPlayerTanks extends GuiContainer{
     public GuiPlayerTanks(EntityPlayer player) {
         super(new ContainerPlayerTanks(player));
         this.player = player;
-        tanks = new TankStack(player.inventory.armorItemInSlot(2));
+        tanks = new LiquipackStack(player.inventory.armorItemInSlot(2));
         xSize = 176;
         ySize = 189;
 
@@ -63,7 +67,16 @@ public class GuiPlayerTanks extends GuiContainer{
 
     @Override
     protected void drawGuiContainerForegroundLayer(int x, int y) {
-
+        int i = 0;
+        for(GuiTank tank : guiTanks){
+            if(tank.isMouseInBounds(x-guiLeft,y-guiTop)){
+                FluidStack contents = tanks.getTankForStack(i).getFluid();
+                List<String> text = new ArrayList<String>();
+                text.add(contents == null ? "Empty" : (contents.amount + "mb X " + contents.getFluid().getLocalizedName(contents)));
+                drawHoveringText(text, x-guiLeft, y-guiTop, fontRendererObj);
+            }
+            i++;
+        }
     }
 
     @Override

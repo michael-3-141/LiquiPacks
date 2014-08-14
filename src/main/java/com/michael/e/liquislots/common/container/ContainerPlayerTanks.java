@@ -1,7 +1,7 @@
 package com.michael.e.liquislots.common.container;
 
+import com.michael.e.liquislots.common.LiquipackStack;
 import com.michael.e.liquislots.common.SFluidTank;
-import com.michael.e.liquislots.common.TankStack;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -17,14 +17,14 @@ public class ContainerPlayerTanks extends Container implements OnInventoryChange
 
     private InventoryTankInterface tankInterface = new InventoryTankInterface(this);
     private EntityPlayer player;
-    private TankStack tanks;
+    private LiquipackStack tanks;
 
     public int selectedTank = 0;
 
     public ContainerPlayerTanks(EntityPlayer player){
         this.player = player;
         InventoryPlayer invPlayer = player.inventory;
-        tanks = new TankStack(player.inventory.armorItemInSlot(2));
+        tanks = new LiquipackStack(player.inventory.armorItemInSlot(2));
 
         for (int i = 0; i < 9; ++i)
         {

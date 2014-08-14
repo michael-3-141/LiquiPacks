@@ -1,5 +1,7 @@
-package com.michael.e.liquislots.common;
+package com.michael.e.liquislots.common.recipe;
 
+import com.michael.e.liquislots.common.LiquipackStack;
+import com.michael.e.liquislots.item.ILiquipackProtection;
 import com.michael.e.liquislots.item.ItemTank;
 import com.michael.e.liquislots.item.ItemsRef;
 import net.minecraft.inventory.InventoryCrafting;
@@ -15,8 +17,11 @@ public class RecipeLiquipack implements IRecipe {
     public boolean matches(InventoryCrafting crafting, World world) {
         int foundLiquipacks = 0;
         int foundTanks = 0;
+        int foundProtectors = 0;
+        int foundOthers = 0;
         ItemStack foundLiquipack = null;
         ItemStack foundTank = null;
+        ItemStack foundProtector = null;
         for(int i = 0; i < crafting.getSizeInventory(); i++){
             ItemStack stack = crafting.getStackInSlot(i);
             if(stack != null){
@@ -28,12 +33,24 @@ public class RecipeLiquipack implements IRecipe {
                     foundTanks++;
                     foundTank = stack;
                 }
+                else if(stack.getItem() instanceof ILiquipackProtection){
+                    foundProtectors++;
+                    foundProtector = stack;
+                }
+                else{
+                    foundOthers++;
+                }
             }
         }
-        if(foundLiquipacks == 1 && foundTanks == 1){
-            TankStack tankStack = new TankStack(foundLiquipack.copy());
-            if(tankStack.getTanks().length >= 4)return false;
-            result = tankStack.addTankTankToStack(ItemTank.getFluidTankFromStack(foundTank));
+        if(foundLiquipacks == 1 && foundTanks == 1 && foundProtectors == 0 && foundOthers == 0){
+            LiquipackStack liquipackStack = new LiquipackStack(foundLiquipack.copy());
+            if(liquipackStack.getTanks().length >= 4)return false;
+            result = liquipackStack.addTankTankToStack(ItemTank.getFluidTankFromStack(foundTank));
+            return true;
+        }
+        if(foundLiquipacks == 1 && foundTanks == 0 && foundProtectors == 1 && foundOthers == 0){
+            LiquipackStack liquipackStack = new LiquipackStack(foundLiquipack.copy());
+            result = liquipackStack.setProtection(foundProtector);
             return true;
         }
         return false;

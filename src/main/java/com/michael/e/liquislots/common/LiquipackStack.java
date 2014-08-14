@@ -1,15 +1,16 @@
 package com.michael.e.liquislots.common;
 
+import com.michael.e.liquislots.item.ILiquipackProtection;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
 
-public class TankStack {
+public class LiquipackStack {
 
     private ItemStack stack;
 
-    public TankStack(ItemStack stack, int tankCount, int... capacities) {
+    public LiquipackStack(ItemStack stack, int tankCount, int... capacities) {
         this.stack = stack;
 
         if(stack.getTagCompound() == null)stack.setTagCompound(new NBTTagCompound());
@@ -25,7 +26,7 @@ public class TankStack {
         }
     }
 
-    public TankStack(ItemStack stack){
+    public LiquipackStack(ItemStack stack){
         this(stack, 0);
     }
 
@@ -56,5 +57,17 @@ public class TankStack {
         tank.writeToNBT(compound);
         stack.getTagCompound().getTagList("tanks", Constants.NBT.TAG_COMPOUND).appendTag(compound);
         return stack;
+    }
+
+    public ItemStack setProtection(ItemStack protection){
+        if(!(protection.getItem() instanceof ILiquipackProtection))throw new IllegalArgumentException("Liquipack protection item must implement ILiquipackProtection");
+        NBTTagCompound compound = new NBTTagCompound();
+        protection.writeToNBT(compound);
+        stack.getTagCompound().setTag("protection", compound);
+        return stack;
+    }
+
+    public ItemStack getProtection(){
+        return ItemStack.loadItemStackFromNBT(stack.getTagCompound().getCompoundTag("protection"));
     }
 }

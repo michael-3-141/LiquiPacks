@@ -2,8 +2,8 @@ package com.michael.e.liquislots.item;
 
 import com.michael.e.liquislots.Liquislots;
 import com.michael.e.liquislots.Reference;
+import com.michael.e.liquislots.common.LiquipackStack;
 import com.michael.e.liquislots.common.SFluidTank;
-import com.michael.e.liquislots.common.TankStack;
 import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -65,7 +65,7 @@ public class ItemLiquipackBucket extends Item {
         MovingObjectPosition movingobjectposition = this.getMovingObjectPositionFromPlayer(world, player, isDrainingMode(stack));
         FluidStack result = null;
         ItemStack liquipack = player.inventory.armorItemInSlot(2);
-        TankStack tanks = new TankStack(liquipack);
+        LiquipackStack tanks = new LiquipackStack(liquipack);
         if(getSelectedTank(stack) >= tanks.getTanks().length){
             if(!world.isRemote){
                 player.addChatComponentMessage(new ChatComponentText("You don't have any tank in slot " + (getSelectedTank(stack) + 1) + " of your liquipack."));

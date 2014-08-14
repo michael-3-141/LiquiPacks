@@ -3,12 +3,14 @@ package com.michael.e.liquislots.item;
 import com.michael.e.liquislots.Reference;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.item.Item;
+import net.minecraftforge.common.ISpecialArmor;
 
 public class ItemsRef {
 
     public static Item liquipack;
     public static Item tank;
     public static Item liquipackBucket;
+    public static Item liquipackProtector;
 
     public static void init()
     {
@@ -20,6 +22,9 @@ public class ItemsRef {
 
         liquipackBucket = new ItemLiquipackBucket();
         regItem(liquipackBucket);
+
+        liquipackProtector = new ItemLiquipackProtector(new ISpecialArmor.ArmorProperties(1, 6, 15));
+        regItem(liquipackProtector);
     }
 
     public static void regItem(Item item)

@@ -4,7 +4,7 @@ import com.michael.e.liquislots.block.BlocksRef;
 import com.michael.e.liquislots.client.KeybindHandler;
 import com.michael.e.liquislots.client.LiquislotClientEventHandler;
 import com.michael.e.liquislots.common.GuiHandler;
-import com.michael.e.liquislots.common.RecipeLiquipack;
+import com.michael.e.liquislots.common.recipe.RecipeLiquipack;
 import com.michael.e.liquislots.config.ConfigHander;
 import com.michael.e.liquislots.item.ItemsRef;
 import com.michael.e.liquislots.network.message.ChangeLiquipackIOOptionsMessageHandler;
