@@ -22,7 +22,7 @@ public class ItemsRef {
         liquipackBucket = new ItemLiquipackBucket();
         regItem(liquipackBucket);
 
-        liquipackProtector = new ItemLiquipackProtector(6D / 25D, 90);
+        liquipackProtector = new ItemLiquipackProtector(6D / 25D, 240);
         regItem(liquipackProtector);
     }
 

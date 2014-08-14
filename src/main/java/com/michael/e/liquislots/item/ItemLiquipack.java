@@ -9,6 +9,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
@@ -49,6 +50,7 @@ public class ItemLiquipack extends ItemArmor implements ISpecialArmor{
     public void addInformation(ItemStack stack, EntityPlayer player, List info, boolean debug) {
         if(!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
             info.add("<Press SHIFT for more info>");
+            info.add(String.valueOf(Items.iron_chestplate.getMaxDamage()));
             /*if(debug && stack.getTagCompound() != null){
                 String[] nbt = stack.getTagCompound().toString().split("(?<=\\G.{80})");
                 for(String line : nbt){
@@ -97,7 +99,7 @@ public class ItemLiquipack extends ItemArmor implements ISpecialArmor{
         LiquipackStack liquipackStack = new LiquipackStack(armor);
         if(liquipackStack.getProtection() == null)return 0;
         ArmorProperties protection = ((ILiquipackProtection)liquipackStack.getProtection().getItem()).getProtectionProps(armor);
-        return ((int)(protection.AbsorbMax * protection.AbsorbRatio))/30;
+        return (int)(protection.AbsorbRatio * 25D);
     }
 
     @Override
