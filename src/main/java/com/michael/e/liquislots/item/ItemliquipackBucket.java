@@ -7,10 +7,8 @@ import com.michael.e.liquislots.common.SFluidTank;
 import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
@@ -26,12 +24,12 @@ import org.lwjgl.input.Keyboard;
 
 import java.util.List;
 
-public class ItemLiquipackBucket extends Item {
+public class ItemLiquipackBucket extends ItemLiquipacksBase {
 
     public ItemLiquipackBucket() {
+        super();
         setUnlocalizedName("liquipackBucket");
         setTextureName(Reference.MOD_ID + ":" + getUnlocalizedName().substring(5));
-        setCreativeTab(CreativeTabs.tabTools);
         setMaxStackSize(1);
     }
 

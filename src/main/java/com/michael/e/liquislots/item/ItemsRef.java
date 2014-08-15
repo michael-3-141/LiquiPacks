@@ -9,7 +9,9 @@ public class ItemsRef {
     public static Item liquipack;
     public static Item tank;
     public static Item liquipackBucket;
-    public static Item liquipackProtector;
+
+    public static Item liquipackProtectorIron;
+    public static Item liquipackProtectorDiamond;
 
     public static void init()
     {
@@ -22,8 +24,11 @@ public class ItemsRef {
         liquipackBucket = new ItemLiquipackBucket();
         regItem(liquipackBucket);
 
-        liquipackProtector = new ItemLiquipackProtector(6D / 25D, 240);
-        regItem(liquipackProtector);
+        liquipackProtectorIron = new ItemLiquipackProtector(6D / 25D, 240).setUnlocalizedName("liquipackProtectorIron");
+        regItem(liquipackProtectorIron);
+
+        liquipackProtectorDiamond = new ItemLiquipackProtector(33D / 25D, 528).setUnlocalizedName("liquipackProtectorDiamond");
+        regItem(liquipackProtectorDiamond);
     }
 
     public static void regItem(Item item)

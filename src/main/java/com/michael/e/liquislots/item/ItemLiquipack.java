@@ -5,11 +5,9 @@ import com.michael.e.liquislots.Reference;
 import com.michael.e.liquislots.common.LiquipackStack;
 import com.michael.e.liquislots.common.SFluidTank;
 import net.minecraft.client.model.ModelBiped;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
@@ -26,13 +24,8 @@ public class ItemLiquipack extends ItemArmor implements ISpecialArmor{
     public ItemLiquipack() {
         super(liquipackMaterial, 0, 1);
         setUnlocalizedName("liquipack");
-        setCreativeTab(CreativeTabs.tabTools);
+        setCreativeTab(Liquislots.INSTANCE.tabLiquipacks);
         setTextureName(Reference.MOD_ID + ":liquipack1");
-    }
-
-    @Override
-    public String getUnlocalizedName(ItemStack stack) {
-        return getUnlocalizedName() + "." + stack.getItemDamage();
     }
 
     @Override
@@ -50,7 +43,6 @@ public class ItemLiquipack extends ItemArmor implements ISpecialArmor{
     public void addInformation(ItemStack stack, EntityPlayer player, List info, boolean debug) {
         if(!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
             info.add("<Press SHIFT for more info>");
-            info.add(String.valueOf(Items.iron_chestplate.getMaxDamage()));
             /*if(debug && stack.getTagCompound() != null){
                 String[] nbt = stack.getTagCompound().toString().split("(?<=\\G.{80})");
                 for(String line : nbt){
@@ -75,7 +67,7 @@ public class ItemLiquipack extends ItemArmor implements ISpecialArmor{
             }
             ItemStack protection = liquipackStack.getProtection();
             if(protection != null){
-                info.add("Armor damage: " + protection.getItemDamage() + "/" + protection.getMaxDamage());
+                info.add("Armor damage: " + (protection.getMaxDamage() - protection.getItemDamage()) + "/" + protection.getMaxDamage());
             }
         }
     }

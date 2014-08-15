@@ -1,17 +1,14 @@
 package com.michael.e.liquislots.item;
 
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.ISpecialArmor;
 
-public class ItemLiquipackProtector extends Item implements ILiquipackProtection {
+public class ItemLiquipackProtector extends ItemLiquipacksBase implements ILiquipackProtection {
 
     private double absorbAmount;
 
     public ItemLiquipackProtector(double absorbAmount, int maxDamage) {
-        setUnlocalizedName("liquipackProtector");
-        setCreativeTab(CreativeTabs.tabCombat);
+        super();
         setMaxDamage(maxDamage);
         this.absorbAmount = absorbAmount;
     }

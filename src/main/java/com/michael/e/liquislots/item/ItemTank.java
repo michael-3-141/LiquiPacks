@@ -12,12 +12,12 @@ import net.minecraft.util.IIcon;
 import java.util.List;
 
 
-public class ItemTank extends Item {
+public class ItemTank extends ItemLiquipacksBase {
 
     private IIcon[] icons = new IIcon[3];
 
     public ItemTank() {
-        setCreativeTab(CreativeTabs.tabMaterials);
+        super();
         setUnlocalizedName("tank");
         setHasSubtypes(true);
     }

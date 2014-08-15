@@ -23,8 +23,10 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import org.apache.logging.log4j.Logger;
@@ -136,5 +138,12 @@ public class Liquislots {
     {
 
     }
+
+    public CreativeTabs tabLiquipacks = new CreativeTabs("tabLiquipacks") {
+        @Override
+        public Item getTabIconItem() {
+            return ItemsRef.liquipack;
+        }
+    };
 
 }
