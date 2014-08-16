@@ -120,11 +120,12 @@ public class ContainerPlayerTanks extends Container implements OnInventoryChange
         ItemStack result = tankInterface.getStackInSlot(1);
         SFluidTank tank = tanks.getTankForStack(selectedTank);
         boolean success = false;
-        if(input == null || result != null)return;
+        if(input == null)return;
         if(FluidContainerRegistry.isFilledContainer(input)){
             if(tank.fill(new FluidStack(FluidContainerRegistry.getFluidForFilledItem(input), FluidContainerRegistry.BUCKET_VOLUME), false) == FluidContainerRegistry.BUCKET_VOLUME) {
+                if(!addStackToOutput(new ItemStack(input.getItem().getContainerItem(), 1), false))return;
                 tank.fill(new FluidStack(FluidContainerRegistry.getFluidForFilledItem(input), FluidContainerRegistry.BUCKET_VOLUME), true);
-                result = new ItemStack(input.getItem().getContainerItem(), 1);
+                addStackToOutput(new ItemStack(input.getItem().getContainerItem(), 1), true);
                 success = true;
             }
         }
@@ -141,6 +142,25 @@ public class ContainerPlayerTanks extends Container implements OnInventoryChange
             tankInterface.setInventorySlotContents(1, result);
             tankInterface.decrStackSize(0, 1);
             tanks.setTankInStack(tank, selectedTank);
+        }
+    }
+
+    private boolean addStackToOutput(ItemStack stack, boolean doPut){
+        ItemStack output = tankInterface.getStackInSlot(1);
+        if(output == null){
+            if(doPut){
+                tankInterface.setInventorySlotContents(1, stack);
+            }
+            return true;
+        }
+        else if(stack.getItem() == output.getItem() && !(stack.getItem().getHasSubtypes() && stack.getItemDamage() != output.getItemDamage()) && (output.stackSize + stack.stackSize) <= output.getMaxStackSize()){
+            if(doPut){
+                tankInterface.incrStackSize(1, stack.stackSize);
+            }
+            return true;
+        }
+        else{
+            return false;
         }
     }
 
