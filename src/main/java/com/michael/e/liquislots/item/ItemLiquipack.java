@@ -67,7 +67,7 @@ public class ItemLiquipack extends ItemArmor implements ISpecialArmor{
             }
             ItemStack protection = liquipackStack.getProtection();
             if(protection != null){
-                info.add("Armor damage: " + (protection.getMaxDamage() - protection.getItemDamage()) + "/" + protection.getMaxDamage());
+                info.add("Installed Armor: " + protection.getDisplayName() + " | Damage:" + (protection.getMaxDamage() - protection.getItemDamage()) + "/" + protection.getMaxDamage());
             }
         }
     }

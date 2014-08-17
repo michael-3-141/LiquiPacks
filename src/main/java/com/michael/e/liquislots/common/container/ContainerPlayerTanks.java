@@ -50,10 +50,21 @@ public class ContainerPlayerTanks extends Container implements OnInventoryChange
         return true;
     }
 
+    private void sendTanksToCrafter(ICrafting player){
+        /*int i = 0;
+        for(SFluidTank fluidTank : tanks.getTanks()){
+            player.sendProgressBarUpdate(this, i, fluidTank.getFluid() != null ? fluidTank.getFluid().fluidID : -1);
+            player.sendProgressBarUpdate(this, i + 1, fluidTank.getFluid() != null ? fluidTank.getFluidAmount() : -1);
+            player.sendProgressBarUpdate(this, i + 2, fluidTank.getCapacity());
+            i++;
+        }*/
+    }
+
     @Override
     @SuppressWarnings("unchecked")
     public void addCraftingToCrafters(ICrafting player) {
         crafters.add(player);
+        //sendTanksToCrafter(player);
     }
 
     @Override
@@ -63,11 +74,34 @@ public class ContainerPlayerTanks extends Container implements OnInventoryChange
 
     @Override
     public void updateProgressBar(int id, int data) {
-        /*if(id == 0){
-            tanks.getTankForStack(0).getFluid().fluidID = data;
-        }
-        else{
-            tanks.getTankForStack(0).getFluid().amount = data;
+        /*int tank = id / 3;
+        SFluidTank fluidTank = tanks.getTankForStack(tank);
+        FluidStack fluidStack = fluidTank.getFluid();
+        switch (id % 3){
+            case 0:
+                if(data == -1){
+                    fluidTank.setFluid(null);
+                    tanks.setTankInStack(fluidTank, tank);
+                    break;
+                }
+                fluidStack.fluidID = data;
+                fluidTank.setFluid(fluidStack);
+                tanks.setTankInStack(fluidTank, tank);
+                break;
+            case 1:
+                if(data == -1){
+                    fluidTank.setFluid(null);
+                    tanks.setTankInStack(fluidTank, tank);
+                    break;
+                }
+                fluidStack.amount = data;
+                fluidTank.setFluid(fluidStack);
+                tanks.setTankInStack(fluidTank, tank);
+                break;
+            case 2:
+                fluidTank.setCapacity(data);
+                tanks.setTankInStack(fluidTank, tank);
+                break;
         }*/
     }
 
@@ -125,7 +159,7 @@ public class ContainerPlayerTanks extends Container implements OnInventoryChange
             if(tank.fill(new FluidStack(FluidContainerRegistry.getFluidForFilledItem(input), FluidContainerRegistry.BUCKET_VOLUME), false) == FluidContainerRegistry.BUCKET_VOLUME) {
                 if(!addStackToOutput(new ItemStack(input.getItem().getContainerItem(), 1), false))return;
                 tank.fill(new FluidStack(FluidContainerRegistry.getFluidForFilledItem(input), FluidContainerRegistry.BUCKET_VOLUME), true);
-                addStackToOutput(new ItemStack(input.getItem().getContainerItem(), 1), true);
+                result = new ItemStack(input.getItem().getContainerItem());
                 success = true;
             }
         }
@@ -139,8 +173,8 @@ public class ContainerPlayerTanks extends Container implements OnInventoryChange
 
         }
         if(success) {
-            tankInterface.setInventorySlotContents(1, result);
             tankInterface.decrStackSize(0, 1);
+            addStackToOutput(result, true);
             tanks.setTankInStack(tank, selectedTank);
         }
     }
