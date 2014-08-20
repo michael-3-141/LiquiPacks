@@ -157,9 +157,9 @@ public class ContainerPlayerTanks extends Container implements OnInventoryChange
         if(input == null)return;
         if(FluidContainerRegistry.isFilledContainer(input)){
             if(tank.fill(new FluidStack(FluidContainerRegistry.getFluidForFilledItem(input), FluidContainerRegistry.BUCKET_VOLUME), false) == FluidContainerRegistry.BUCKET_VOLUME) {
-                if(!addStackToOutput(new ItemStack(input.getItem().getContainerItem(), 1), false))return;
+                if(!addStackToOutput(input.getItem().hasContainerItem(input) ? input.getItem().getContainerItem(input) : null, false))return;
                 tank.fill(new FluidStack(FluidContainerRegistry.getFluidForFilledItem(input), FluidContainerRegistry.BUCKET_VOLUME), true);
-                result = new ItemStack(input.getItem().getContainerItem());
+                result = input.getItem().hasContainerItem(input) ? input.getItem().getContainerItem(input) : null;
                 success = true;
             }
         }
