@@ -13,7 +13,6 @@ public class SelectedTankChangeMessageHandler implements IMessageHandler<Selecte
 
         if(ctx.getServerHandler().playerEntity.openContainer instanceof ContainerPlayerTanks){
             ((ContainerPlayerTanks) ctx.getServerHandler().playerEntity.openContainer).selectedTank = message.newId;
-            ((ContainerPlayerTanks) ctx.getServerHandler().playerEntity.openContainer).onInventoryChanged();
         }
         return null;
     }

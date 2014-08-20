@@ -43,4 +43,16 @@ public class SFluidTank extends FluidTank {
         int capacity = nbt.getInteger("Capacity");
         return new SFluidTank(capacity).readFromNBT(nbt);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj != null && obj instanceof SFluidTank){
+            SFluidTank tank = (SFluidTank) obj;
+            if(this.capacity == tank.capacity){
+                return this.fluid == null && tank.fluid == null || !(this.fluid == null || tank.fluid == null) && this.fluid.fluidID == tank.fluid.fluidID && this.fluid.amount == tank.fluid.amount;
+            }
+
+        }
+        return false;
+    }
 }

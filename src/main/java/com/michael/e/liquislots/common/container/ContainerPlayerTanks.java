@@ -2,6 +2,8 @@ package com.michael.e.liquislots.common.container;
 
 import com.michael.e.liquislots.common.LiquipackStack;
 import com.michael.e.liquislots.common.SFluidTank;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -10,12 +12,18 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-public class ContainerPlayerTanks extends Container implements OnInventoryChangedListener{
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-    private InventoryTankInterface tankInterface = new InventoryTankInterface(this);
+public class ContainerPlayerTanks extends Container{
+
+    //private InventoryTankInterface tankInterface = new InventoryTankInterface(this);
     private EntityPlayer player;
     private LiquipackStack tanks;
 
@@ -41,8 +49,8 @@ public class ContainerPlayerTanks extends Container implements OnInventoryChange
 
 
 
-        addSlotToContainer(new BucketSlot(tankInterface, 0, 61, 80));
-        addSlotToContainer(new BucketResultSlot(tankInterface, 1, 106, 80));
+        addSlotToContainer(new BucketSlot(tanks, 0, 61, 80));
+        addSlotToContainer(new BucketResultSlot(tanks, 1, 106, 80));
     }
 
     @Override
@@ -51,67 +59,63 @@ public class ContainerPlayerTanks extends Container implements OnInventoryChange
     }
 
     private void sendTanksToCrafter(ICrafting player){
-        /*int i = 0;
+        int i = 0;
         for(SFluidTank fluidTank : tanks.getTanks()){
-            player.sendProgressBarUpdate(this, i, fluidTank.getFluid() != null ? fluidTank.getFluid().fluidID : -1);
-            player.sendProgressBarUpdate(this, i + 1, fluidTank.getFluid() != null ? fluidTank.getFluidAmount() : -1);
+            player.sendProgressBarUpdate(this, i, fluidTank.getFluid() != null && fluidTank.getFluid().getFluid() != null? fluidTank.getFluid().fluidID : -1);
+            player.sendProgressBarUpdate(this, i + 1, fluidTank.getFluid() != null && fluidTank.getFluid().amount > 0 ? fluidTank.getFluidAmount() : -1);
             player.sendProgressBarUpdate(this, i + 2, fluidTank.getCapacity());
             i++;
-        }*/
+        }
+        player.sendProgressBarUpdate(this, 500, 500);
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public void addCraftingToCrafters(ICrafting player) {
-        crafters.add(player);
+        //super.addCraftingToCrafters(player);
         //sendTanksToCrafter(player);
     }
+
+    private SFluidTank[] prevTanks;
 
     @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
+        if(!Arrays.equals(prevTanks, tanks.getTanks())) {
+            for (Object crafting : crafters) {
+                sendTanksToCrafter((ICrafting) crafting);
+            }
+        }
+        prevTanks = tanks.getTanks().clone();
     }
+
+    @SideOnly(Side.CLIENT)
+    private List<Integer> recievedTanks = new ArrayList<Integer>();
 
     @Override
     public void updateProgressBar(int id, int data) {
-        /*int tank = id / 3;
-        SFluidTank fluidTank = tanks.getTankForStack(tank);
-        FluidStack fluidStack = fluidTank.getFluid();
-        switch (id % 3){
-            case 0:
-                if(data == -1){
-                    fluidTank.setFluid(null);
-                    tanks.setTankInStack(fluidTank, tank);
-                    break;
-                }
-                fluidStack.fluidID = data;
-                fluidTank.setFluid(fluidStack);
-                tanks.setTankInStack(fluidTank, tank);
-                break;
-            case 1:
-                if(data == -1){
-                    fluidTank.setFluid(null);
-                    tanks.setTankInStack(fluidTank, tank);
-                    break;
-                }
-                fluidStack.amount = data;
-                fluidTank.setFluid(fluidStack);
-                tanks.setTankInStack(fluidTank, tank);
-                break;
-            case 2:
-                fluidTank.setCapacity(data);
-                tanks.setTankInStack(fluidTank, tank);
-                break;
-        }*/
+        super.updateProgressBar(id, data);
+        if(id == 500 && data == 500) {
+            NBTTagList list = new NBTTagList();
+            for (int i = 0; i < recievedTanks.size() / 3; i++) {
+                SFluidTank tank = new SFluidTank(recievedTanks.get(i * 3) == -1 ? null : new FluidStack(recievedTanks.get(i * 3), recievedTanks.get((i * 3) + 1)), recievedTanks.get((i * 3) + 2));
+                list.appendTag(tank.writeToNBT(new NBTTagCompound()));
+            }
+            tanks.setTanks(list);
+            recievedTanks.clear();
+        }
+        else{
+            recievedTanks.add(data);
+        }
     }
 
     @Override
     public void onContainerClosed(EntityPlayer player) {
         super.onContainerClosed(player);
         if(!player.worldObj.isRemote) {
-            for (int i = 0; i < tankInterface.getSizeInventory(); i++) {
-                if (tankInterface.getStackInSlot(i) != null) {
-                    EntityItem item = new EntityItem(player.worldObj, player.posX, player.posY, player.posZ, tankInterface.getStackInSlot(i));
+            for (int i = 0; i < tanks.getSizeInventory(); i++) {
+                if (tanks.getStackInSlot(i) != null) {
+                    EntityItem item = new EntityItem(player.worldObj, player.posX, player.posY, player.posZ, tanks.getStackInSlot(i));
                     player.worldObj.spawnEntityInWorld(item);
                 }
             }
@@ -146,56 +150,6 @@ public class ContainerPlayerTanks extends Container implements OnInventoryChange
         }
 
         return null;
-    }
-
-    @Override
-    public void onInventoryChanged() {
-        ItemStack input = tankInterface.getStackInSlot(0);
-        ItemStack result = tankInterface.getStackInSlot(1);
-        SFluidTank tank = tanks.getTankForStack(selectedTank);
-        boolean success = false;
-        if(input == null)return;
-        if(FluidContainerRegistry.isFilledContainer(input)){
-            if(tank.fill(new FluidStack(FluidContainerRegistry.getFluidForFilledItem(input), FluidContainerRegistry.BUCKET_VOLUME), false) == FluidContainerRegistry.BUCKET_VOLUME) {
-                if(!addStackToOutput(new ItemStack(input.getItem().getContainerItem(), 1), false))return;
-                tank.fill(new FluidStack(FluidContainerRegistry.getFluidForFilledItem(input), FluidContainerRegistry.BUCKET_VOLUME), true);
-                result = new ItemStack(input.getItem().getContainerItem());
-                success = true;
-            }
-        }
-        else if(FluidContainerRegistry.isEmptyContainer(input))
-        {
-            if(tank.drain(FluidContainerRegistry.BUCKET_VOLUME, false) != null && tank.drain(FluidContainerRegistry.BUCKET_VOLUME, false).amount == FluidContainerRegistry.BUCKET_VOLUME){
-                result = FluidContainerRegistry.fillFluidContainer(tank.getFluid(), input);
-                tank.drain(FluidContainerRegistry.BUCKET_VOLUME, true);
-                success = true;
-            }
-
-        }
-        if(success) {
-            tankInterface.decrStackSize(0, 1);
-            addStackToOutput(result, true);
-            tanks.setTankInStack(tank, selectedTank);
-        }
-    }
-
-    private boolean addStackToOutput(ItemStack stack, boolean doPut){
-        ItemStack output = tankInterface.getStackInSlot(1);
-        if(output == null){
-            if(doPut){
-                tankInterface.setInventorySlotContents(1, stack);
-            }
-            return true;
-        }
-        else if(stack.getItem() == output.getItem() && !(stack.getItem().getHasSubtypes() && stack.getItemDamage() != output.getItemDamage()) && (output.stackSize + stack.stackSize) <= output.getMaxStackSize()){
-            if(doPut){
-                tankInterface.incrStackSize(1, stack.stackSize);
-            }
-            return true;
-        }
-        else{
-            return false;
-        }
     }
 
     private class InventoryTankInterface implements IInventory{
@@ -270,6 +224,7 @@ public class ContainerPlayerTanks extends Container implements OnInventoryChange
 
         @Override
         public void markDirty() {
+            if(player.worldObj.isRemote)return;
             listener.onInventoryChanged();
         }
 

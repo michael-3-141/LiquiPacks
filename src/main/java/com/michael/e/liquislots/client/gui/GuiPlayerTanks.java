@@ -88,7 +88,6 @@ public class GuiPlayerTanks extends GuiContainer{
                 selectedTank = i;
                 ((ContainerPlayerTanks)inventorySlots).selectedTank = i;
                 Liquislots.INSTANCE.netHandler.sendToServer(new SelectedTankChangeMessageHandler.SelectedTankChangeMessage(selectedTank));
-                ((ContainerPlayerTanks) inventorySlots).onInventoryChanged();
                 break;
             }
             i++;

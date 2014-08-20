@@ -1,7 +1,7 @@
 package com.michael.e.liquislots.common.recipe;
 
 import com.michael.e.liquislots.common.LiquipackStack;
-import com.michael.e.liquislots.item.ILiquipackProtection;
+import com.michael.e.liquislots.item.ILiquipackArmor;
 import com.michael.e.liquislots.item.ItemTank;
 import com.michael.e.liquislots.item.ItemsRef;
 import net.minecraft.inventory.InventoryCrafting;
@@ -33,7 +33,7 @@ public class RecipeLiquipack implements IRecipe {
                     foundTanks++;
                     foundTank = stack;
                 }
-                else if(stack.getItem() instanceof ILiquipackProtection){
+                else if(stack.getItem() instanceof ILiquipackArmor){
                     foundProtectors++;
                     foundProtector = stack;
                 }
@@ -50,7 +50,7 @@ public class RecipeLiquipack implements IRecipe {
         }
         if(foundLiquipacks == 1 && foundTanks == 0 && foundProtectors == 1 && foundOthers == 0){
             LiquipackStack liquipackStack = new LiquipackStack(foundLiquipack.copy());
-            result = liquipackStack.setProtection(foundProtector);
+            result = liquipackStack.setArmor(foundProtector);
             return true;
         }
         return false;
