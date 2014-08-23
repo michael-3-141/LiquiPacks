@@ -1,6 +1,6 @@
 package com.michael.e.liquislots.common;
 
-import com.michael.e.liquislots.item.ILiquipackProtection;
+import com.michael.e.liquislots.item.ILiquipackArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -59,20 +59,20 @@ public class LiquipackStack {
         return stack;
     }
 
-    public ItemStack setProtection(ItemStack protection){
-        if(!(protection.getItem() instanceof ILiquipackProtection))throw new IllegalArgumentException("Liquipack protection item must implement ILiquipackProtection");
+    public ItemStack setArmor(ItemStack protection){
+        if(!(protection.getItem() instanceof ILiquipackArmor))throw new IllegalArgumentException("Liquipack armor item must implement ILiquipackArmor");
         NBTTagCompound compound = new NBTTagCompound();
         protection.writeToNBT(compound);
-        stack.getTagCompound().setTag("protection", compound);
+        stack.getTagCompound().setTag("armor", compound);
         return stack;
     }
 
-    public ItemStack getProtection(){
-        return ItemStack.loadItemStackFromNBT(stack.getTagCompound().getCompoundTag("protection"));
+    public ItemStack getArmor(){
+        return ItemStack.loadItemStackFromNBT(stack.getTagCompound().getCompoundTag("armor"));
     }
 
-    public ItemStack removeProtection(){
-        stack.getTagCompound().removeTag("protection");
+    public ItemStack removeArmor(){
+        stack.getTagCompound().removeTag("armor");
         return stack;
     }
 }

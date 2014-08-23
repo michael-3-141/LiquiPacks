@@ -3,7 +3,7 @@ package com.michael.e.liquislots.item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.ISpecialArmor;
 
-public class ItemLiquipackProtector extends ItemLiquipacksBase implements ILiquipackProtection {
+public class ItemLiquipackProtector extends ItemLiquipacksBase implements ILiquipackArmor {
 
     private double absorbAmount;
 

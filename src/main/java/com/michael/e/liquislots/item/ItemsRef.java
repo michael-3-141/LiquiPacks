@@ -10,8 +10,8 @@ public class ItemsRef {
     public static Item tank;
     public static Item liquipackBucket;
 
-    public static Item liquipackProtectorIron;
-    public static Item liquipackProtectorDiamond;
+    public static Item liquipackArmorIron;
+    public static Item liquipackArmorDiamond;
 
     public static void init()
     {
@@ -24,10 +24,10 @@ public class ItemsRef {
         liquipackBucket = new ItemLiquipackBucket();
         regItem(liquipackBucket);
 
-        liquipackProtectorIron = new ItemLiquipackProtector(6D / 25D, 240).setUnlocalizedName("liquipackProtectorIron");
-        regItem(liquipackProtectorIron);
+        liquipackArmorIron = new ItemLiquipackArmor(6D / 25D, 240).setUnlocalizedName("liquipackArmorIron").setTextureName(Reference.MOD_ID + ":liquipackArmorIron");
+        regItem(liquipackArmorIron);
 
-        liquipackProtectorDiamond = new ItemLiquipackProtector(33D / 25D, 528).setUnlocalizedName("liquipackProtectorDiamond");
+        liquipackArmorDiamond = new ItemLiquipackArmor(8D / 25D, 528).setUnlocalizedName("liquipackArmorDiamond").setTextureName(Reference.MOD_ID + ":liquipackArmorDiamond");
         regItem(liquipackProtectorDiamond);
     }
 

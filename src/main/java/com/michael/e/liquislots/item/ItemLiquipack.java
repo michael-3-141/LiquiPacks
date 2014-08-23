@@ -31,7 +31,7 @@ public class ItemLiquipack extends ItemArmor implements ISpecialArmor{
     @Override
     public boolean showDurabilityBar(ItemStack stack) {
         LiquipackStack liquipackStack = new LiquipackStack(stack);
-        return liquipackStack.getProtection() != null && liquipackStack.getProtection().getItemDamage() != 0;
+        return liquipackStack.getArmor() != null && liquipackStack.getArmor().getItemDamage() != 0;
     }
 
     @Override
@@ -65,9 +65,9 @@ public class ItemLiquipack extends ItemArmor implements ISpecialArmor{
                 String containsText = tank.getFluid() == null ? "Nothing" : tank.getFluidAmount() + "x" + tank.getFluid().getFluid().getLocalizedName(tank.getFluid());
                 info.add("Tank " + (i + 1) + " | Capacity: " + tank.getCapacity() + "mb | Contains: " + containsText);
             }
-            ItemStack protection = liquipackStack.getProtection();
+            ItemStack protection = liquipackStack.getArmor();
             if(protection != null){
-                info.add("Installed Armor: " + protection.getDisplayName() + " | Damage:" + (protection.getMaxDamage() - protection.getItemDamage()) + "/" + protection.getMaxDamage());
+                info.add("Installed Armor: " + protection.getDisplayName() + " | Damage: " + (protection.getMaxDamage() - protection.getItemDamage()) + "/" + protection.getMaxDamage());
             }
         }
     }
@@ -80,38 +80,38 @@ public class ItemLiquipack extends ItemArmor implements ISpecialArmor{
     @Override
     public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage, int slot) {
         LiquipackStack stack = new LiquipackStack(armor);
-        if(stack.getProtection() != null){
-            return ((ILiquipackProtection)stack.getProtection().getItem()).getProtectionProps(stack.getProtection());
+        if(stack.getArmor() != null){
+            return ((ILiquipackArmor)stack.getArmor().getItem()).getProtectionProps(stack.getArmor());
         }
-        return null;
+        return new ArmorProperties(0, 0, 0);
     }
 
     @Override
     public int getArmorDisplay(EntityPlayer player, ItemStack armor, int slot) {
         LiquipackStack liquipackStack = new LiquipackStack(armor);
-        if(liquipackStack.getProtection() == null)return 0;
-        ArmorProperties protection = ((ILiquipackProtection)liquipackStack.getProtection().getItem()).getProtectionProps(armor);
+        if(liquipackStack.getArmor() == null)return 0;
+        ArmorProperties protection = ((ILiquipackArmor)liquipackStack.getArmor().getItem()).getProtectionProps(armor);
         return (int)(protection.AbsorbRatio * 25D);
     }
 
     @Override
     public void damageArmor(EntityLivingBase entity, ItemStack stack, DamageSource source, int damage, int slot) {
         LiquipackStack liquipackStack = new LiquipackStack(stack);
-        ItemStack protectorStack = liquipackStack.getProtection();
+        ItemStack protectorStack = liquipackStack.getArmor();
         if(protectorStack != null) {
             protectorStack.damageItem(damage, entity);
             if(protectorStack.getItemDamage() < protectorStack.getMaxDamage()) {
-                liquipackStack.setProtection(protectorStack);
+                liquipackStack.setArmor(protectorStack);
             }
             else{
-                liquipackStack.removeProtection();
+                liquipackStack.removeArmor();
             }
         }
     }
 
     @Override
     public double getDurabilityForDisplay(ItemStack stack) {
-        ItemStack protection = new LiquipackStack(stack).getProtection();
+        ItemStack protection = new LiquipackStack(stack).getArmor();
         return protection != null ? 1.0 - (protection.getItemDamageForDisplay() / protection.getItemDamage()) : 0;
     }
 }
