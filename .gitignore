@@ -5,4 +5,4 @@ out/
 *.iml
 *.iws
 *.ipr
-**Thumbs.db
+**/Thumbs.db
