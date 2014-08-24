@@ -28,7 +28,7 @@ public class ItemsRef {
         regItem(liquipackArmorIron);
 
         liquipackArmorDiamond = new ItemLiquipackArmor(8D / 25D, 528).setUnlocalizedName("liquipackArmorDiamond").setTextureName(Reference.MOD_ID + ":liquipackArmorDiamond");
-        regItem(liquipackProtectorDiamond);
+        regItem(liquipackArmorDiamond);
     }
 
     public static void regItem(Item item)
