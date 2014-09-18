@@ -11,4 +11,8 @@ public class CommonProxy{
     public void initRenderers(){
 
     }
+
+    public void initKeybinds() {
+
+    }
 }

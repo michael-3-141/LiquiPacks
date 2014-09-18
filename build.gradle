@@ -17,9 +17,9 @@ buildscript {
 
 apply plugin: 'forge'
 
-version = "1.7.10-1.1"
+version = "1.7.10-1.2"
 group= "com.michael.e.liquislots" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "Liquipack"
+archivesBaseName = "Liquipacks"
 
 minecraft {
     version = "1.7.10-10.13.0.1180"

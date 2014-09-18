@@ -1,7 +1,6 @@
 package com.michael.e.liquislots;
 
 import com.michael.e.liquislots.block.BlocksRef;
-import com.michael.e.liquislots.client.KeybindHandler;
 import com.michael.e.liquislots.client.LiquislotClientEventHandler;
 import com.michael.e.liquislots.common.GuiHandler;
 import com.michael.e.liquislots.common.recipe.RecipeLiquipack;
@@ -130,7 +129,7 @@ public class Liquislots {
         GameRegistry.addRecipe(new RecipeLiquipack());
 
         proxy.initRenderers();
-        KeybindHandler.init();
+        proxy.initKeybinds();
     }
 
     @Mod.EventHandler
