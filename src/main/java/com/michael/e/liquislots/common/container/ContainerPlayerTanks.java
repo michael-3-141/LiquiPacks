@@ -63,7 +63,7 @@ public class ContainerPlayerTanks extends Container implements OnInventoryChange
     @Override
     @SuppressWarnings("unchecked")
     public void addCraftingToCrafters(ICrafting player) {
-        crafters.add(player);
+        super.addCraftingToCrafters(player);
         //sendTanksToCrafter(player);
     }
 
@@ -148,24 +148,30 @@ public class ContainerPlayerTanks extends Container implements OnInventoryChange
         return null;
     }
 
+    public int test = 0;
+
     @Override
     public void onInventoryChanged() {
-        ItemStack input = tankInterface.getStackInSlot(0);
-        ItemStack result = tankInterface.getStackInSlot(1);
+        if(Thread.currentThread().getName().equals("Client thread")) System.out.println("Method called");
+        if(tankInterface.getStackInSlot(0) == null)return;
+        ItemStack input = ItemStack.copyItemStack(tankInterface.getStackInSlot(0));
+        input.stackSize = 1;
+        ItemStack result = ItemStack.copyItemStack(tankInterface.getStackInSlot(1));
         SFluidTank tank = tanks.getTankForStack(selectedTank);
         boolean success = false;
-        if(input == null)return;
         if(FluidContainerRegistry.isFilledContainer(input)){
             if(tank.fill(new FluidStack(FluidContainerRegistry.getFluidForFilledItem(input), FluidContainerRegistry.BUCKET_VOLUME), false) == FluidContainerRegistry.BUCKET_VOLUME) {
                 if(!addStackToOutput(input.getItem().hasContainerItem(input) ? input.getItem().getContainerItem(input) : null, false))return;
                 tank.fill(new FluidStack(FluidContainerRegistry.getFluidForFilledItem(input), FluidContainerRegistry.BUCKET_VOLUME), true);
                 result = input.getItem().hasContainerItem(input) ? input.getItem().getContainerItem(input) : null;
                 success = true;
+
             }
         }
         else if(FluidContainerRegistry.isEmptyContainer(input))
         {
             if(tank.drain(FluidContainerRegistry.BUCKET_VOLUME, false) != null && tank.drain(FluidContainerRegistry.BUCKET_VOLUME, false).amount == FluidContainerRegistry.BUCKET_VOLUME){
+                if(!addStackToOutput(FluidContainerRegistry.fillFluidContainer(tank.getFluid(), input), false))return;
                 result = FluidContainerRegistry.fillFluidContainer(tank.getFluid(), input);
                 tank.drain(FluidContainerRegistry.BUCKET_VOLUME, true);
                 success = true;
@@ -173,23 +179,28 @@ public class ContainerPlayerTanks extends Container implements OnInventoryChange
 
         }
         if(success) {
-            tankInterface.decrStackSize(0, 1);
-            addStackToOutput(result, true);
+            tankInterface.getStackInSlot(0).stackSize--;
+            if(tankInterface.getStackInSlot(0).stackSize == 0)tankInterface.stacks[0] = null;
             tanks.setTankInStack(tank, selectedTank);
+            addStackToOutput(result, true);
         }
     }
 
     private boolean addStackToOutput(ItemStack stack, boolean doPut){
         ItemStack output = tankInterface.getStackInSlot(1);
+        if(stack == null){
+            if(doPut)tankInterface.markDirty();
+            return true;
+        }
         if(output == null){
             if(doPut){
                 tankInterface.setInventorySlotContents(1, stack);
             }
             return true;
         }
-        else if(stack.getItem() == output.getItem() && !(stack.getItem().getHasSubtypes() && stack.getItemDamage() != output.getItemDamage()) && (output.stackSize + stack.stackSize) <= output.getMaxStackSize()){
+        else if(stack.isItemEqual(output) && (output.stackSize + stack.stackSize) <= output.getMaxStackSize()){
             if(doPut){
-                tankInterface.incrStackSize(1, stack.stackSize);
+                tankInterface.incrStackSize(1, stack.stackSize > 0 ? stack.stackSize : 1, true);
             }
             return true;
         }
@@ -291,17 +302,18 @@ public class ContainerPlayerTanks extends Container implements OnInventoryChange
             return true;
         }
 
-        public boolean incrStackSize(int i, int j) {
+        public boolean incrStackSize(int i, int j, boolean markDirty) {
             ItemStack itemstack = getStackInSlot(i);
 
             if(itemstack != null) {
                 if (itemstack.stackSize >= itemstack.getMaxStackSize()) {
                     itemstack.stackSize = itemstack.getMaxStackSize();
-                    setInventorySlotContents(i, itemstack);
+                    stacks[i] = itemstack;
+                    if(markDirty)markDirty();
                 } else {
                     itemstack.stackSize += j;
-                    setInventorySlotContents(i, itemstack);
-                    markDirty();
+                    stacks[i] = itemstack;
+                    if(markDirty)markDirty();
                     return true;
                 }
             }

@@ -4,6 +4,8 @@ import com.michael.e.liquislots.Liquislots;
 import com.michael.e.liquislots.Reference;
 import com.michael.e.liquislots.common.LiquipackStack;
 import com.michael.e.liquislots.common.SFluidTank;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -73,6 +75,7 @@ public class ItemLiquipack extends ItemArmor implements ISpecialArmor{
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, int armorSlot) {
         return Liquislots.proxy.getModel();
     }
