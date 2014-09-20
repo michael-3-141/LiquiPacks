@@ -14,7 +14,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.IFluidHandler;
 import org.lwjgl.opengl.GL11;
 
-public class LiquipackIORenderer extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler{
+public class LiquipackIORenderer extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler {
 
     private ModelLiquipackIO model = new ModelLiquipackIO();
     private ResourceLocation modelTexture = new ResourceLocation(Reference.MOD_ID, "models/liquipackIO.png");
