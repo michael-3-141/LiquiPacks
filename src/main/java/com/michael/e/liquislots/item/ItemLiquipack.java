@@ -2,8 +2,8 @@ package com.michael.e.liquislots.item;
 
 import com.michael.e.liquislots.Liquislots;
 import com.michael.e.liquislots.Reference;
-import com.michael.e.liquislots.common.LiquipackStack;
-import com.michael.e.liquislots.common.SFluidTank;
+import com.michael.e.liquislots.common.util.LiquipackStack;
+import com.michael.e.liquislots.common.util.LiquipackTank;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.model.ModelBiped;
@@ -13,6 +13,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.common.util.EnumHelper;
 import org.lwjgl.input.Keyboard;
@@ -41,31 +42,49 @@ public class ItemLiquipack extends ItemArmor implements ISpecialArmor{
         return Reference.MOD_ID + ":models/armor/liquipack.png";
     }
 
+    public static boolean isOldFormat(ItemStack stack){
+        return stack.getTagCompound() != null && stack.getTagCompound().hasKey("tanks") && stack.getTagCompound().getTag("tanks").getId() == 9;
+    }
+
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List info, boolean debug) {
+        if(debug && stack.getTagCompound() != null){
+            String[] nbt = stack.getTagCompound().toString().split("(?<=\\G.{80})");
+            for(String line : nbt){
+                info.add(line);
+            }
+        }
+        //Message for old format liquipacks
+        if(isOldFormat(stack)){
+            info.add(EnumChatFormatting.DARK_RED + "This item is from an older version,");
+            info.add(EnumChatFormatting.DARK_RED + "to update it to the new version place it in a crafting table");
+            return;
+        }
         if(!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
             info.add("<Press SHIFT for more info>");
-            /*if(debug && stack.getTagCompound() != null){
-                String[] nbt = stack.getTagCompound().toString().split("(?<=\\G.{80})");
-                for(String line : nbt){
-                    info.add(line);
-                }
-            }*/
         }
         else {
             LiquipackStack liquipackStack = new LiquipackStack(stack);
-            SFluidTank[] tanks = liquipackStack.getTanks();
-            if(tanks.length == 0){
+            LiquipackTank[] tanks = liquipackStack.getTanks();
+            boolean isEmpty = true;
+            for(LiquipackTank tank : tanks){
+                if(tank != null){
+                    isEmpty = false;
+                    break;
+                }
+            }
+            if(isEmpty){
                 info.add("This item is useless without any tanks");
                 info.add("Add tanks by putting them in a crafting");
                 info.add("table with the liquipack");
             }
             int i = -1;
-            for (SFluidTank tank : tanks) {
+            for (LiquipackTank tank : tanks) {
                 i++;
-                if (tank == null) return;
-                String containsText = tank.getFluid() == null ? "Nothing" : tank.getFluidAmount() + "x" + tank.getFluid().getFluid().getLocalizedName(tank.getFluid());
-                info.add("Tank " + (i + 1) + " | Capacity: " + tank.getCapacity() + "mb | Contains: " + containsText);
+                if (tank != null) {
+                    String containsText = tank.getFluid() == null ? "Nothing" : tank.getFluidAmount() + "x" + tank.getFluid().getFluid().getLocalizedName(tank.getFluid());
+                    info.add("Tank " + (i + 1) + " | Capacity: " + tank.getCapacity() + "mb | Contains: " + containsText);
+                }
             }
             ItemStack protection = liquipackStack.getArmor();
             if(protection != null){

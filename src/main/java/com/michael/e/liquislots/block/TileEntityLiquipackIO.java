@@ -1,7 +1,7 @@
 package com.michael.e.liquislots.block;
 
-import com.michael.e.liquislots.common.LiquipackStack;
-import com.michael.e.liquislots.common.SFluidTank;
+import com.michael.e.liquislots.common.util.LiquipackStack;
+import com.michael.e.liquislots.common.util.LiquipackTank;
 import com.michael.e.liquislots.item.ItemLiquipack;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -18,12 +18,12 @@ import java.util.List;
 
 public class TileEntityLiquipackIO extends TileEntity implements IFluidHandler{
 
-    public SFluidTank buffer;
+    public LiquipackTank buffer;
     private int tank;
     private boolean isDrainingMode;
 
     public TileEntityLiquipackIO() {
-        buffer = new SFluidTank(10000);
+        buffer = new LiquipackTank(10000);
         tank = 0;
         isDrainingMode = true;
     }
@@ -93,19 +93,19 @@ public class TileEntityLiquipackIO extends TileEntity implements IFluidHandler{
                 if(this.tank >= tank.getTanks().length){
                     return;
                 }
-                SFluidTank fluidTank = tank.getTankForStack(this.tank);
+                LiquipackTank fluidTank = tank.getTank(this.tank);
                 if(isDrainingMode) {
                     if (fluidTank.getFluid() != null) {
                         int left = fluidTank.getFluid().amount - ((TileEntityLiquipackIO) tile).buffer.fill(fluidTank.getFluid(), true);
                         fluidTank.setFluid(left == 0 ? null : new FluidStack(fluidTank.getFluid().getFluid(), left));
-                        tank.setTankInStack(fluidTank, this.tank);
+                        tank.setTank(fluidTank, this.tank);
                     }
                 }
                 else{
                     if(fluidTank.fill(buffer.getFluid(), false) > 0){
                         int left = buffer.getFluid().amount - fluidTank.fill(buffer.getFluid(), true);
                         buffer.setFluid(new FluidStack(buffer.getFluidAmount(), left));
-                        tank.setTankInStack(fluidTank, this.tank);
+                        tank.setTank(fluidTank, this.tank);
                     }
                 }
             }

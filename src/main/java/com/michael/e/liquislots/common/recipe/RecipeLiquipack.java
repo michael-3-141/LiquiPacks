@@ -1,7 +1,8 @@
 package com.michael.e.liquislots.common.recipe;
 
-import com.michael.e.liquislots.common.LiquipackStack;
+import com.michael.e.liquislots.common.util.LiquipackStack;
 import com.michael.e.liquislots.item.ILiquipackArmor;
+import com.michael.e.liquislots.item.ItemLiquipack;
 import com.michael.e.liquislots.item.ItemTank;
 import com.michael.e.liquislots.item.ItemsRef;
 import net.minecraft.inventory.InventoryCrafting;
@@ -42,13 +43,13 @@ public class RecipeLiquipack implements IRecipe {
                 }
             }
         }
-        if(foundLiquipacks == 1 && foundTanks == 1 && foundProtectors == 0 && foundOthers == 0){
+        if(foundLiquipacks == 1 && foundTanks == 1 && foundProtectors == 0 && foundOthers == 0 && !ItemLiquipack.isOldFormat(foundLiquipack)){
             LiquipackStack liquipackStack = new LiquipackStack(foundLiquipack.copy());
-            if(liquipackStack.getTanks().length >= 4)return false;
-            result = liquipackStack.addTankTankToStack(ItemTank.getFluidTankFromStack(foundTank));
+            if(liquipackStack.getTankCount() >= 4)return false;
+            result = liquipackStack.addTank(ItemTank.getFluidTankFromStack(foundTank));
             return true;
         }
-        if(foundLiquipacks == 1 && foundTanks == 0 && foundProtectors == 1 && foundOthers == 0){
+        if(foundLiquipacks == 1 && foundTanks == 0 && foundProtectors == 1 && foundOthers == 0 && !ItemLiquipack.isOldFormat(foundLiquipack)){
             LiquipackStack liquipackStack = new LiquipackStack(foundLiquipack.copy());
             result = liquipackStack.setArmor(foundProtector);
             return true;

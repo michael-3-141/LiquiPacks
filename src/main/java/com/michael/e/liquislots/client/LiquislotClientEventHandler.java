@@ -21,4 +21,6 @@ public class LiquislotClientEventHandler{
             Liquislots.INSTANCE.logger.info(TankExtendedPlayer.getPlayerTanks(Minecraft.getMinecraft().thePlayer).playerTank.getFluid().getFluid().getName());
         }*/
     }
+
+
 }

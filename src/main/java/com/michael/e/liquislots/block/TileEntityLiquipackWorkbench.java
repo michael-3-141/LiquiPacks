@@ -4,11 +4,30 @@ import com.michael.e.liquislots.item.ItemLiquipack;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
 public class TileEntityLiquipackWorkbench extends TileEntity implements IInventory{
 
     private ItemStack stack;
+
+    @Override
+    public void writeToNBT(NBTTagCompound nbt) {
+        super.writeToNBT(nbt);
+        NBTTagCompound compound = new NBTTagCompound();
+        if(stack != null) {
+            stack.writeToNBT(compound);
+            nbt.setTag("liquipack", compound);
+        }
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound nbt) {
+        super.readFromNBT(nbt);
+        if(nbt.hasKey("liquipack")){
+            stack = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("liquipack"));
+        }
+    }
 
     @Override
     public int getSizeInventory() {
@@ -44,8 +63,8 @@ public class TileEntityLiquipackWorkbench extends TileEntity implements IInvento
     }
 
     @Override
-    public void setInventorySlotContents(int p_70299_1_, ItemStack p_70299_2_) {
-
+    public void setInventorySlotContents(int i, ItemStack stack) {
+        this.stack = stack;
     }
 
     @Override

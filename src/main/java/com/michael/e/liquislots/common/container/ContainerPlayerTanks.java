@@ -1,7 +1,7 @@
 package com.michael.e.liquislots.common.container;
 
-import com.michael.e.liquislots.common.LiquipackStack;
-import com.michael.e.liquislots.common.SFluidTank;
+import com.michael.e.liquislots.common.util.LiquipackStack;
+import com.michael.e.liquislots.common.util.LiquipackTank;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -148,8 +148,6 @@ public class ContainerPlayerTanks extends Container implements OnInventoryChange
         return null;
     }
 
-    public int test = 0;
-
     @Override
     public void onInventoryChanged() {
         if(Thread.currentThread().getName().equals("Client thread")) System.out.println("Method called");
@@ -157,7 +155,7 @@ public class ContainerPlayerTanks extends Container implements OnInventoryChange
         ItemStack input = ItemStack.copyItemStack(tankInterface.getStackInSlot(0));
         input.stackSize = 1;
         ItemStack result = ItemStack.copyItemStack(tankInterface.getStackInSlot(1));
-        SFluidTank tank = tanks.getTankForStack(selectedTank);
+        LiquipackTank tank = tanks.getTank(selectedTank);
         boolean success = false;
         if(FluidContainerRegistry.isFilledContainer(input)){
             if(tank.fill(new FluidStack(FluidContainerRegistry.getFluidForFilledItem(input), FluidContainerRegistry.BUCKET_VOLUME), false) == FluidContainerRegistry.BUCKET_VOLUME) {
@@ -181,7 +179,7 @@ public class ContainerPlayerTanks extends Container implements OnInventoryChange
         if(success) {
             tankInterface.getStackInSlot(0).stackSize--;
             if(tankInterface.getStackInSlot(0).stackSize == 0)tankInterface.stacks[0] = null;
-            tanks.setTankInStack(tank, selectedTank);
+            tanks.setTank(tank, selectedTank);
             addStackToOutput(result, true);
         }
     }

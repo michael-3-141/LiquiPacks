@@ -1,7 +1,8 @@
 item.liquipack.name=Liquipack
-item.tank.0.name=Small Tank
-item.tank.1.name=Medium Tank
-item.tank.2.name=Big Tank
+item.tank.8000.name=Small Tank
+item.tank.16000.name=Medium Tank
+item.tank.32000.name=Big Tank
+item.tank.0.name=Custom Tank
 item.liquipackBucket.name=Liquipack Bucket
 item.liquipackArmorIron.name=Iron Liquipack Armor
 item.liquipackArmorDiamond.name=Diamond Liquipack Armor
@@ -10,3 +11,4 @@ key.liquipackinv=Open Liquipack Inventory
 liquipackbucket.mode.1=Pick up liquids into liquipack
 liquipackbucket.mode.0=Place liquids from liquipack
 itemGroup.tabLiquipacks=LiquiPacks
+tile.liquipackWorkbench.name=Liquipack Workbench

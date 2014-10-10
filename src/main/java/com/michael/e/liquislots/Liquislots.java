@@ -4,7 +4,11 @@ import com.michael.e.liquislots.block.BlocksRef;
 import com.michael.e.liquislots.client.LiquislotClientEventHandler;
 import com.michael.e.liquislots.common.GuiHandler;
 import com.michael.e.liquislots.common.recipe.RecipeLiquipack;
+import com.michael.e.liquislots.common.recipe.RecipeUpdateLiquipack;
+import com.michael.e.liquislots.common.recipe.RecipeUpdateTank;
+import com.michael.e.liquislots.common.util.LiquipackTank;
 import com.michael.e.liquislots.config.ConfigHander;
+import com.michael.e.liquislots.item.ItemTank;
 import com.michael.e.liquislots.item.ItemsRef;
 import com.michael.e.liquislots.network.message.ChangeLiquipackIOOptionsMessageHandler;
 import com.michael.e.liquislots.network.message.ChangeTankOptionsMessageHandler;
@@ -28,6 +32,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 import org.apache.logging.log4j.Logger;
 
 @Mod(modid = Reference.MOD_ID, name = Reference.NAME, version = Reference.VERSION)
@@ -67,7 +72,9 @@ public class Liquislots {
     @Mod.EventHandler
     public void init(FMLInitializationEvent e)
     {
-        GameRegistry.addRecipe(new ItemStack(ItemsRef.tank, 1, 0),
+        ItemStack tank = new ItemStack(ItemsRef.tank, 1, 0);
+        ItemTank.setTankForStack(tank, new LiquipackTank(ItemTank.tankCapacities[tank.getItemDamage()]));
+        GameRegistry.addRecipe(tank,
                 "ggg",
                 "gig",
                 "ggg",
@@ -76,7 +83,9 @@ public class Liquislots {
                 'g',new ItemStack(Blocks.glass)
         );
 
-        GameRegistry.addRecipe(new ItemStack(ItemsRef.tank, 1, 1),
+        tank = new ItemStack(ItemsRef.tank, 1, 1);
+        ItemTank.setTankForStack(tank, new LiquipackTank(ItemTank.tankCapacities[tank.getItemDamage()]));
+        GameRegistry.addRecipe(tank,
                 "gig",
                 "gtg",
                 "gig",
@@ -86,7 +95,9 @@ public class Liquislots {
                 't', new ItemStack(ItemsRef.tank, 1, 0)
         );
 
-        GameRegistry.addRecipe(new ItemStack(ItemsRef.tank, 1, 2),
+        tank = new ItemStack(ItemsRef.tank, 1, 2);
+        ItemTank.setTankForStack(tank, new LiquipackTank(ItemTank.tankCapacities[tank.getItemDamage()]));
+        GameRegistry.addRecipe(tank,
                 "gig",
                 "dtd",
                 "gig",
@@ -126,7 +137,38 @@ public class Liquislots {
                 'b', new ItemStack(Items.bucket)
                 );
 
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemsRef.liquipackArmorIron),
+                "igi",
+                "iii",
+                "iii",
+
+                'i', new ItemStack(Items.iron_ingot),
+                'g', "blockGlass"
+                ));
+
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemsRef.liquipackArmorDiamond),
+                "dgd",
+                "ggg",
+                "gdg",
+
+                'd', new ItemStack(Items.diamond),
+                'g', "blockGlass"
+        ));
+
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlocksRef.liquipackWorkbench),
+                "gig",
+                "wcw",
+                "igi",
+
+                'g', "blockGlass",
+                'i', new ItemStack(Items.iron_ingot),
+                'w', "plankWood",
+                'c', new ItemStack(Blocks.crafting_table)
+        ));
+
         GameRegistry.addRecipe(new RecipeLiquipack());
+        GameRegistry.addRecipe(new RecipeUpdateLiquipack());
+        GameRegistry.addRecipe(new RecipeUpdateTank());
 
         proxy.initRenderers();
         proxy.initKeybinds();

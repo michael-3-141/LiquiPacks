@@ -2,8 +2,8 @@ package com.michael.e.liquislots.item;
 
 import com.michael.e.liquislots.Liquislots;
 import com.michael.e.liquislots.Reference;
-import com.michael.e.liquislots.common.LiquipackStack;
-import com.michael.e.liquislots.common.SFluidTank;
+import com.michael.e.liquislots.common.util.LiquipackStack;
+import com.michael.e.liquislots.common.util.LiquipackTank;
 import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -70,7 +70,7 @@ public class ItemLiquipackBucket extends ItemLiquipacksBase {
             }
             return stack;
         }
-        SFluidTank tank = tanks.getTankForStack(getSelectedTank(stack));
+        LiquipackTank tank = tanks.getTank(getSelectedTank(stack));
 
         if (movingobjectposition != null) {
             if (movingobjectposition.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
@@ -112,7 +112,7 @@ public class ItemLiquipackBucket extends ItemLiquipacksBase {
 
                     if(result != null && tank.fill(result, false) == FluidContainerRegistry.BUCKET_VOLUME){
                         tank.fill(result, true);
-                        tanks.setTankInStack(tank, getSelectedTank(stack));
+                        tanks.setTank(tank, getSelectedTank(stack));
                         world.setBlockToAir(x, y, z);
                     }
                 } else {
@@ -148,7 +148,7 @@ public class ItemLiquipackBucket extends ItemLiquipacksBase {
                     //Try to place
                     if(tank.drain(FluidContainerRegistry.BUCKET_VOLUME, false) != null && tank.drain(FluidContainerRegistry.BUCKET_VOLUME, false).amount == FluidContainerRegistry.BUCKET_VOLUME) {
                         this.tryPlaceContainedLiquid(world, x, y, z, stack, tank.drain(FluidContainerRegistry.BUCKET_VOLUME, true));
-                        tanks.setTankInStack(tank, getSelectedTank(stack));
+                        tanks.setTank(tank, getSelectedTank(stack));
                     }
                 }
             }
