@@ -45,7 +45,7 @@ public class ItemTank extends ItemLiquipacksBase {
     }
 
     @Override
-    public IIcon getIcon(ItemStack stack, int pass) {
+    public IIcon getIconIndex(ItemStack stack) {
         LiquipackTank tank = getTankForStack(stack);
         if(tank == null)return icons[0];
         for(int i = 0; i < tankCapacities.length; i++){
@@ -54,6 +54,11 @@ public class ItemTank extends ItemLiquipacksBase {
             }
         }
         return icons[0];
+    }
+
+    @Override
+    public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
+        return getIconIndex(stack);
     }
 
     @Override

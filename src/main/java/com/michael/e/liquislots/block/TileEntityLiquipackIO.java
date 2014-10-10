@@ -90,10 +90,8 @@ public class TileEntityLiquipackIO extends TileEntity implements IFluidHandler{
             if(player.inventory.armorItemInSlot(2) != null && player.inventory.armorItemInSlot(2).getItem() instanceof ItemLiquipack && tile instanceof TileEntityLiquipackIO){
                 ItemStack stack = player.inventory.armorItemInSlot(2);
                 LiquipackStack tank = new LiquipackStack(stack);
-                if(this.tank >= tank.getTanks().length){
-                    return;
-                }
                 LiquipackTank fluidTank = tank.getTank(this.tank);
+                if(fluidTank == null)return;
                 if(isDrainingMode) {
                     if (fluidTank.getFluid() != null) {
                         int left = fluidTank.getFluid().amount - ((TileEntityLiquipackIO) tile).buffer.fill(fluidTank.getFluid(), true);
