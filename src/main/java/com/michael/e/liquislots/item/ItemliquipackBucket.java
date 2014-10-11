@@ -64,13 +64,13 @@ public class ItemLiquipackBucket extends ItemLiquipacksBase {
         FluidStack result = null;
         ItemStack liquipack = player.inventory.armorItemInSlot(2);
         LiquipackStack tanks = new LiquipackStack(liquipack);
-        if(getSelectedTank(stack) >= tanks.getTanks().length){
+        LiquipackTank tank = tanks.getTank(getSelectedTank(stack));
+        if(tank == null){
             if(!world.isRemote){
                 player.addChatComponentMessage(new ChatComponentText("You don't have any tank in slot " + (getSelectedTank(stack) + 1) + " of your liquipack."));
             }
             return stack;
         }
-        LiquipackTank tank = tanks.getTank(getSelectedTank(stack));
 
         if (movingobjectposition != null) {
             if (movingobjectposition.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
