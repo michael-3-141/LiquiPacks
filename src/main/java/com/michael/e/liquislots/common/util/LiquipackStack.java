@@ -14,19 +14,23 @@ public class LiquipackStack {
         this.stack = stack;
     }
 
-    private NBTNumberedList getList(){
+    private NBTNumberedList getTankList(){
         return new NBTNumberedList(stack.getTagCompound().getCompoundTag("tanks"));
+    }
+
+    private NBTNumberedList getUpgradeList(){
+        return new NBTNumberedList(stack.getTagCompound().getCompoundTag("upgrades"));
     }
 
     public LiquipackTank getTank(int tank)
     {
-        return LiquipackTank.loadFromNBT(getList().get(tank));
+        return LiquipackTank.loadFromNBT(getTankList().get(tank));
     }
 
     public LiquipackTank[] getTanks(){
         LiquipackTank[] tanks = new LiquipackTank[4];
         for(int i = 0; i < tanks.length; i++){
-            tanks[i] = LiquipackTank.loadFromNBT(getList().get(i));
+            tanks[i] = LiquipackTank.loadFromNBT(getTankList().get(i));
         }
         return tanks;
     }
@@ -42,12 +46,10 @@ public class LiquipackStack {
     public ItemStack setTank(LiquipackTank tank, int tankIndex)
     {
         if(tank != null) {
-            NBTTagCompound compound = new NBTTagCompound();
-            tank.writeToNBT(compound);
-            getList().set(tankIndex, tank.writeToNBT(new NBTTagCompound()));
+            getTankList().set(tankIndex, tank.writeToNBT(new NBTTagCompound()));
         }
         else{
-            getList().remove(tankIndex);
+            getTankList().remove(tankIndex);
         }
         return stack;
     }
@@ -55,9 +57,7 @@ public class LiquipackStack {
     public ItemStack addTank(LiquipackTank tank)
     {
         if(tank == null)return stack;
-        NBTTagCompound compound = new NBTTagCompound();
-        tank.writeToNBT(compound);
-        getList().add(tank.writeToNBT(new NBTTagCompound()));
+        getTankList().add(tank.writeToNBT(new NBTTagCompound()));
         return stack;
     }
 
@@ -75,6 +75,41 @@ public class LiquipackStack {
 
     public ItemStack removeArmor(){
         stack.getTagCompound().removeTag("armor");
+        return stack;
+    }
+
+    public LiquipackUpgrade[] getUpgrades(){
+        LiquipackUpgrade[] tanks = new LiquipackUpgrade[4];
+        for(int i = 0; i < tanks.length; i++){
+            tanks[i] = LiquipackUpgrade.loadFromNBT(getUpgradeList().get(i));
+        }
+        return tanks;
+    }
+
+    public LiquipackUpgrade getUpgrade(int upgradeSlot)
+    {
+        return LiquipackUpgrade.loadFromNBT(getUpgradeList().get(upgradeSlot));
+    }
+
+    public int getUpgradeCount(){
+        return getUpgradeList().getLength();
+    }
+
+    public ItemStack setUpgrade(LiquipackUpgrade upgrade, int upgradeIndex)
+    {
+        if(upgrade != null) {
+            getUpgradeList().set(upgradeIndex, upgrade.writeToNBT(new NBTTagCompound()));
+        }
+        else{
+            getUpgradeList().remove(upgradeIndex);
+        }
+        return stack;
+    }
+
+    public ItemStack addUpgrade(LiquipackUpgrade upgrade)
+    {
+        if(upgrade == null)return stack;
+        getTankList().add(upgrade.writeToNBT(new NBTTagCompound()));
         return stack;
     }
 }

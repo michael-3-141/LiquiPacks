@@ -2,6 +2,7 @@
 build/
 eclipse/
 out/
+.idea/
 *.iml
 *.iws
 *.ipr
