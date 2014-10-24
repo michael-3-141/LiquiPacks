@@ -1,10 +1,8 @@
 package com.michael.e.liquislots.common.recipe;
 
 import com.michael.e.liquislots.common.util.LiquipackStack;
-import com.michael.e.liquislots.item.ILiquipackArmor;
-import com.michael.e.liquislots.item.ItemLiquipack;
-import com.michael.e.liquislots.item.ItemTank;
-import com.michael.e.liquislots.item.ItemsRef;
+import com.michael.e.liquislots.common.util.LiquipackUpgrade;
+import com.michael.e.liquislots.item.*;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -19,10 +17,12 @@ public class RecipeLiquipack implements IRecipe {
         int foundLiquipacks = 0;
         int foundTanks = 0;
         int foundProtectors = 0;
+        int foundUpgrades = 0;
         int foundOthers = 0;
         ItemStack foundLiquipack = null;
         ItemStack foundTank = null;
         ItemStack foundProtector = null;
+        ItemStack foundUpgrade = null;
         for(int i = 0; i < crafting.getSizeInventory(); i++){
             ItemStack stack = crafting.getStackInSlot(i);
             if(stack != null){
@@ -38,21 +38,32 @@ public class RecipeLiquipack implements IRecipe {
                     foundProtectors++;
                     foundProtector = stack;
                 }
+                else if(stack.getItem() instanceof ILiquipackUpgrade){
+                    foundUpgrades++;
+                    foundUpgrade = stack;
+                }
                 else{
                     foundOthers++;
                 }
             }
         }
-        if(foundLiquipacks == 1 && foundTanks == 1 && foundProtectors == 0 && foundOthers == 0 && !ItemLiquipack.isOldFormat(foundLiquipack)){
-            LiquipackStack liquipackStack = new LiquipackStack(foundLiquipack.copy());
-            if(liquipackStack.getTankCount() >= 4)return false;
-            result = liquipackStack.addTank(ItemTank.getFluidTankFromStack(foundTank));
-            return true;
-        }
-        if(foundLiquipacks == 1 && foundTanks == 0 && foundProtectors == 1 && foundOthers == 0 && !ItemLiquipack.isOldFormat(foundLiquipack)){
-            LiquipackStack liquipackStack = new LiquipackStack(foundLiquipack.copy());
-            result = liquipackStack.setArmor(foundProtector);
-            return true;
+        if(foundLiquipacks == 1 && !ItemLiquipack.isOldFormat(foundLiquipack)) {
+            if (foundTanks == 1 && foundProtectors == 0 && foundUpgrades == 0 && foundOthers == 0) {
+                LiquipackStack liquipackStack = new LiquipackStack(foundLiquipack.copy());
+                if (liquipackStack.getTankCount() >= 4) return false;
+                result = liquipackStack.addTank(ItemTank.getFluidTankFromStack(foundTank));
+                return true;
+            }
+            if (foundTanks == 0 && foundProtectors == 1 && foundUpgrades == 0 && foundOthers == 0) {
+                LiquipackStack liquipackStack = new LiquipackStack(foundLiquipack.copy());
+                result = liquipackStack.setArmor(foundProtector);
+                return true;
+            }
+            if (foundTanks == 0 && foundProtectors == 0 && foundUpgrades == 1 && foundOthers == 0) {
+                LiquipackStack liquipackStack = new LiquipackStack(foundLiquipack.copy());
+                result = liquipackStack.addUpgrade(LiquipackUpgrade.loadFromNBT(foundUpgrade.getTagCompound()));
+                return true;
+            }
         }
         return false;
     }
