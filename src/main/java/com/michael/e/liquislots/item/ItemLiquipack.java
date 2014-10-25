@@ -90,7 +90,7 @@ public class ItemLiquipack extends ItemArmor implements ISpecialArmor{
                 info.add("Installed Armor: " + protection.getDisplayName() + " | Damage: " + (protection.getMaxDamage() - protection.getItemDamage()) + "/" + protection.getMaxDamage());
             }
 
-            if(upgrades.length < 0) {
+            if(upgrades.length > 0) {
                 info.add("Installed Upgrades:");
                 for (LiquipackUpgrade upgrade : upgrades) {
                     info.add("- " + StatCollector.translateToLocal("liquipackupgrade." + upgrade.getUpgradeName()));

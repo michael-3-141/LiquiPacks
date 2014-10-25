@@ -11,6 +11,7 @@ public class LiquipackStack {
     public LiquipackStack(ItemStack stack){
         if(stack.getTagCompound() == null)stack.setTagCompound(new NBTTagCompound());
         if(!stack.getTagCompound().hasKey("tanks"))stack.getTagCompound().setTag("tanks", new NBTTagCompound());
+        if(!stack.getTagCompound().hasKey("upgrades"))stack.getTagCompound().setTag("upgrades", new NBTTagCompound());
         this.stack = stack;
     }
 
@@ -79,11 +80,11 @@ public class LiquipackStack {
     }
 
     public LiquipackUpgrade[] getUpgrades(){
-        LiquipackUpgrade[] tanks = new LiquipackUpgrade[4];
-        for(int i = 0; i < tanks.length; i++){
-            tanks[i] = LiquipackUpgrade.loadFromNBT(getUpgradeList().get(i));
+        LiquipackUpgrade[] upgrades = new LiquipackUpgrade[getUpgradeCount()];
+        for(int i = 0; i < upgrades.length; i++){
+            upgrades[i] = LiquipackUpgrade.loadFromNBT(getUpgradeList().get(i));
         }
-        return tanks;
+        return upgrades;
     }
 
     public LiquipackUpgrade getUpgrade(int upgradeSlot)
@@ -109,7 +110,7 @@ public class LiquipackStack {
     public ItemStack addUpgrade(LiquipackUpgrade upgrade)
     {
         if(upgrade == null)return stack;
-        getTankList().add(upgrade.writeToNBT(new NBTTagCompound()));
+        getUpgradeList().add(upgrade.writeToNBT(new NBTTagCompound()));
         return stack;
     }
 }

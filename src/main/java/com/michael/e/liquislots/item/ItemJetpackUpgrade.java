@@ -12,7 +12,7 @@ public class ItemJetpackUpgrade extends ItemLiquipacksBase implements ILiquipack
 
     public ItemJetpackUpgrade() {
         super();
-        setUnlocalizedName("liquipackJetpackUpgrade");
+        setUnlocalizedName("jetpackUpgrade");
         setTextureName(Reference.MOD_ID + ":lpJetpackUpgrade");
     }
 
