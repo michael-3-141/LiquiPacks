@@ -98,7 +98,7 @@ public class GuiHandler implements IGuiHandler{
         private ItemStack stack;
 
         public GuiModeLiquipackBucket(ItemStack stack) {
-            super(StatCollector.translateToLocal("liquipackbucket.btnToggle.1"), StatCollector.translateToLocal("liquipackbucket.btnToggle.0"));
+            super(StatCollector.translateToLocal("liquipackbucket.mode.1"), StatCollector.translateToLocal("liquipackbucket.mode.0"));
             this.stack = stack;
         }
 
