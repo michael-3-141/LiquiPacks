@@ -143,4 +143,17 @@ public class GuiTankOptions extends GuiContainer{
             ItemLiquipackBucket.setDrainingMode(bucket, drainingMode);
         }
     }
+
+    public abstract static class GuiMode {
+
+        public String toggleOptionA;
+        public String toggleOptionB;
+
+        public GuiMode(String toggleOptionA, String toggleOptionB) {
+            this.toggleOptionA = toggleOptionA;
+            this.toggleOptionB = toggleOptionB;
+        }
+
+        public void actionPerformed(){}
+    }
 }
