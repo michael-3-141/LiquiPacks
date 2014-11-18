@@ -13,7 +13,7 @@ public class ItemsRef {
     public static Item liquipackArmorIron;
     public static Item liquipackArmorDiamond;
 
-    public static Item upgradeJetpack;
+    //public static Item upgradeJetpack;
 
     public static void init()
     {
@@ -32,8 +32,8 @@ public class ItemsRef {
         liquipackArmorDiamond = new ItemLiquipackArmor(8D / 25D, 528).setUnlocalizedName("liquipackArmorDiamond").setTextureName(Reference.MOD_ID + ":liquipackArmorDiamond");
         regItem(liquipackArmorDiamond);
 
-        upgradeJetpack = new ItemJetpackUpgrade();
-        regItem(upgradeJetpack);
+        //upgradeJetpack = new ItemJetpackUpgrade();
+        //regItem(upgradeJetpack);
     }
 
     public static void regItem(Item item)

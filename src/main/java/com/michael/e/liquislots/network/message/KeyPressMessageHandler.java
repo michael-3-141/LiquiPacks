@@ -16,6 +16,13 @@ public class KeyPressMessageHandler implements IMessageHandler<KeyPressMessageHa
         {
             FMLNetworkHandler.openGui(ctx.getServerHandler().playerEntity, Liquislots.INSTANCE, 0, ctx.getServerHandler().playerEntity.worldObj, 0,0,0);
         }
+        /*else if(message.key == 'j' && !ItemLiquipack.isOldFormat(ctx.getServerHandler().playerEntity.inventory.armorItemInSlot(2))){
+            LiquipacksExtendedPlayer player = LiquipacksExtendedPlayer.get(ctx.getServerHandler().playerEntity);
+            if(player != null){
+                player.toggleJetpackActivated();
+                ctx.getServerHandler().playerEntity.addChatComponentMessage(new ChatComponentText("Liquipack Water Jetpack " + (player.isJetpackActivated() ? "On" : "Off")));
+            }
+        }*/
         return null;
     }
 

@@ -16,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.common.util.EnumHelper;
 import org.lwjgl.input.Keyboard;
@@ -46,7 +47,7 @@ public class ItemLiquipack extends ItemArmor implements ISpecialArmor{
     }
 
     public static boolean isOldFormat(ItemStack stack){
-        return stack.getTagCompound() != null && stack.getTagCompound().hasKey("tanks") && stack.getTagCompound().getTag("tanks").getId() == 9;
+        return stack != null && stack.getTagCompound() != null && stack.getTagCompound().hasKey("tanks") && stack.getTagCompound().getTag("tanks").getId() == 9;
     }
 
     @Override
@@ -141,5 +142,19 @@ public class ItemLiquipack extends ItemArmor implements ISpecialArmor{
     public double getDurabilityForDisplay(ItemStack stack) {
         ItemStack protection = new LiquipackStack(stack).getArmor();
         return protection != null ? 1.0 - (protection.getItemDamageForDisplay() / protection.getItemDamage()) : 0;
+    }
+
+    @Override
+    public void onArmorTick(World world, EntityPlayer player, ItemStack itemStack) {
+        if(world.isRemote || player == null)return;
+        LiquipackStack stack = new LiquipackStack(itemStack);
+        for(LiquipackUpgrade upgrade : stack.getUpgrades()){
+            /*if(upgrade.getUpgradeName().equals("jetpack")) {
+                if (LiquipacksExtendedPlayer.get(player).isJetpackActivated()) {
+                    if (FlySyncMessageHandler.flyKeyDown.containsKey(player) && FlySyncMessageHandler.flyKeyDown.get(player))
+                        player.motionY += 5000;
+                }
+            }*/
+        }
     }
 }

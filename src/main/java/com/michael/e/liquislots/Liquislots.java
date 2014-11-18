@@ -7,13 +7,10 @@ import com.michael.e.liquislots.common.recipe.RecipeLiquipack;
 import com.michael.e.liquislots.common.recipe.RecipeUpdateLiquipack;
 import com.michael.e.liquislots.common.recipe.RecipeUpdateTank;
 import com.michael.e.liquislots.common.util.LiquipackTank;
-import com.michael.e.liquislots.config.ConfigHander;
+import com.michael.e.liquislots.config.ConfigHandler;
 import com.michael.e.liquislots.item.ItemTank;
 import com.michael.e.liquislots.item.ItemsRef;
-import com.michael.e.liquislots.network.message.ChangeLiquipackIOOptionsMessageHandler;
-import com.michael.e.liquislots.network.message.ChangeTankOptionsMessageHandler;
-import com.michael.e.liquislots.network.message.KeyPressMessageHandler;
-import com.michael.e.liquislots.network.message.SelectedTankChangeMessageHandler;
+import com.michael.e.liquislots.network.message.*;
 import com.michael.e.liquislots.network.proxy.CommonProxy;
 import com.michael.e.liquislots.server.LiquislotServerEventHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -35,7 +32,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import org.apache.logging.log4j.Logger;
 
-@Mod(modid = Reference.MOD_ID, name = Reference.NAME, version = Reference.VERSION)
+@Mod(modid = Reference.MOD_ID, name = Reference.NAME, version = Reference.VERSION, guiFactory = "com.michael.e.liquislots.config.GuiFactory")
 public class Liquislots {
 
     @Mod.Instance
@@ -50,7 +47,7 @@ public class Liquislots {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent e)
     {
-        ConfigHander.init(e.getSuggestedConfigurationFile());
+        ConfigHandler.init(e.getSuggestedConfigurationFile());
 
         ItemsRef.init();
         BlocksRef.init();
@@ -62,7 +59,7 @@ public class Liquislots {
         netHandler.registerMessage(SelectedTankChangeMessageHandler.class, SelectedTankChangeMessageHandler.SelectedTankChangeMessage.class, 1, Side.SERVER);
         netHandler.registerMessage(ChangeLiquipackIOOptionsMessageHandler.class, ChangeLiquipackIOOptionsMessageHandler.ChangeLiquipackIOOptionsMessage.class, 2, Side.SERVER);
         netHandler.registerMessage(ChangeTankOptionsMessageHandler.class, ChangeTankOptionsMessageHandler.ChangeTankOptionsMessage.class, 3, Side.SERVER);
-
+        //netHandler.registerMessage(FlySyncMessageHandler.class, FlySyncMessageHandler.FlySyncMessage.class, 4, Side.SERVER);
 
         FMLCommonHandler.instance().bus().register(new LiquislotClientEventHandler());
         MinecraftForge.EVENT_BUS.register(new LiquislotServerEventHandler());
@@ -73,7 +70,7 @@ public class Liquislots {
     public void init(FMLInitializationEvent e)
     {
         ItemStack tank = new ItemStack(ItemsRef.tank, 1, 0);
-        ItemTank.setTankForStack(tank, new LiquipackTank(ItemTank.tankCapacities[tank.getItemDamage()]));
+        ItemTank.setTankForStack(tank, new LiquipackTank(ItemTank.getTankCapacities()[tank.getItemDamage()]));
         GameRegistry.addRecipe(tank,
                 "ggg",
                 "gig",
@@ -84,7 +81,7 @@ public class Liquislots {
         );
 
         tank = new ItemStack(ItemsRef.tank, 1, 1);
-        ItemTank.setTankForStack(tank, new LiquipackTank(ItemTank.tankCapacities[tank.getItemDamage()]));
+        ItemTank.setTankForStack(tank, new LiquipackTank(ItemTank.getTankCapacities()[tank.getItemDamage()]));
         GameRegistry.addRecipe(tank,
                 "gig",
                 "gtg",
@@ -96,7 +93,7 @@ public class Liquislots {
         );
 
         tank = new ItemStack(ItemsRef.tank, 1, 2);
-        ItemTank.setTankForStack(tank, new LiquipackTank(ItemTank.tankCapacities[tank.getItemDamage()]));
+        ItemTank.setTankForStack(tank, new LiquipackTank(ItemTank.getTankCapacities()[tank.getItemDamage()]));
         GameRegistry.addRecipe(tank,
                 "gig",
                 "dtd",
