@@ -26,5 +26,6 @@ public class GuiToggleButton extends GuiButton{
 
     public void setState(boolean state){
         this.displayString = state ? textA : textB;
+        this.width = Minecraft.getMinecraft().fontRenderer.getStringWidth(displayString) + 10;
     }
 }
