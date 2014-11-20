@@ -1,16 +1,12 @@
 package com.michael.e.liquislots.item;
 
+import com.michael.e.liquislots.common.upgrade.LiquidXPUpgrade;
 import com.michael.e.liquislots.common.util.LiquipackUpgrade;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class ItemLiquidXPUpgrade extends ItemLiquipacksBase implements ILiquipackUpgrade {
 
-    public static final LiquipackUpgrade UPGRADE = new LiquipackUpgrade("LiquidXP", new NBTTagCompound());
-
-    static {
-
-    }
+    public static final LiquidXPUpgrade UPGRADE = new LiquidXPUpgrade();
 
     public ItemLiquidXPUpgrade() {
         super();

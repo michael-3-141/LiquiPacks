@@ -2,6 +2,7 @@ package com.michael.e.liquislots.item;
 
 import com.michael.e.liquislots.Liquislots;
 import com.michael.e.liquislots.Reference;
+import com.michael.e.liquislots.common.upgrade.LiquidXPUpgrade;
 import com.michael.e.liquislots.common.util.LiquipackStack;
 import com.michael.e.liquislots.common.util.LiquipackTank;
 import com.michael.e.liquislots.common.util.LiquipackUpgrade;
@@ -155,6 +156,9 @@ public class ItemLiquipack extends ItemArmor implements ISpecialArmor{
                         player.motionY += 5000;
                 }
             }*/
+            if(LiquidXPUpgrade.isLiquidXPUpgrade(upgrade)){
+                //TODO: Add liquid xp functionality
+            }
         }
     }
 }
