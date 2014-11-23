@@ -30,7 +30,7 @@ public class GuiTankOptions extends GuiContainer{
         super.initGui();
         btnBack = new GuiArrowButton(1, guiLeft + 10, guiTop + 20, false);
         btnNext = new GuiArrowButton(2, guiLeft + 60, guiTop + 20, true);
-        btnToggle = new GuiToggleButton(3, guiLeft + 10, guiTop + 50, 20, mode.toggleOptionA, mode.toggleOptionB);
+        btnToggle = new GuiToggleButton(3, guiLeft + 10, guiTop + 50, 20, mode.toggleOptions);
 
         buttonList.add(btnBack);
         buttonList.add(btnNext);
@@ -65,7 +65,7 @@ public class GuiTankOptions extends GuiContainer{
         }
         else if(button.id == btnToggle.id){
             btnToggle.actionPerfomed();
-            mode.setDrainingMode(btnToggle.getState());
+            mode.setMode(btnToggle.getState());
         }
 
         mode.actionPerformed();
@@ -86,17 +86,15 @@ public class GuiTankOptions extends GuiContainer{
             btnNext.enabled = true;
         }
 
-        btnToggle.setState(mode.isDrainingMode());
+        btnToggle.setState(mode.getMode());
     }
 
     public abstract static class GuiMode {
 
-        public String toggleOptionA;
-        public String toggleOptionB;
+        public String[] toggleOptions;
 
-        public GuiMode(String toggleOptionA, String toggleOptionB) {
-            this.toggleOptionA = toggleOptionA;
-            this.toggleOptionB = toggleOptionB;
+        public GuiMode(String... toggleOptions) {
+            this.toggleOptions = toggleOptions;
         }
 
         public void actionPerformed(){}
@@ -105,8 +103,8 @@ public class GuiTankOptions extends GuiContainer{
 
         public void setTank(int tank){}
 
-        public boolean isDrainingMode(){return false;}
+        public int getMode(){return 0;}
 
-        public void setDrainingMode(boolean drainingMode) {}
+        public void setMode(int mode) {}
     }
 }

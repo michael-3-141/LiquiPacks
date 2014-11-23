@@ -10,7 +10,11 @@ import com.michael.e.liquislots.common.container.ContainerLiquipackBucketOptions
 import com.michael.e.liquislots.common.container.ContainerLiquipackIO;
 import com.michael.e.liquislots.common.container.ContainerLiquipackWorkbench;
 import com.michael.e.liquislots.common.container.ContainerPlayerTanks;
+import com.michael.e.liquislots.common.upgrade.LiquidXPUpgrade;
+import com.michael.e.liquislots.common.util.LiquipackStack;
+import com.michael.e.liquislots.common.util.LiquipackUpgrade;
 import com.michael.e.liquislots.item.ItemLiquipackBucket;
+import com.michael.e.liquislots.network.message.ChangeLiquidXPOptionsMessageHandler;
 import com.michael.e.liquislots.network.message.ChangeLiquipackIOOptionsMessageHandler;
 import com.michael.e.liquislots.network.message.ChangeTankOptionsMessageHandler;
 import cpw.mods.fml.common.network.IGuiHandler;
@@ -83,13 +87,13 @@ public class GuiHandler implements IGuiHandler{
         }
 
         @Override
-        public boolean isDrainingMode() {
-            return te.isDrainingMode();
+        public int getMode() {
+            return te.isDrainingMode() ? 0 : 1;
         }
 
         @Override
-        public void setDrainingMode(boolean drainingMode) {
-            te.setDrainingMode(drainingMode);
+        public void setMode(int mode) {
+            te.setDrainingMode(mode == 0);
         }
     }
 
@@ -118,13 +122,61 @@ public class GuiHandler implements IGuiHandler{
         }
 
         @Override
-        public boolean isDrainingMode() {
-            return ItemLiquipackBucket.isDrainingMode(stack);
+        public int getMode() {
+            return ItemLiquipackBucket.isDrainingMode(stack) ? 0 : 1;
         }
 
         @Override
-        public void setDrainingMode(boolean drainingMode) {
-            ItemLiquipackBucket.setDrainingMode(stack, drainingMode);
+        public void setMode(int mode) {
+            ItemLiquipackBucket.setDrainingMode(stack, mode == 0);
+        }
+
+    }
+
+    public static class GuiModeLiquidXp extends GuiTankOptions.GuiMode{
+        private LiquipackStack stack;
+        private LiquidXPUpgrade upgrade;
+        private int upgradeIndex;
+
+        public GuiModeLiquidXp(ItemStack stack) {
+            super(StatCollector.translateToLocal("liquidxp.mode.0"), StatCollector.translateToLocal("liquidxp.mode.1"), StatCollector.translateToLocal("liquidxp.mode.2"));
+            this.stack = new LiquipackStack(stack);
+            int i = 0;
+            for(LiquipackUpgrade upgrade : this.stack.getUpgrades()){
+                if(LiquidXPUpgrade.isLiquidXPUpgrade(upgrade)){
+                    this.upgrade = (LiquidXPUpgrade) upgrade;
+                    upgradeIndex = i;
+                    break;
+                }
+                i++;
+            }
+        }
+
+        @Override
+        public void actionPerformed() {
+            Liquislots.INSTANCE.netHandler.sendToServer(new ChangeLiquidXPOptionsMessageHandler.ChangeLiquidXPOptionsMessage(upgrade.getTank(), upgrade.getMode()));
+        }
+
+        @Override
+        public int getTank() {
+            return upgrade.getTank();
+        }
+
+        @Override
+        public void setTank(int tank) {
+            upgrade.setTank(tank);
+            stack.setUpgrade(upgrade, upgradeIndex);
+        }
+
+        @Override
+        public int getMode() {
+            return upgrade.getMode();
+        }
+
+        @Override
+        public void setMode(int mode) {
+            upgrade.setMode(mode);
+            stack.setUpgrade(upgrade, upgradeIndex);
         }
 
     }

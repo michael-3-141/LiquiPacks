@@ -5,27 +5,26 @@ import net.minecraft.client.gui.GuiButton;
 
 public class GuiToggleButton extends GuiButton{
 
-    private String textA;
-    private String textB;
+    private String[] texts;
+    private int currentText = 0;
 
-    public GuiToggleButton(int id, int x, int y, int height, String textA, String textB) {
-        super(id, x, y, 5, height, textA);
-        this.textA = textA;
-        this.textB = textB;
+    public GuiToggleButton(int id, int x, int y, int height, String... text) {
+        super(id, x, y, 5, height, text[0]);
+        this.texts = text;
         this.width = Minecraft.getMinecraft().fontRenderer.getStringWidth(displayString) + 10;
     }
 
     public void actionPerfomed(){
-        this.displayString = this.displayString == textA ? textB : textA;
-        this.width = Minecraft.getMinecraft().fontRenderer.getStringWidth(displayString) + 10;
+        setState((currentText + 1) % texts.length);
     }
 
-    public boolean getState(){
-        return this.displayString == textA;
+    public int getState(){
+        return currentText;
     }
 
-    public void setState(boolean state){
-        this.displayString = state ? textA : textB;
+    public void setState(int state){
+        currentText = state;
+        this.displayString = texts[currentText];
         this.width = Minecraft.getMinecraft().fontRenderer.getStringWidth(displayString) + 10;
     }
 }
