@@ -1,6 +1,7 @@
 package com.michael.e.liquislots.client.renderers;
 
 import com.michael.e.liquislots.Reference;
+import com.michael.e.liquislots.block.BlockLiquipackIO;
 import com.michael.e.liquislots.client.models.ModelLiquipackIO;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -23,6 +24,7 @@ public class LiquipackIORenderer extends TileEntitySpecialRenderer implements IS
     public LiquipackIORenderer() {
         rendererID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(this);
+        BlockLiquipackIO.renderID = rendererID;
     }
 
     @Override

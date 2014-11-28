@@ -2,7 +2,6 @@ package com.michael.e.liquislots.block;
 
 import com.michael.e.liquislots.Liquislots;
 import com.michael.e.liquislots.Reference;
-import com.michael.e.liquislots.client.renderers.LiquipackIORenderer;
 import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -19,6 +18,8 @@ public class BlockLiquipackIO extends BlockContainer {
 
     @SideOnly(Side.CLIENT)
     private IIcon blockTexture;
+
+    public static int renderID = -1;
 
     protected BlockLiquipackIO() {
         super(Material.iron);
@@ -44,7 +45,7 @@ public class BlockLiquipackIO extends BlockContainer {
 
     @Override
     public int getRenderType() {
-        return LiquipackIORenderer.rendererID;
+        return renderID;
     }
 
     @Override
