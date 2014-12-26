@@ -22,7 +22,7 @@ group= "com.michael.e.liquislots" // http://maven.apache.org/guides/mini/guide-n
 archivesBaseName = "Liquipacks"
 
 minecraft {
-    version = "1.7.10-10.13.0.1180"
+    version = "1.7.10-10.13.2.1277"
     runDir = "eclipse/assets"
 }
 
@@ -39,8 +39,6 @@ dependencies {
     // for more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
-
-    compile 'com.mod-buildcraft:buildcraft:6.0.17:dev'
 
 }
 
