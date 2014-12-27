@@ -2,8 +2,10 @@ package com.michael.e.liquislots.item;
 
 import com.michael.e.liquislots.Reference;
 import com.michael.e.liquislots.common.util.LiquipackTank;
+import com.michael.e.liquislots.config.ConfigHandler;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -25,7 +27,7 @@ public class ItemTank extends ItemLiquipacksBase {
 
     @Override
     public String getUnlocalizedName(ItemStack stack) {
-        return getUnlocalizedName() + "." + (getTankForStack(stack) != null ? getTankForStack(stack).getCapacity() : 0);
+        return getUnlocalizedName() + "." + stack.getItemDamage();
     }
 
     @Override
@@ -38,18 +40,24 @@ public class ItemTank extends ItemLiquipacksBase {
     @Override
     public void getSubItems(Item item, CreativeTabs tab, List list) {
         for(int i = 0; i < icons.length; i++){
-            ItemStack stack = new ItemStack(item, 1);
-            setTankForStack(stack, new LiquipackTank(tankCapacities[i]));
+            ItemStack stack = new ItemStack(item, 1, i);
+            setTankForStack(stack, new LiquipackTank(getTankCapacities()[i]));
             list.add(stack);
         }
+    }
+
+    @Override
+    public boolean itemInteractionForEntity(ItemStack p_111207_1_, EntityPlayer p_111207_2_, EntityLivingBase entityLivingBase) {
+        p_111207_2_.motionY += 10;
+        return false;
     }
 
     @Override
     public IIcon getIconIndex(ItemStack stack) {
         LiquipackTank tank = getTankForStack(stack);
         if(tank == null)return icons[0];
-        for(int i = 0; i < tankCapacities.length; i++){
-            if(tankCapacities[i] == tank.getCapacity()){
+        for(int i = 0; i < getTankCapacities().length; i++){
+            if(getTankCapacities()[i] == tank.getCapacity()){
                 return icons[i];
             }
         }
@@ -66,10 +74,12 @@ public class ItemTank extends ItemLiquipacksBase {
         return false;
     }
 
-    public static int[] tankCapacities = new int[]{8000, 16000, 32000};
+    public static int[] getTankCapacities(){
+        return ConfigHandler.damageToCapacity;
+    } 
 
     public static LiquipackTank getFluidTankFromStack(ItemStack stack) {
-        return new LiquipackTank(tankCapacities[stack.getItemDamage()]);
+        return new LiquipackTank(getTankCapacities()[stack.getItemDamage()]);
     }
 
     @Override

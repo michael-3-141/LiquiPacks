@@ -28,7 +28,7 @@ public class RecipeUpdateTank implements IRecipe{
         }
         if(foundTanks == 1 && foundItems == 1 && foundTank.getItemDamage() <= 3) {
             result = foundTank.copy();
-            ItemTank.setTankForStack(result, new LiquipackTank(ItemTank.tankCapacities[result.getItemDamage()]));
+            ItemTank.setTankForStack(result, new LiquipackTank(ItemTank.getTankCapacities()[result.getItemDamage()]));
             return true;
         }
         return false;
