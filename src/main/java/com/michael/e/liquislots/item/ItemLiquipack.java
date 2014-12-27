@@ -2,8 +2,10 @@ package com.michael.e.liquislots.item;
 
 import com.michael.e.liquislots.Liquislots;
 import com.michael.e.liquislots.Reference;
+import com.michael.e.liquislots.common.upgrade.LiquidXPUpgrade;
 import com.michael.e.liquislots.common.util.LiquipackStack;
 import com.michael.e.liquislots.common.util.LiquipackTank;
+import com.michael.e.liquislots.common.util.LiquipackUpgrade;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.model.ModelBiped;
@@ -14,10 +16,13 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.common.util.EnumHelper;
 import org.lwjgl.input.Keyboard;
 
+import java.util.Collections;
 import java.util.List;
 
 public class ItemLiquipack extends ItemArmor implements ISpecialArmor{
@@ -43,16 +48,15 @@ public class ItemLiquipack extends ItemArmor implements ISpecialArmor{
     }
 
     public static boolean isOldFormat(ItemStack stack){
-        return stack.getTagCompound() != null && stack.getTagCompound().hasKey("tanks") && stack.getTagCompound().getTag("tanks").getId() == 9;
+        return stack != null && stack.getTagCompound() != null && stack.getTagCompound().hasKey("tanks") && stack.getTagCompound().getTag("tanks").getId() == 9;
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void addInformation(ItemStack stack, EntityPlayer player, List info, boolean debug) {
         if(debug && stack.getTagCompound() != null){
             String[] nbt = stack.getTagCompound().toString().split("(?<=\\G.{80})");
-            for(String line : nbt){
-                info.add(line);
-            }
+            Collections.addAll(info, nbt);
         }
         //Message for old format liquipacks
         if(isOldFormat(stack)){
@@ -66,18 +70,14 @@ public class ItemLiquipack extends ItemArmor implements ISpecialArmor{
         else {
             LiquipackStack liquipackStack = new LiquipackStack(stack);
             LiquipackTank[] tanks = liquipackStack.getTanks();
-            boolean isEmpty = true;
-            for(LiquipackTank tank : tanks){
-                if(tank != null){
-                    isEmpty = false;
-                    break;
-                }
-            }
-            if(isEmpty){
+            LiquipackUpgrade[] upgrades = liquipackStack.getUpgrades();
+
+            if(liquipackStack.getTankCount() == 0){
                 info.add("This item is useless without any tanks");
                 info.add("Add tanks by putting them in a crafting");
                 info.add("table with the liquipack");
             }
+
             int i = -1;
             for (LiquipackTank tank : tanks) {
                 i++;
@@ -86,9 +86,17 @@ public class ItemLiquipack extends ItemArmor implements ISpecialArmor{
                     info.add("Tank " + (i + 1) + " | Capacity: " + tank.getCapacity() + "mb | Contains: " + containsText);
                 }
             }
+
             ItemStack protection = liquipackStack.getArmor();
             if(protection != null){
                 info.add("Installed Armor: " + protection.getDisplayName() + " | Damage: " + (protection.getMaxDamage() - protection.getItemDamage()) + "/" + protection.getMaxDamage());
+            }
+
+            if(upgrades.length > 0) {
+                info.add("Installed Upgrades:");
+                for (LiquipackUpgrade upgrade : upgrades) {
+                    info.add("- " + StatCollector.translateToLocal("liquipackupgrade." + upgrade.getUpgradeName()));
+                }
             }
         }
     }
@@ -135,5 +143,22 @@ public class ItemLiquipack extends ItemArmor implements ISpecialArmor{
     public double getDurabilityForDisplay(ItemStack stack) {
         ItemStack protection = new LiquipackStack(stack).getArmor();
         return protection != null ? 1.0 - (protection.getItemDamageForDisplay() / protection.getItemDamage()) : 0;
+    }
+
+    @Override
+    public void onArmorTick(World world, EntityPlayer player, ItemStack itemStack) {
+        if(world.isRemote || player == null)return;
+        LiquipackStack stack = new LiquipackStack(itemStack);
+        for(LiquipackUpgrade upgrade : stack.getUpgrades()){
+            /*if(upgrade.getUpgradeName().equals("jetpack")) {
+                if (LiquipacksExtendedPlayer.get(player).isJetpackActivated()) {
+                    if (FlySyncMessageHandler.flyKeyDown.containsKey(player) && FlySyncMessageHandler.flyKeyDown.get(player))
+                        player.motionY += 5000;
+                }
+            }*/
+            if(LiquidXPUpgrade.isLiquidXPUpgrade(upgrade)){
+                //TODO: Add liquid xp functionality
+            }
+        }
     }
 }

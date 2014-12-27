@@ -1,41 +1,24 @@
 package com.michael.e.liquislots.client.gui;
 
-import com.michael.e.liquislots.Liquislots;
 import com.michael.e.liquislots.Reference;
-import com.michael.e.liquislots.block.TileEntityLiquipackIO;
-import com.michael.e.liquislots.common.container.ContainerLiquipackBucketOptions;
-import com.michael.e.liquislots.common.container.ContainerLiquipackIO;
-import com.michael.e.liquislots.item.ItemLiquipackBucket;
-import com.michael.e.liquislots.network.message.ChangeLiquipackIOOptionsMessageHandler;
-import com.michael.e.liquislots.network.message.ChangeTankOptionsMessageHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
+import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
 
 public class GuiTankOptions extends GuiContainer{
 
     private static ResourceLocation texture = new ResourceLocation(Reference.MOD_ID, "textures/gui/liquipackIO.png");
-    private GuiArrowButton back;
-    private GuiArrowButton next;
-    private GuiToggleButton mode;
-    private TileEntityLiquipackIO te;
-    private ItemStack bucket;
+    private GuiArrowButton btnBack;
+    private GuiArrowButton btnNext;
+    private GuiToggleButton btnToggle;
+    private GuiMode mode;
 
-    public GuiTankOptions(EntityPlayer player, TileEntityLiquipackIO te) {
-        super(new ContainerLiquipackIO(player, te));
-        this.te = te;
-
-        xSize = 176;
-        ySize = 189;
-    }
-
-    public GuiTankOptions(EntityPlayer player, ItemStack bucket) {
-        super(new ContainerLiquipackBucketOptions(player, bucket));
-        this.bucket = bucket;
+    public GuiTankOptions(EntityPlayer player, GuiMode mode, Container container){
+        super(container);
+        this.mode = mode;
 
         xSize = 176;
         ySize = 189;
@@ -45,13 +28,13 @@ public class GuiTankOptions extends GuiContainer{
     @Override
     public void initGui() {
         super.initGui();
-        back = new GuiArrowButton(1, guiLeft + 50, guiTop + 25, false);
-        next = new GuiArrowButton(2, guiLeft + 100, guiTop + 25, true);
-        mode = new GuiToggleButton(3, guiLeft + (te != null ? 42 : 7), guiTop + 50, te != null ? 80 : 160, 20, te != null ? "Drain liquipack" : StatCollector.translateToLocal("liquipackbucket.mode.1"),  te != null ? "Fill liquipack" : StatCollector.translateToLocal("liquipackbucket.mode.0"));
+        btnBack = new GuiArrowButton(1, guiLeft + 10, guiTop + 20, false);
+        btnNext = new GuiArrowButton(2, guiLeft + 60, guiTop + 20, true);
+        btnToggle = new GuiToggleButton(3, guiLeft + 10, guiTop + 50, 20, mode.toggleOptions);
 
-        buttonList.add(back);
-        buttonList.add(next);
-        buttonList.add(mode);
+        buttonList.add(btnBack);
+        buttonList.add(btnNext);
+        buttonList.add(btnToggle);
 
         refreshButtons();
     }
@@ -61,8 +44,8 @@ public class GuiTankOptions extends GuiContainer{
         Minecraft.getMinecraft().renderEngine.bindTexture(texture);
         drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 
-        fontRendererObj.drawString("Tank:", guiLeft + 68, guiTop + 17, 4210752);
-        fontRendererObj.drawString(Integer.toString(getTank()+1), guiLeft + 78, guiTop + 30, 4210752);
+        fontRendererObj.drawString("Tank:", guiLeft + 28, guiTop + 10, 4210752);
+        fontRendererObj.drawString(Integer.toString(mode.getTank()+1), guiLeft + 38, guiTop + 25, 4210752);
 
         refreshButtons();
     }
@@ -74,73 +57,54 @@ public class GuiTankOptions extends GuiContainer{
 
     @Override
     protected void actionPerformed(GuiButton button) {
-        if(button.id == back.id){
-            setTank(getTank()-1);
+        if(button.id == btnBack.id){
+            mode.setTank(mode.getTank() - 1);
         }
-        else if(button.id == next.id){
-            setTank(getTank()+1);
+        else if(button.id == btnNext.id){
+            mode.setTank(mode.getTank() + 1);
         }
-        else if(button.id == mode.id){
-            mode.actionPerfomed();
-            setDrainingMode(mode.getState());
+        else if(button.id == btnToggle.id){
+            btnToggle.actionPerfomed();
+            mode.setMode(btnToggle.getState());
         }
 
+        mode.actionPerformed();
         refreshButtons();
-
-        if(te != null){Liquislots.INSTANCE.netHandler.sendToServer(new ChangeLiquipackIOOptionsMessageHandler.ChangeLiquipackIOOptionsMessage(te.getTank(), te.isDrainingMode()));}
-        else{Liquislots.INSTANCE.netHandler.sendToServer(new ChangeTankOptionsMessageHandler.ChangeTankOptionsMessage(getTank(), isDrainingMode()));}
     }
 
     private void refreshButtons(){
-        if(getTank() == 0){
-            back.enabled = false;
-            next.enabled = true;
+        if(mode.getTank() == 0){
+            btnBack.enabled = false;
+            btnNext.enabled = true;
         }
-        else if(getTank() == 3){
-            back.enabled = true;
-            next.enabled = false;
+        else if(mode.getTank() == 3){
+            btnBack.enabled = true;
+            btnNext.enabled = false;
         }
         else{
-            back.enabled = true;
-            next.enabled = true;
+            btnBack.enabled = true;
+            btnNext.enabled = true;
         }
 
-        mode.setState(isDrainingMode());
-    }
-    
-    private int getTank(){
-        if(te != null){
-            return te.getTank();
-        }
-        else{
-            return ItemLiquipackBucket.getSelectedTank(bucket);
-        }
-    }
-    
-    private void setTank(int tank){
-        if(te != null){
-            te.setTank(tank);
-        }
-        else{
-            ItemLiquipackBucket.setSelectedTank(bucket, tank);
-        }
+        btnToggle.setState(mode.getMode());
     }
 
-    private boolean isDrainingMode(){
-        if(te != null){
-            return te.isDrainingMode();
-        }
-        else{
-            return ItemLiquipackBucket.isDrainingMode(bucket);
-        }
-    }
+    public abstract static class GuiMode {
 
-    private void setDrainingMode(boolean drainingMode){
-        if(te != null){
-            te.setDrainingMode(drainingMode);
+        public String[] toggleOptions;
+
+        public GuiMode(String... toggleOptions) {
+            this.toggleOptions = toggleOptions;
         }
-        else{
-            ItemLiquipackBucket.setDrainingMode(bucket, drainingMode);
-        }
+
+        public void actionPerformed(){}
+
+        public int getTank(){return 0;}
+
+        public void setTank(int tank){}
+
+        public int getMode(){return 0;}
+
+        public void setMode(int mode) {}
     }
 }
