@@ -28,6 +28,8 @@ public class BlockLiquipackWorkbench extends BlockContainer {
         super(Material.iron);
         setBlockName("liquipackWorkbench");
         setCreativeTab(Liquislots.INSTANCE.tabLiquipacks);
+        setHardness(2.0F);
+        setResistance(7.0F);
     }
 
     @Override
