@@ -26,6 +26,8 @@ public class BlockLiquipackIO extends BlockContainer {
         setBlockName("liquipackIO");
         setCreativeTab(Liquislots.INSTANCE.tabLiquipacks);
         setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.0625F, 1.0F);
+        setHardness(2.0F);
+        setResistance(10.0F);
     }
 
     @Override
