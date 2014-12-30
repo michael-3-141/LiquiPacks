@@ -1,13 +1,16 @@
 package com.michael.e.liquislots.common.container;
 
 import com.michael.e.liquislots.block.TileEntityLiquipackIO;
+import com.michael.e.liquislots.common.util.LiquipackTank;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
+import net.minecraftforge.fluids.FluidStack;
 
 import java.util.List;
+import java.util.Objects;
 
 public class ContainerLiquipackIO extends Container {
 
@@ -38,6 +41,7 @@ public class ContainerLiquipackIO extends Container {
 
     private int prevTank;
     private boolean prevDrainMode;
+    private LiquipackTank prevBuffer;
 
     @Override
     public void addCraftingToCrafters(ICrafting player) {
@@ -55,12 +59,19 @@ public class ContainerLiquipackIO extends Container {
             if (te.isDrainingMode() != prevDrainMode){
                 player.sendProgressBarUpdate(this, 1, te.isDrainingMode() ? 1 : 0);
             }
+            if(!te.buffer.equals(prevBuffer) && te.buffer.getFluid() != null){
+                player.sendProgressBarUpdate(this, 2, te.buffer.getFluid().fluidID);
+                player.sendProgressBarUpdate(this, 3, te.buffer.getFluid().amount);
+            }
             prevTank = te.getTank();
             prevDrainMode = te.isDrainingMode();
+            prevBuffer = te.buffer.copy();
             /*player.sendProgressBarUpdate(this, 0, te.getTank());
             player.sendProgressBarUpdate(this, 1, te.isDrainingMode() ? 1 : 0);*/
         }
     }
+
+    private int fluidID = 0;
 
     @Override
     public void updateProgressBar(int id, int data) {
@@ -70,6 +81,11 @@ public class ContainerLiquipackIO extends Container {
                 break;
             case 1:
                 te.setDrainingMode(data == 1);
+                break;
+            case 2:
+                fluidID = data;
+            case 3:
+                te.buffer.setFluid(new FluidStack(fluidID, data));
         }
     }
 

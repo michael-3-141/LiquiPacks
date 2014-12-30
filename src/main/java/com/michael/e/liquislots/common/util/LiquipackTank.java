@@ -65,4 +65,21 @@ public class LiquipackTank extends FluidTank {
         int capacity = nbt.getInteger("Capacity");
         return new LiquipackTank(capacity).readFromNBT(nbt);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj != null && obj instanceof LiquipackTank && ((LiquipackTank) obj).capacity == capacity && ((LiquipackTank) obj).getFluidAmount() == getFluidAmount()){
+            if(((LiquipackTank) obj).fluid == null){
+                return this.fluid == null;
+            }
+            else{
+                return this.fluid.equals(((LiquipackTank) obj).fluid);
+            }
+        }
+        return false;
+    }
+
+    public LiquipackTank copy() {
+        return this.fluid == null ? new LiquipackTank(capacity) : new LiquipackTank(fluid.getFluid(), fluid.amount, capacity);
+    }
 }

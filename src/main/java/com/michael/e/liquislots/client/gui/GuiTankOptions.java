@@ -8,9 +8,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
 
+import java.util.List;
+
 public class GuiTankOptions extends GuiContainer{
 
-    private static ResourceLocation texture = new ResourceLocation(Reference.MOD_ID, "textures/gui/liquipackIO.png");
+    public static ResourceLocation texture = new ResourceLocation(Reference.MOD_ID, "textures/gui/liquipackIO.png");
     private GuiArrowButton btnBack;
     private GuiArrowButton btnNext;
     private GuiToggleButton btnToggle;
@@ -43,7 +45,7 @@ public class GuiTankOptions extends GuiContainer{
     protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
         Minecraft.getMinecraft().renderEngine.bindTexture(texture);
         drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
-
+        mode.drawBackground(guiLeft, guiTop, this);
         fontRendererObj.drawString("Tank:", guiLeft + 28, guiTop + 10, 4210752);
         fontRendererObj.drawString(Integer.toString(mode.getTank()+1), guiLeft + 38, guiTop + 25, 4210752);
 
@@ -53,6 +55,7 @@ public class GuiTankOptions extends GuiContainer{
     @Override
     protected void drawGuiContainerForegroundLayer(int x, int y) {
         super.drawGuiContainerForegroundLayer(x, y);
+        mode.drawForeground(x, y, guiLeft, guiTop, this);
     }
 
     @Override
@@ -89,6 +92,10 @@ public class GuiTankOptions extends GuiContainer{
         btnToggle.setState(mode.getMode());
     }
 
+    public void drawTooltip(List text, int x, int y){
+        drawHoveringText(text, x, y, fontRendererObj);
+    }
+
     public abstract static class GuiMode {
 
         public String[] toggleOptions;
@@ -106,5 +113,9 @@ public class GuiTankOptions extends GuiContainer{
         public int getMode(){return 0;}
 
         public void setMode(int mode) {}
+
+        public void drawBackground(int guiLeft, int guiTop, GuiTankOptions guiTankOptions){}
+
+        public void drawForeground(int x, int y, int guiLeft, int guiTop, GuiTankOptions guiTankOptions){}
     }
 }

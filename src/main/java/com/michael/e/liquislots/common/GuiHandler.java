@@ -5,6 +5,7 @@ import com.michael.e.liquislots.block.TileEntityLiquipackIO;
 import com.michael.e.liquislots.block.TileEntityLiquipackWorkbench;
 import com.michael.e.liquislots.client.gui.GuiLiquipackWorkbench;
 import com.michael.e.liquislots.client.gui.GuiPlayerTanks;
+import com.michael.e.liquislots.client.gui.GuiTank;
 import com.michael.e.liquislots.client.gui.GuiTankOptions;
 import com.michael.e.liquislots.common.container.ContainerLiquipackBucketOptions;
 import com.michael.e.liquislots.common.container.ContainerLiquipackIO;
@@ -18,10 +19,15 @@ import com.michael.e.liquislots.network.message.ChangeLiquidXPOptionsMessageHand
 import com.michael.e.liquislots.network.message.ChangeLiquipackIOOptionsMessageHandler;
 import com.michael.e.liquislots.network.message.ChangeTankOptionsMessageHandler;
 import cpw.mods.fml.common.network.IGuiHandler;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidStack;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GuiHandler implements IGuiHandler{
     @Override
@@ -65,10 +71,12 @@ public class GuiHandler implements IGuiHandler{
     public static class GuiModeIO extends GuiTankOptions.GuiMode{
 
         private TileEntityLiquipackIO te;
+        private GuiTank tank;
 
         public GuiModeIO(TileEntityLiquipackIO te) {
             super("Drain Liquipack", "Fill Liquipack");
             this.te = te;
+            this.tank = new GuiTank(126, 21, 16, 58);
         }
 
         @Override
@@ -94,6 +102,25 @@ public class GuiHandler implements IGuiHandler{
         @Override
         public void setMode(int mode) {
             te.setDrainingMode(mode == 0);
+        }
+
+        @Override
+        public void drawBackground(int guiLeft, int guiTop, GuiTankOptions guiTankOptions) {
+            Minecraft.getMinecraft().renderEngine.bindTexture(GuiTankOptions.texture);
+            guiTankOptions.drawTexturedModalRect(guiLeft + 125, guiTop + 20, 176, 0, 18, 60);
+            Minecraft.getMinecraft().fontRenderer.drawString("Buffer:", guiLeft + 125, guiTop + 10, 4210752);
+            float level = te.buffer.getFluidAmount() / ((float) te.buffer.getCapacity()) * 58;
+            tank.render(te.buffer.getFluid(), (int) level, guiLeft, guiTop);
+        }
+
+        @Override
+        public void drawForeground(int x, int y, int guiLeft, int guiTop, GuiTankOptions guiTankOptions) {
+            if(tank.isMouseInBounds(x-guiLeft,y-guiTop)){
+                FluidStack contents = te.buffer.getFluid();
+                List<String> text = new ArrayList<String>();
+                text.add(contents == null ? "Empty" : (contents.amount + "mb X " + contents.getFluid().getLocalizedName(contents)));
+                guiTankOptions.drawTooltip(text, x - guiLeft, y - guiTop);
+            }
         }
     }
 

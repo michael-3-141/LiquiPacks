@@ -89,21 +89,21 @@ public class TileEntityLiquipackIO extends TileEntity implements IFluidHandler{
             TileEntity tile = worldObj.getTileEntity(xCoord, yCoord, zCoord);
             if(player.inventory.armorItemInSlot(2) != null && player.inventory.armorItemInSlot(2).getItem() instanceof ItemLiquipack && tile instanceof TileEntityLiquipackIO){
                 ItemStack stack = player.inventory.armorItemInSlot(2);
-                LiquipackStack tank = new LiquipackStack(stack);
-                LiquipackTank fluidTank = tank.getTank(this.tank);
+                LiquipackStack liquipack = new LiquipackStack(stack);
+                LiquipackTank fluidTank = liquipack.getTank(this.tank);
                 if(fluidTank == null)return;
                 if(isDrainingMode) {
                     if (fluidTank.getFluid() != null) {
                         int left = fluidTank.getFluid().amount - ((TileEntityLiquipackIO) tile).buffer.fill(fluidTank.getFluid(), true);
                         fluidTank.setFluid(left == 0 ? null : new FluidStack(fluidTank.getFluid().getFluid(), left));
-                        tank.setTank(fluidTank, this.tank);
+                        liquipack.setTank(fluidTank, this.tank);
                     }
                 }
                 else{
                     if(fluidTank.fill(buffer.getFluid(), false) > 0){
                         int left = buffer.getFluid().amount - fluidTank.fill(buffer.getFluid(), true);
                         buffer.setFluid(new FluidStack(buffer.getFluidAmount(), left));
-                        tank.setTank(fluidTank, this.tank);
+                        liquipack.setTank(fluidTank, this.tank);
                     }
                 }
             }
@@ -124,5 +124,5 @@ public class TileEntityLiquipackIO extends TileEntity implements IFluidHandler{
 
     public void setDrainingMode(boolean isDrainingMode) {
         this.isDrainingMode = isDrainingMode;
-    }  
+    }
 }
