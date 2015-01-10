@@ -5,7 +5,7 @@ import com.michael.e.liquislots.Reference;
 import com.michael.e.liquislots.common.upgrade.LiquidXPUpgrade;
 import com.michael.e.liquislots.common.util.LiquipackStack;
 import com.michael.e.liquislots.common.util.LiquipackTank;
-import com.michael.e.liquislots.common.util.LiquipackUpgrade;
+import com.michael.e.liquislots.common.upgrade.LiquipackUpgrade;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.model.ModelBiped;
@@ -95,7 +95,7 @@ public class ItemLiquipack extends ItemArmor implements ISpecialArmor{
             if(upgrades.length > 0) {
                 info.add("Installed Upgrades:");
                 for (LiquipackUpgrade upgrade : upgrades) {
-                    info.add("- " + StatCollector.translateToLocal("liquipackupgrade." + upgrade.getUpgradeName()));
+                    info.add("- " + StatCollector.translateToLocal("liquipackupgrade." + upgrade.getType().name()));
                 }
             }
         }

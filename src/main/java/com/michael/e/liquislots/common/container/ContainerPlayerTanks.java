@@ -150,7 +150,6 @@ public class ContainerPlayerTanks extends Container implements OnInventoryChange
 
     @Override
     public void onInventoryChanged() {
-        if(Thread.currentThread().getName().equals("Client thread")) System.out.println("Method called");
         if(tankInterface.getStackInSlot(0) == null)return;
         ItemStack input = ItemStack.copyItemStack(tankInterface.getStackInSlot(0));
         input.stackSize = 1;

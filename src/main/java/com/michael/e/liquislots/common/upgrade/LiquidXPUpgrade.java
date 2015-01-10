@@ -1,22 +1,16 @@
 package com.michael.e.liquislots.common.upgrade;
 
-import com.michael.e.liquislots.common.util.LiquipackUpgrade;
+import com.michael.e.liquislots.common.util.LiquipackTank;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class LiquidXPUpgrade extends LiquipackUpgrade {
 
-    public static final String ID = "LiquidXP";
+    public LiquidXPUpgrade(){
+        this(new NBTTagCompound());
+    }
 
-    public static final int MODE_DISABLED = 0;
-    public static final int MODE_DRAIN_XP = 0;
-    public static final int MODE_DRAIN_TANK = 0;
-
-    public LiquidXPUpgrade() {
-        super(ID, null);
-        NBTTagCompound compound = new NBTTagCompound();
-        compound.setInteger("tank", 1);
-        compound.setInteger("mode", 0);
-        setInfo(compound);
+    public LiquidXPUpgrade(NBTTagCompound info){
+        super(info, LiquipackUpgradeType.LIQUID_XP);
     }
 
     public void setTank(int tank){
@@ -36,6 +30,10 @@ public class LiquidXPUpgrade extends LiquipackUpgrade {
     }
 
     public static boolean isLiquidXPUpgrade(LiquipackUpgrade upgrade) {
-        return upgrade.getUpgradeName().equalsIgnoreCase("LiquidXP");
+        return upgrade != null && upgrade.getType() == LiquipackUpgradeType.LIQUID_XP;
+    }
+
+    public static LiquidXPUpgrade fromLiquipackUpgrade(LiquipackUpgrade upgrade){
+        return upgrade.getType() == LiquipackUpgradeType.LIQUID_XP ? new LiquidXPUpgrade(upgrade.getInfo()) : null;
     }
 }

@@ -1,7 +1,8 @@
 package com.michael.e.liquislots.item;
 
+import com.michael.e.liquislots.Reference;
 import com.michael.e.liquislots.common.upgrade.LiquidXPUpgrade;
-import com.michael.e.liquislots.common.util.LiquipackUpgrade;
+import com.michael.e.liquislots.common.upgrade.LiquipackUpgrade;
 import net.minecraft.item.ItemStack;
 
 public class ItemLiquidXPUpgrade extends ItemLiquipacksBase implements ILiquipackUpgrade {
@@ -10,6 +11,8 @@ public class ItemLiquidXPUpgrade extends ItemLiquipacksBase implements ILiquipac
 
     public ItemLiquidXPUpgrade() {
         super();
+        setUnlocalizedName("liquidXPUpgrade");
+        setTextureName(Reference.MOD_ID + ":liquidXPUpgrade");
     }
 
     @Override

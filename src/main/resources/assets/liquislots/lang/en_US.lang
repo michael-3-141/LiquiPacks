@@ -6,6 +6,7 @@ item.liquipackBucket.name=Liquipack Bucket
 item.liquipackArmorIron.name=Iron Liquipack Armor
 item.liquipackArmorDiamond.name=Diamond Liquipack Armor
 item.jetpackUpgrade.name=Liquipack Upgrade: Water Jetpack
+item.liquidXPUpgrade.name=Liquipack Upgrade: Liquid XP
 tile.liquipackIO.name=Liquipack Pipe Interface
 key.liquipackinv=Open Liquipack Inventory
 liquipackbucket.mode.1=Pick up liquids into liquipack

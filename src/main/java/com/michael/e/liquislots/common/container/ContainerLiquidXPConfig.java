@@ -2,6 +2,7 @@ package com.michael.e.liquislots.common.container;
 
 import com.michael.e.liquislots.common.upgrade.LiquidXPUpgrade;
 import com.michael.e.liquislots.common.util.LiquipackStack;
+import com.michael.e.liquislots.common.upgrade.LiquipackUpgrade;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -11,16 +12,22 @@ import net.minecraft.item.ItemStack;
 
 public class ContainerLiquidXPConfig extends Container {
 
-    private final LiquidXPUpgrade upgrade;
+    private LiquidXPUpgrade upgrade = null;
     private ItemStack liquipack;
     private LiquipackStack liquipackStack;
     private int upgradeIndex;
 
-    public ContainerLiquidXPConfig(EntityPlayer player, ItemStack liquipack, int upgradeIndex) {
-        this.liquipack = liquipack;
+    public ContainerLiquidXPConfig(EntityPlayer player, int upgradeIndex) {
+        this.liquipack = player.inventory.armorItemInSlot(2);
         this.liquipackStack = new LiquipackStack(liquipack);
-        this.upgrade = (LiquidXPUpgrade) liquipackStack.getUpgrade(upgradeIndex);
         this.upgradeIndex = upgradeIndex;
+        try {
+            this.upgrade = LiquidXPUpgrade.fromLiquipackUpgrade(liquipackStack.getUpgrade(upgradeIndex));
+        }catch (ClassCastException e){
+            player.closeScreen();
+            return;
+        }
+
         InventoryPlayer invPlayer = player.inventory;
 
         for (int i = 0; i < 3; ++i)

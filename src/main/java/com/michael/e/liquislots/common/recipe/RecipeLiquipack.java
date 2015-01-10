@@ -1,7 +1,6 @@
 package com.michael.e.liquislots.common.recipe;
 
 import com.michael.e.liquislots.common.util.LiquipackStack;
-import com.michael.e.liquislots.common.util.LiquipackUpgrade;
 import com.michael.e.liquislots.item.*;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;

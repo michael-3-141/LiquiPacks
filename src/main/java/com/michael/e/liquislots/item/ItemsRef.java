@@ -14,6 +14,7 @@ public class ItemsRef {
     public static Item liquipackArmorDiamond;
 
     //public static Item upgradeJetpack;
+    public static Item upgradeLiquidXP;
 
     public static void init()
     {
@@ -34,6 +35,9 @@ public class ItemsRef {
 
         //upgradeJetpack = new ItemJetpackUpgrade();
         //regItem(upgradeJetpack);
+
+        upgradeLiquidXP = new ItemLiquidXPUpgrade();
+        regItem(upgradeLiquidXP);
     }
 
     public static void regItem(Item item)

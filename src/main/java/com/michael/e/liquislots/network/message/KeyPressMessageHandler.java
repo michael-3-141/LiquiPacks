@@ -1,6 +1,8 @@
 package com.michael.e.liquislots.network.message;
 
 import com.michael.e.liquislots.Liquislots;
+import com.michael.e.liquislots.common.upgrade.LiquidXPUpgrade;
+import com.michael.e.liquislots.common.util.LiquipackStack;
 import com.michael.e.liquislots.item.ItemLiquipack;
 import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;

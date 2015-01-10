@@ -7,13 +7,10 @@ import com.michael.e.liquislots.client.gui.GuiLiquipackWorkbench;
 import com.michael.e.liquislots.client.gui.GuiPlayerTanks;
 import com.michael.e.liquislots.client.gui.GuiTank;
 import com.michael.e.liquislots.client.gui.GuiTankOptions;
-import com.michael.e.liquislots.common.container.ContainerLiquipackBucketOptions;
-import com.michael.e.liquislots.common.container.ContainerLiquipackIO;
-import com.michael.e.liquislots.common.container.ContainerLiquipackWorkbench;
-import com.michael.e.liquislots.common.container.ContainerPlayerTanks;
+import com.michael.e.liquislots.common.container.*;
 import com.michael.e.liquislots.common.upgrade.LiquidXPUpgrade;
 import com.michael.e.liquislots.common.util.LiquipackStack;
-import com.michael.e.liquislots.common.util.LiquipackUpgrade;
+import com.michael.e.liquislots.common.upgrade.LiquipackUpgrade;
 import com.michael.e.liquislots.item.ItemLiquipackBucket;
 import com.michael.e.liquislots.network.message.ChangeLiquidXPOptionsMessageHandler;
 import com.michael.e.liquislots.network.message.ChangeLiquipackIOOptionsMessageHandler;
@@ -43,6 +40,8 @@ public class GuiHandler implements IGuiHandler{
             case 3:
                 if(world.getTileEntity(x, y, z) instanceof TileEntityLiquipackWorkbench)
                     return new ContainerLiquipackWorkbench((TileEntityLiquipackWorkbench) world.getTileEntity(x, y, z), player);
+            case 4:
+                return new ContainerLiquidXPConfig(player, x);
             default:
                 return null;
         }
@@ -63,6 +62,8 @@ public class GuiHandler implements IGuiHandler{
             case 3:
                 if(world.getTileEntity(x, y, z) instanceof TileEntityLiquipackWorkbench)
                     return new GuiLiquipackWorkbench((TileEntityLiquipackWorkbench) world.getTileEntity(x, y, z), player);
+            case 4:
+                return new GuiTankOptions(player, new GuiModeLiquidXp(player.getEquipmentInSlot(2)), new ContainerLiquidXPConfig(player, x));
             default:
                 return null;
         }

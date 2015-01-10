@@ -1,5 +1,6 @@
 package com.michael.e.liquislots.common.util;
 
+import com.michael.e.liquislots.common.upgrade.LiquipackUpgrade;
 import com.michael.e.liquislots.item.ILiquipackArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -82,14 +83,14 @@ public class LiquipackStack {
     public LiquipackUpgrade[] getUpgrades(){
         LiquipackUpgrade[] upgrades = new LiquipackUpgrade[getUpgradeCount()];
         for(int i = 0; i < upgrades.length; i++){
-            upgrades[i] = LiquipackUpgrade.loadFromNBT(getUpgradeList().get(i));
+            upgrades[i] = new LiquipackUpgrade(getUpgradeList().get(i));
         }
         return upgrades;
     }
 
     public LiquipackUpgrade getUpgrade(int upgradeSlot)
     {
-        return LiquipackUpgrade.loadFromNBT(getUpgradeList().get(upgradeSlot));
+        return new LiquipackUpgrade(getUpgradeList().get(upgradeSlot));
     }
 
     public int getUpgradeCount(){
