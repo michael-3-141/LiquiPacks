@@ -63,7 +63,7 @@ public class GuiHandler implements IGuiHandler{
                 if(world.getTileEntity(x, y, z) instanceof TileEntityLiquipackWorkbench)
                     return new GuiLiquipackWorkbench((TileEntityLiquipackWorkbench) world.getTileEntity(x, y, z), player);
             case 4:
-                return new GuiTankOptions(player, new GuiModeLiquidXp(player.getEquipmentInSlot(2)), new ContainerLiquidXPConfig(player, x));
+                return new GuiTankOptions(player, new GuiModeLiquidXp(player.inventory.armorItemInSlot(2)), new ContainerLiquidXPConfig(player, x));
             default:
                 return null;
         }
@@ -172,7 +172,7 @@ public class GuiHandler implements IGuiHandler{
             int i = 0;
             for(LiquipackUpgrade upgrade : this.stack.getUpgrades()){
                 if(LiquidXPUpgrade.isLiquidXPUpgrade(upgrade)){
-                    this.upgrade = (LiquidXPUpgrade) upgrade;
+                    this.upgrade = LiquidXPUpgrade.fromLiquipackUpgrade(upgrade);
                     upgradeIndex = i;
                     break;
                 }

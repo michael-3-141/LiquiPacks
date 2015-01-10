@@ -16,14 +16,13 @@ public class ChangeLiquidXPOptionsMessageHandler implements IMessageHandler<Chan
 
     @Override
     public IMessage onMessage(ChangeLiquidXPOptionsMessage message, MessageContext ctx) {
-        Container container = ctx.getServerHandler().playerEntity.openContainer;
-        ItemStack stack = ctx.getServerHandler().playerEntity.getEquipmentInSlot(2);
-        if(container instanceof ContainerLiquipackBucketOptions && stack.getItem() instanceof ItemLiquipack){
+        ItemStack stack = ctx.getServerHandler().playerEntity.inventory.armorItemInSlot(2);
+        if(stack.getItem() instanceof ItemLiquipack){
             LiquipackStack liquipack = new LiquipackStack(stack);
             int i = 0;
             for(LiquipackUpgrade upgrade : liquipack.getUpgrades()){
                 if(LiquidXPUpgrade.isLiquidXPUpgrade(upgrade)){
-                    LiquidXPUpgrade XPUpgrade = (LiquidXPUpgrade) upgrade;
+                    LiquidXPUpgrade XPUpgrade = LiquidXPUpgrade.fromLiquipackUpgrade(upgrade);
                     XPUpgrade.setMode(message.mode);
                     XPUpgrade.setTank(message.tank);
                     liquipack.setUpgrade(XPUpgrade, i);

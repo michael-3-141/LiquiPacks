@@ -5,6 +5,10 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class LiquidXPUpgrade extends LiquipackUpgrade {
 
+    public static final int MODE_DISABLED = 0;
+    public static final int MODE_DRAIN_XP = 1;
+    public static final int MODE_DRAIN_TANK = 2;
+
     public LiquidXPUpgrade(){
         this(new NBTTagCompound());
     }
