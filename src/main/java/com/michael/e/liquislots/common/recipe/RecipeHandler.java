@@ -107,6 +107,18 @@ public class RecipeHandler {
                 'c', new ItemStack(Blocks.crafting_table)
         ));
 
+        if(ItemsRef.upgradeLiquidXP != null) {
+            GameRegistry.addRecipe(new ItemStack(ItemsRef.upgradeLiquidXP),
+                    "iii",
+                    "ibi",
+                    "rrr",
+
+                    'i', new ItemStack(Items.iron_ingot),
+                    'b', new ItemStack(ItemsRef.liquipackBucket),
+                    'r', new ItemStack(Items.redstone)
+            );
+        }
+
         GameRegistry.addRecipe(new RecipeLiquipack());
         GameRegistry.addRecipe(new RecipeUpdateLiquipack());
         GameRegistry.addRecipe(new RecipeUpdateTank());
