@@ -92,6 +92,11 @@ public class GuiTankOptions extends GuiContainer{
         btnToggle.setState(mode.getMode());
     }
 
+    @Override
+    public void onGuiClosed() {
+        mode.onGuiClosed();
+    }
+
     public void drawTooltip(List text, int x, int y){
         drawHoveringText(text, x, y, fontRendererObj);
     }
@@ -117,5 +122,8 @@ public class GuiTankOptions extends GuiContainer{
         public void drawBackground(int guiLeft, int guiTop, GuiTankOptions guiTankOptions){}
 
         public void drawForeground(int x, int y, int guiLeft, int guiTop, GuiTankOptions guiTankOptions){}
+
+        public void onGuiClosed() {
+        }
     }
 }

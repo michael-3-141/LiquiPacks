@@ -2,10 +2,9 @@ package com.michael.e.liquislots.item;
 
 import com.michael.e.liquislots.Liquislots;
 import com.michael.e.liquislots.Reference;
-import com.michael.e.liquislots.common.upgrade.LiquidXPUpgrade;
+import com.michael.e.liquislots.common.upgrade.LiquipackUpgrade;
 import com.michael.e.liquislots.common.util.LiquipackStack;
 import com.michael.e.liquislots.common.util.LiquipackTank;
-import com.michael.e.liquislots.common.upgrade.LiquipackUpgrade;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.model.ModelBiped;
@@ -150,15 +149,7 @@ public class ItemLiquipack extends ItemArmor implements ISpecialArmor{
         if(world.isRemote || player == null)return;
         LiquipackStack stack = new LiquipackStack(itemStack);
         for(LiquipackUpgrade upgrade : stack.getUpgrades()){
-            /*if(upgrade.getUpgradeName().equals("jetpack")) {
-                if (LiquipacksExtendedPlayer.get(player).isJetpackActivated()) {
-                    if (FlySyncMessageHandler.flyKeyDown.containsKey(player) && FlySyncMessageHandler.flyKeyDown.get(player))
-                        player.motionY += 5000;
-                }
-            }*/
-            if(LiquidXPUpgrade.isLiquidXPUpgrade(upgrade)){
-                //TODO: Add liquid xp functionality
-            }
+            upgrade.getType().tick(world, player, stack, upgrade);
         }
     }
 }

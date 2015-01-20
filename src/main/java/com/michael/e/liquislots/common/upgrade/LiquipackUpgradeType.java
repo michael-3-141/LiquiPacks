@@ -1,14 +1,15 @@
 package com.michael.e.liquislots.common.upgrade;
 
 import com.michael.e.liquislots.Liquislots;
-import com.michael.e.liquislots.common.GuiHandler;
-import cpw.mods.fml.client.FMLClientHandler;
+import com.michael.e.liquislots.common.util.LiquipackStack;
+import com.michael.e.liquislots.common.util.LiquipackTank;
 import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-
-import javax.swing.text.html.parser.Entity;
+import net.minecraftforge.fluids.FluidStack;
+import openblocks.OpenBlocks;
+import openmods.utils.EnchantmentUtils;
 
 public enum LiquipackUpgradeType{
 
@@ -17,6 +18,28 @@ public enum LiquipackUpgradeType{
         public void onClicked(EntityPlayer player, World world, int upgradeIndex) {
             if(!world.isRemote) {
                 FMLNetworkHandler.openGui(player, Liquislots.INSTANCE, 4, world, upgradeIndex, 0, 0);
+            }
+        }
+
+        @Override
+        public void tick(World world, EntityPlayer player, LiquipackStack stack, LiquipackUpgrade upgrade) {
+            LiquidXPUpgrade liquidXPUpgrade = LiquidXPUpgrade.fromLiquipackUpgrade(upgrade);
+            LiquipackTank tank = stack.getTank(liquidXPUpgrade.getTank());
+            if(tank != null) {
+                if(liquidXPUpgrade.getMode() == LiquidXPUpgrade.MODE_DRAIN_XP) {
+                    int liquidAmount = EnchantmentUtils.XPToLiquidRatio(EnchantmentUtils.getPlayerXP(player));
+                    FluidStack xpStack = OpenBlocks.XP_FLUID.copy();
+                    xpStack.amount = liquidAmount;
+                    int filled = tank.fill(xpStack, true);
+                    EnchantmentUtils.addPlayerXP(player, -EnchantmentUtils.liquidToXPRatio(filled));
+                    stack.setTank(tank, liquidXPUpgrade.getTank());
+                }
+                else if(liquidXPUpgrade.getMode() == LiquidXPUpgrade.MODE_DRAIN_TANK){
+                    int liquidAmount = tank.getFluidAmount();
+                    EnchantmentUtils.addPlayerXP(player, EnchantmentUtils.liquidToXPRatio(liquidAmount));
+                    tank.setFluidAmount(0);
+                    stack.setTank(tank, liquidXPUpgrade.getTank());
+                }
             }
         }
     };
@@ -44,6 +67,10 @@ public enum LiquipackUpgradeType{
 
     public static LiquipackUpgradeType loadFromNBT(NBTTagCompound compound){
         return compound == null ? null : LiquipackUpgradeType.valueOf(compound.getString("type"));
+    }
+
+    public void tick(World world, EntityPlayer player, LiquipackStack stack, LiquipackUpgrade upgrade) {
+
     }
 
     public static class UpgradeButton{

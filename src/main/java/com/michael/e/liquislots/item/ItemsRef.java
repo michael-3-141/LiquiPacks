@@ -1,6 +1,7 @@
 package com.michael.e.liquislots.item;
 
 import com.michael.e.liquislots.Reference;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.item.Item;
 
@@ -35,9 +36,10 @@ public class ItemsRef {
 
         //upgradeJetpack = new ItemJetpackUpgrade();
         //regItem(upgradeJetpack);
-
-        upgradeLiquidXP = new ItemLiquidXPUpgrade();
-        regItem(upgradeLiquidXP);
+        if(Loader.isModLoaded("OpenBlocks")) {
+            upgradeLiquidXP = new ItemLiquidXPUpgrade();
+            regItem(upgradeLiquidXP);
+        }
     }
 
     public static void regItem(Item item)

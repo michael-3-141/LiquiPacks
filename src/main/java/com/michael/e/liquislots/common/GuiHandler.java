@@ -207,5 +207,8 @@ public class GuiHandler implements IGuiHandler{
             stack.setUpgrade(upgrade, upgradeIndex);
         }
 
+        @Override
+        public void onGuiClosed() {
+        }
     }
 }

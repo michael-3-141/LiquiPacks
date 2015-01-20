@@ -82,4 +82,15 @@ public class LiquipackTank extends FluidTank {
     public LiquipackTank copy() {
         return this.fluid == null ? new LiquipackTank(capacity) : new LiquipackTank(fluid.getFluid(), fluid.amount, capacity);
     }
+
+    public void setFluidAmount(int amount){
+        if(this.fluid != null){
+            if(amount == 0){
+                fluid = null;
+            }
+            else{
+                fluid.amount = amount;
+            }
+        }
+    }
 }
