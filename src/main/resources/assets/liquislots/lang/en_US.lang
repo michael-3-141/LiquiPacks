@@ -15,5 +15,6 @@ liquidxp.mode.0=Disabled
 liquidxp.mode.1=Drain Player XP Into Tank
 liquidxp.mode.2=Drain Tank Into Player XP
 liquipackupgrade.jetpack=Water Jetpack
+liquipackupgrade.LIQUID_XP=Liquid XP
 itemGroup.tabLiquipacks=LiquiPacks
 tile.liquipackWorkbench.name=Liquipack Workbench
