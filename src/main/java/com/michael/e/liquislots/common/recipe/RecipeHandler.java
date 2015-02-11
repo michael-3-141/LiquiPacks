@@ -15,26 +15,26 @@ public class RecipeHandler {
     public static void init(){
         ItemStack tank = new ItemStack(ItemsRef.tank, 1, 0);
         ItemTank.setTankForStack(tank, new LiquipackTank(ItemTank.getTankCapacities()[tank.getItemDamage()]));
-        GameRegistry.addRecipe(tank,
+        GameRegistry.addRecipe(new ShapedOreRecipe(tank,
                 "ggg",
                 "gig",
                 "ggg",
 
-                'i', new ItemStack(Blocks.iron_block),
-                'g', new ItemStack(Blocks.glass)
-        );
+                'i', "blockIron",
+                'g', "blockGlass"
+        ));
 
         tank = new ItemStack(ItemsRef.tank, 1, 1);
         ItemTank.setTankForStack(tank, new LiquipackTank(ItemTank.getTankCapacities()[tank.getItemDamage()]));
-        GameRegistry.addRecipe(tank,
+        GameRegistry.addRecipe(new ShapedOreRecipe(tank,
                 "gig",
                 "gtg",
                 "gig",
 
-                'i',new ItemStack(Blocks.iron_block),
-                'g',new ItemStack(Blocks.glass),
+                'i', "blockIron",
+                'g', "blockGlass",
                 't', new ItemStack(ItemsRef.tank, 1, 0)
-        );
+        ));
 
         tank = new ItemStack(ItemsRef.tank, 1, 2);
         ItemTank.setTankForStack(tank, new LiquipackTank(ItemTank.getTankCapacities()[tank.getItemDamage()]));
@@ -43,9 +43,9 @@ public class RecipeHandler {
                 "dtd",
                 "gig",
 
-                'i',new ItemStack(Blocks.iron_block),
-                'g',new ItemStack(Blocks.glass),
-                'd',new ItemStack(Items.diamond),
+                'i', "blockIron",
+                'g', "blockGlass",
+                'd', "gemDiamond",
                 't', new ItemStack(ItemsRef.tank, 1, 0)
         );
 
@@ -54,9 +54,9 @@ public class RecipeHandler {
                 "ibi",
                 "lll",
 
-                'i', new ItemStack(Items.iron_ingot),
+                'i', "ingotIron",
                 'l', new ItemStack(Items.leather),
-                'b', new ItemStack(Blocks.iron_block)
+                'b', "blockIron"
         );
 
         GameRegistry.addRecipe(new ItemStack(BlocksRef.liquipackIO),
@@ -64,8 +64,8 @@ public class RecipeHandler {
                 "rtr",
                 "iri",
 
-                'i', new ItemStack(Items.iron_ingot),
-                'r', new ItemStack(Items.redstone),
+                'i', "ingotIron",
+                'r', "dustRedstone",
                 't', new ItemStack(ItemsRef.tank, 1, 0)
         );
 
@@ -73,7 +73,7 @@ public class RecipeHandler {
                 "rtr",
                 " b ",
 
-                'r', new ItemStack(Items.redstone),
+                'r', "dustRedstone",
                 't', new ItemStack(ItemsRef.tank, 1, 0),
                 'b', new ItemStack(Items.bucket)
         );
@@ -83,7 +83,7 @@ public class RecipeHandler {
                 "iii",
                 "iii",
 
-                'i', new ItemStack(Items.iron_ingot),
+                'i', "ingotIron",
                 'g', "blockGlass"
         ));
 
@@ -92,7 +92,7 @@ public class RecipeHandler {
                 "ggg",
                 "gdg",
 
-                'd', new ItemStack(Items.diamond),
+                'd', "gemDiamond",
                 'g', "blockGlass"
         ));
 
@@ -102,7 +102,7 @@ public class RecipeHandler {
                 "igi",
 
                 'g', "blockGlass",
-                'i', new ItemStack(Items.iron_ingot),
+                'i', "ingotIron",
                 'w', "plankWood",
                 'c', new ItemStack(Blocks.crafting_table)
         ));
@@ -113,9 +113,9 @@ public class RecipeHandler {
                     "ibi",
                     "rrr",
 
-                    'i', new ItemStack(Items.iron_ingot),
+                    'i', "ingotIron",
                     'b', new ItemStack(ItemsRef.liquipackBucket),
-                    'r', new ItemStack(Items.redstone)
+                    'r', "dustRedstone"
             );
         }
 
