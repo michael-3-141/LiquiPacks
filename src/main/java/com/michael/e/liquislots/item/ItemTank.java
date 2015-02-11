@@ -5,7 +5,6 @@ import com.michael.e.liquislots.common.util.LiquipackTank;
 import com.michael.e.liquislots.config.ConfigHandler;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -44,12 +43,6 @@ public class ItemTank extends ItemLiquipacksBase {
             setTankForStack(stack, new LiquipackTank(getTankCapacities()[i]));
             list.add(stack);
         }
-    }
-
-    @Override
-    public boolean itemInteractionForEntity(ItemStack p_111207_1_, EntityPlayer p_111207_2_, EntityLivingBase entityLivingBase) {
-        p_111207_2_.motionY += 10;
-        return false;
     }
 
     @Override
