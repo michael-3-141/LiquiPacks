@@ -88,6 +88,11 @@ public class ItemTank extends ItemLiquipacksBase {
 
     public static LiquipackTank getTankForStack(ItemStack stack){
         if(stack.getTagCompound() == null || !stack.getTagCompound().hasKey("tank")){
+            NBTTagCompound compound = new NBTTagCompound();
+            if(stack.getItemDamage() >= 0 && stack.getItemDamage() < 3) {
+                LiquipackTank tank = new LiquipackTank(getTankCapacities()[stack.getItemDamage()]);
+                compound.setTag("tank", tank.writeToNBT(compound));
+            }
             stack.setTagCompound(new NBTTagCompound());
             return null;
         }
@@ -99,4 +104,5 @@ public class ItemTank extends ItemLiquipacksBase {
         stack.getTagCompound().setTag("tank", tank.writeToNBT(new NBTTagCompound()));
         return stack;
     }
+
 }

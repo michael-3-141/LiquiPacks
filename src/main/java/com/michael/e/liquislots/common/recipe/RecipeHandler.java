@@ -1,8 +1,6 @@
 package com.michael.e.liquislots.common.recipe;
 
 import com.michael.e.liquislots.block.BlocksRef;
-import com.michael.e.liquislots.common.util.LiquipackTank;
-import com.michael.e.liquislots.item.ItemTank;
 import com.michael.e.liquislots.item.ItemsRef;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.init.Blocks;
@@ -13,9 +11,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 public class RecipeHandler {
 
     public static void init(){
-        ItemStack tank = new ItemStack(ItemsRef.tank, 1, 0);
-        ItemTank.setTankForStack(tank, new LiquipackTank(ItemTank.getTankCapacities()[tank.getItemDamage()]));
-        GameRegistry.addRecipe(new ShapedOreRecipe(tank,
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemsRef.tank, 1, 0),
                 "ggg",
                 "gig",
                 "ggg",
@@ -24,9 +20,7 @@ public class RecipeHandler {
                 'g', "blockGlass"
         ));
 
-        tank = new ItemStack(ItemsRef.tank, 1, 1);
-        ItemTank.setTankForStack(tank, new LiquipackTank(ItemTank.getTankCapacities()[tank.getItemDamage()]));
-        GameRegistry.addRecipe(new ShapedOreRecipe(tank,
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemsRef.tank, 1, 1),
                 "gig",
                 "gtg",
                 "gig",
@@ -36,9 +30,7 @@ public class RecipeHandler {
                 't', new ItemStack(ItemsRef.tank, 1, 0)
         ));
 
-        tank = new ItemStack(ItemsRef.tank, 1, 2);
-        ItemTank.setTankForStack(tank, new LiquipackTank(ItemTank.getTankCapacities()[tank.getItemDamage()]));
-        GameRegistry.addRecipe(tank,
+        GameRegistry.addRecipe(new ItemStack(ItemsRef.tank, 1, 2),
                 "gig",
                 "dtd",
                 "gig",
