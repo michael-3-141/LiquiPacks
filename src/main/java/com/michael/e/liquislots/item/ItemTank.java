@@ -91,9 +91,9 @@ public class ItemTank extends ItemLiquipacksBase {
             NBTTagCompound compound = new NBTTagCompound();
             if(stack.getItemDamage() >= 0 && stack.getItemDamage() < 3) {
                 LiquipackTank tank = new LiquipackTank(getTankCapacities()[stack.getItemDamage()]);
-                compound.setTag("tank", tank.writeToNBT(compound));
+                compound.setTag("tank", tank.writeToNBT(new NBTTagCompound()));
             }
-            stack.setTagCompound(new NBTTagCompound());
+            stack.setTagCompound(compound);
             return null;
         }
         return LiquipackTank.loadFromNBT(stack.getTagCompound().getCompoundTag("tank"));

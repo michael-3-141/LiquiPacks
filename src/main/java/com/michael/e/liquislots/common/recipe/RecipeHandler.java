@@ -30,7 +30,7 @@ public class RecipeHandler {
                 't', new ItemStack(ItemsRef.tank, 1, 0)
         ));
 
-        GameRegistry.addRecipe(new ItemStack(ItemsRef.tank, 1, 2),
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemsRef.tank, 1, 2),
                 "gig",
                 "dtd",
                 "gig",
@@ -39,9 +39,9 @@ public class RecipeHandler {
                 'g', "blockGlass",
                 'd', "gemDiamond",
                 't', new ItemStack(ItemsRef.tank, 1, 0)
-        );
+        ));
 
-        GameRegistry.addRecipe(new ItemStack(ItemsRef.liquipack, 1 , 0),
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemsRef.liquipack, 1 , 0),
                 "ili",
                 "ibi",
                 "lll",
@@ -49,9 +49,9 @@ public class RecipeHandler {
                 'i', "ingotIron",
                 'l', new ItemStack(Items.leather),
                 'b', "blockIron"
-        );
+        ));
 
-        GameRegistry.addRecipe(new ItemStack(BlocksRef.liquipackIO),
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlocksRef.liquipackIO),
                 "iri",
                 "rtr",
                 "iri",
@@ -59,16 +59,16 @@ public class RecipeHandler {
                 'i', "ingotIron",
                 'r', "dustRedstone",
                 't', new ItemStack(ItemsRef.tank, 1, 0)
-        );
+        ));
 
-        GameRegistry.addRecipe(new ItemStack(ItemsRef.liquipackBucket),
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemsRef.liquipackBucket),
                 "rtr",
                 " b ",
 
                 'r', "dustRedstone",
                 't', new ItemStack(ItemsRef.tank, 1, 0),
                 'b', new ItemStack(Items.bucket)
-        );
+        ));
 
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemsRef.liquipackArmorIron),
                 "igi",
@@ -100,7 +100,7 @@ public class RecipeHandler {
         ));
 
         if(ItemsRef.upgradeLiquidXP != null) {
-            GameRegistry.addRecipe(new ItemStack(ItemsRef.upgradeLiquidXP),
+            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemsRef.upgradeLiquidXP),
                     "iii",
                     "ibi",
                     "rrr",
@@ -108,7 +108,7 @@ public class RecipeHandler {
                     'i', "ingotIron",
                     'b', new ItemStack(ItemsRef.liquipackBucket),
                     'r', "dustRedstone"
-            );
+            ));
         }
 
         GameRegistry.addRecipe(new RecipeLiquipack());
