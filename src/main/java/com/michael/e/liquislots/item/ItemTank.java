@@ -10,6 +10,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.World;
 
 import java.util.List;
 
@@ -34,6 +35,11 @@ public class ItemTank extends ItemLiquipacksBase {
         for(int i = 0; i < icons.length; i++){
             icons[i] = register.registerIcon(Reference.MOD_ID + ":tank" + i);
         }
+    }
+
+    @Override
+    public void onCreated(ItemStack stack, World world, EntityPlayer player) {
+        generateNbtForStack(stack);
     }
 
     @Override
@@ -86,15 +92,20 @@ public class ItemTank extends ItemLiquipacksBase {
         }
     }
 
+    private static boolean generateNbtForStack(ItemStack stack){
+        if(stack.getItemDamage() >= 0 && stack.getItemDamage() < 3) {
+            NBTTagCompound compound = new NBTTagCompound();
+            LiquipackTank tank = new LiquipackTank(getTankCapacities()[stack.getItemDamage()]);
+            compound.setTag("tank", tank.writeToNBT(new NBTTagCompound()));
+            stack.setTagCompound(compound);
+            return true;
+        }
+        return false;
+    }
+
     public static LiquipackTank getTankForStack(ItemStack stack){
         if(stack.getTagCompound() == null || !stack.getTagCompound().hasKey("tank")){
-            NBTTagCompound compound = new NBTTagCompound();
-            if(stack.getItemDamage() >= 0 && stack.getItemDamage() < 3) {
-                LiquipackTank tank = new LiquipackTank(getTankCapacities()[stack.getItemDamage()]);
-                compound.setTag("tank", tank.writeToNBT(new NBTTagCompound()));
-            }
-            stack.setTagCompound(compound);
-            return null;
+            if(!generateNbtForStack(stack))return null;
         }
         return LiquipackTank.loadFromNBT(stack.getTagCompound().getCompoundTag("tank"));
     }
