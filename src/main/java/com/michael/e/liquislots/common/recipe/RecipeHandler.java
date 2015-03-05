@@ -38,7 +38,7 @@ public class RecipeHandler {
                 'i', "blockIron",
                 'g', "blockGlass",
                 'd', "gemDiamond",
-                't', new ItemStack(ItemsRef.tank, 1, 0)
+                't', new ItemStack(ItemsRef.tank, 1, 1)
         ));
 
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemsRef.liquipack, 1 , 0),
