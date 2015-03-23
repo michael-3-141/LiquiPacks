@@ -22,4 +22,9 @@ public class ClientProxy extends CommonProxy{
     public void initKeybinds() {
         KeybindHandler.init();
     }
+
+    @Override
+    public void reCreateModel() {
+        packModel = new ModelLiquipack();
+    }
 }

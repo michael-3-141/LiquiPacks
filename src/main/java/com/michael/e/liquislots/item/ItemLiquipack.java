@@ -43,7 +43,7 @@ public class ItemLiquipack extends ItemArmor implements ISpecialArmor{
 
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
-        return Reference.MOD_ID + ":models/armor/liquipack.png";
+        return Reference.MOD_ID + ":models/armor/liquipackNew.png";
     }
 
     public static boolean isOldFormat(ItemStack stack){

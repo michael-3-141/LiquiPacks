@@ -22,4 +22,8 @@ public class CommonProxy{
     public void initKeybinds() {
 
     }
+
+    public void reCreateModel() {
+
+    }
 }

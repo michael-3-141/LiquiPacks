@@ -13,6 +13,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import java.util.List;
+
 public class ContainerPlayerTanks extends Container implements OnInventoryChangedListener{
 
     private InventoryTankInterface tankInterface = new InventoryTankInterface(this);
@@ -25,6 +27,7 @@ public class ContainerPlayerTanks extends Container implements OnInventoryChange
         this.player = player;
         InventoryPlayer invPlayer = player.inventory;
         tanks = new LiquipackStack(player.inventory.armorItemInSlot(2));
+        prevTanks = new LiquipackTank[tanks.getTankCount()];
 
         for (int i = 0; i < 9; ++i)
         {
@@ -50,59 +53,44 @@ public class ContainerPlayerTanks extends Container implements OnInventoryChange
         return true;
     }
 
-    private void sendTanksToCrafter(ICrafting player){
-        /*int i = 0;
-        for(SFluidTank fluidTank : tanks.getTanks()){
-            player.sendProgressBarUpdate(this, i, fluidTank.getFluid() != null ? fluidTank.getFluid().fluidID : -1);
-            player.sendProgressBarUpdate(this, i + 1, fluidTank.getFluid() != null ? fluidTank.getFluidAmount() : -1);
-            player.sendProgressBarUpdate(this, i + 2, fluidTank.getCapacity());
-            i++;
-        }*/
-    }
-
     @Override
     @SuppressWarnings("unchecked")
     public void addCraftingToCrafters(ICrafting player) {
         super.addCraftingToCrafters(player);
-        //sendTanksToCrafter(player);
     }
+
+    private LiquipackTank[] prevTanks;
 
     @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
+        for(ICrafting player : (List<ICrafting>)crafters){
+            int i = 0;
+            for(LiquipackTank prevTank : prevTanks){
+                LiquipackTank currentTank = tanks.getTank(i);
+                if(prevTank != null && !prevTank.equals(currentTank)){
+                    player.sendProgressBarUpdate(this, (i*2), currentTank.getFluid().fluidID);
+                    player.sendProgressBarUpdate(this, (i*2)+1, currentTank.getFluid().amount);
+                }
+                prevTanks[i] = currentTank.copy();
+                i++;
+            }
+        }
     }
+
+    private int tempFluidId;
 
     @Override
     public void updateProgressBar(int id, int data) {
-        /*int tank = id / 3;
-        SFluidTank fluidTank = tanks.getTankForStack(tank);
-        FluidStack fluidStack = fluidTank.getFluid();
-        switch (id % 3){
-            case 0:
-                if(data == -1){
-                    fluidTank.setFluid(null);
-                    tanks.setTankInStack(fluidTank, tank);
-                    break;
-                }
-                fluidStack.fluidID = data;
-                fluidTank.setFluid(fluidStack);
-                tanks.setTankInStack(fluidTank, tank);
-                break;
-            case 1:
-                if(data == -1){
-                    fluidTank.setFluid(null);
-                    tanks.setTankInStack(fluidTank, tank);
-                    break;
-                }
-                fluidStack.amount = data;
-                fluidTank.setFluid(fluidStack);
-                tanks.setTankInStack(fluidTank, tank);
-                break;
-            case 2:
-                fluidTank.setCapacity(data);
-                tanks.setTankInStack(fluidTank, tank);
-                break;
-        }*/
+        if(id % 2 == 0){
+            tempFluidId = data;
+        }
+        else if(id % 2 == 1){
+            int tankId = id/2;
+            LiquipackTank tank = tanks.getTank(tankId);
+            tank.setFluid(new FluidStack(tempFluidId, data));
+            tanks.setTank(tank, tankId);
+        }
     }
 
     @Override

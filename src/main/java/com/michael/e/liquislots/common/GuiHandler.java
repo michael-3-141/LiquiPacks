@@ -119,7 +119,7 @@ public class GuiHandler implements IGuiHandler{
             if(tank.isMouseInBounds(x-guiLeft,y-guiTop)){
                 FluidStack contents = te.buffer.getFluid();
                 List<String> text = new ArrayList<String>();
-                text.add(contents == null ? "Empty" : (contents.amount + "mb X " + contents.getFluid().getLocalizedName(contents)));
+                text.add(contents == null || contents.getFluid() == null ? "Empty" : (contents.amount + "mb X " + contents.getFluid().getLocalizedName(contents)));
                 guiTankOptions.drawTooltip(text, x - guiLeft, y - guiTop);
             }
         }

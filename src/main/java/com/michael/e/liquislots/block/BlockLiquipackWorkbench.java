@@ -5,10 +5,12 @@ import com.michael.e.liquislots.Reference;
 import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -73,5 +75,18 @@ public class BlockLiquipackWorkbench extends BlockContainer {
     @Override
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack) {
         world.setBlockMetadataWithNotify(x, y, z, (MathHelper.floor_double((entity.rotationYaw * 4 / 360) + 0.5) & 3), 2);
+    }
+
+    @Override
+    public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
+        TileEntity te = world.getTileEntity(x, y, z);
+        if(te != null && te instanceof TileEntityLiquipackWorkbench){
+            ItemStack stack = ((TileEntityLiquipackWorkbench) te).getStackInSlot(0);
+            if(stack != null) {
+                EntityItem drop = new EntityItem(world, x, y, z, ((TileEntityLiquipackWorkbench) te).getStackInSlot(0));
+                world.spawnEntityInWorld(drop);
+            }
+        }
+        super.breakBlock(world, x, y, z, block, meta);
     }
 }

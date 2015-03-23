@@ -4,59 +4,87 @@ import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
-public class ModelLiquipack extends ModelBiped
-{
-    //fields
-    ModelRenderer Base;
-    ModelRenderer Right_Tank;
-    ModelRenderer Left_Tank;
-    ModelRenderer Connector;
+public class ModelLiquipack extends ModelBiped {
+    public ModelRenderer tank11;
+    public ModelRenderer tank12;
+    public ModelRenderer tank21;
+    public ModelRenderer tank22;
+    public ModelRenderer tank31;
+    public ModelRenderer tank32;
+    public ModelRenderer tank41;
+    public ModelRenderer tank42;
+    public ModelRenderer strap1;
+    public ModelRenderer strap2;
+    public ModelRenderer strap3;
+    public ModelRenderer pipeleft1;
+    public ModelRenderer pipeleft2;
+    public ModelRenderer pipeleft3;
+    public ModelRenderer piperight1;
+    public ModelRenderer piperight2;
+    public ModelRenderer piperight3;
 
-    public ModelLiquipack()
-    {
+    public ModelLiquipack() {
         super(1, 0, 64, 64);
-        textureWidth = 64;
-        textureHeight = 64;
+        this.textureWidth = 64;
+        this.textureHeight = 64;
+        this.pipeleft3 = new ModelRenderer(this, 17, 56);
+        this.pipeleft3.addBox(5.0F, 14.0F, 4.0F, 1, 1, 1, 0F);
+        this.tank41 = new ModelRenderer(this, 41, 58);
+        this.tank41.addBox(-4.0F, 12.5F, 3.5F, 9, 4, 2, 0F);
+        this.strap1 = new ModelRenderer(this, 0, 60);
+        this.strap1.addBox(-4.5F, 1.5F, 2.0F, 10, 3, 1, 0F);
+        this.tank11 = new ModelRenderer(this, 41, 58);
+        this.tank11.addBox(-4.0F, 0.5F, 4.0F, 9, 4, 2, 0F);
+        this.tank32 = new ModelRenderer(this, 49, 38);
+        this.tank32.addBox(1.5F, 4.5F, 2.5F, 3, 8, 4, 0F);
+        this.pipeleft2 = new ModelRenderer(this, 24, 45);
+        this.pipeleft2.addBox(6.0F, 3.0F, 4.0F, 1, 12, 1, 0F);
+        this.piperight1 = new ModelRenderer(this, 17, 56);
+        this.piperight1.addBox(-5.0F, 3.0F, 4.0F, 1, 1, 1, 0F);
+        this.tank21 = new ModelRenderer(this, 37, 40);
+        this.tank21.addBox(-4.0F, 4.5F, 3.5F, 4, 8, 2, 0F);
+        this.strap3 = new ModelRenderer(this, 0, 45);
+        this.strap3.addBox(-4.5F, 4.5F, 2.0F, 2, 12, 1, 0F);
+        this.tank22 = new ModelRenderer(this, 49, 38);
+        this.tank22.addBox(-3.5F, 4.5F, 2.5F, 3, 8, 4, 0F);
+        this.tank12 = new ModelRenderer(this, 37, 51);
+        this.tank12.addBox(-4.0F, 1.0F, 3.0F, 9, 3, 4, 0F);
+        this.tank42 = new ModelRenderer(this, 37, 51);
+        this.tank42.addBox(-4.0F, 13.0F, 3.0F, 9, 3, 4, 0F);
+        this.piperight3 = new ModelRenderer(this, 17, 56);
+        this.piperight3.addBox(-5.0F, 14.0F, 4.0F, 1, 1, 1, 0F);
+        this.tank31 = new ModelRenderer(this, 37, 40);
+        this.tank31.addBox(1.0F, 4.5F, 3.5F, 4, 8, 2, 0F);
+        this.strap2 = new ModelRenderer(this, 6, 45);
+        this.strap2.addBox(3.5F, 4.5F, 2.0F, 2, 12, 1, 0F);
+        this.pipeleft1 = new ModelRenderer(this, 17, 56);
+        this.pipeleft1.addBox(5.0F, 3.0F, 4.0F, 1, 1, 1, 0F);
+        this.piperight2 = new ModelRenderer(this, 24, 45);
+        this.piperight2.addBox(-6.0F, 3.0F, 4.0F, 1, 12, 1, 0F);
 
-        Base = new ModelRenderer(this, 0, 32);
-        Base.addBox(-4F, 1F, 2F, 8, 10, 2);
-        Base.setRotationPoint(0F, 0F, 0F);
-        Base.setTextureSize(64, 64);
-        Base.mirror = true;
-        bipedBody.addChild(Base);
-
-        Right_Tank = new ModelRenderer(this, 20, 32);
-        Right_Tank.addBox(1F, 1F, 5F, 3, 10, 3);
-        Right_Tank.setRotationPoint(0F, 0F, 0F);
-        Right_Tank.setTextureSize(64, 64);
-        Right_Tank.mirror = true;
-        bipedBody.addChild(Right_Tank);
-
-        Left_Tank = new ModelRenderer(this, 20, 32);
-        Left_Tank.addBox(-4F, 1F, 5F, 3, 10, 3);
-        Left_Tank.setRotationPoint(0F, 0F, 0F);
-        Left_Tank.setTextureSize(64, 64);
-        Left_Tank.mirror = true;
-        bipedBody.addChild(Left_Tank);
-
-        Connector = new ModelRenderer(this, 0, 44);
-        Connector.addBox(-4F, 5F, 4F, 8, 2, 1);
-        Connector.setRotationPoint(0F, 0F, 0F);
-        Connector.setTextureSize(64, 64);
-        Connector.mirror = true;
-        bipedBody.addChild(Connector);
+        this.bipedBody.addChild(tank11);
+        this.bipedBody.addChild(tank12);
+        this.bipedBody.addChild(tank21);
+        this.bipedBody.addChild(tank22);
+        this.bipedBody.addChild(tank31);
+        this.bipedBody.addChild(tank32);
+        this.bipedBody.addChild(tank41);
+        this.bipedBody.addChild(tank42);
+        this.bipedBody.addChild(strap1);
+        this.bipedBody.addChild(strap2);
+        this.bipedBody.addChild(strap3);
+        this.bipedBody.addChild(pipeleft1);
+        this.bipedBody.addChild(pipeleft2);
+        this.bipedBody.addChild(pipeleft3);
+        this.bipedBody.addChild(piperight1);
+        this.bipedBody.addChild(piperight2);
+        this.bipedBody.addChild(piperight3);
     }
 
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
-    {
-        super.render(entity, f, f1, f2, f3, f4, f5);
-    }
+    @Override
+    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
+        super.render(entity, f, f1, f2, f3, f4, 0.0525F);
+        this.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
 
-    private void setRotation(ModelRenderer model, float x, float y, float z)
-    {
-        model.rotateAngleX = x;
-        model.rotateAngleY = y;
-        model.rotateAngleZ = z;
     }
-
 }

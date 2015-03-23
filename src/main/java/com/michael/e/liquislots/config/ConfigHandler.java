@@ -1,8 +1,5 @@
 package com.michael.e.liquislots.config;
 
-import com.michael.e.liquislots.Reference;
-import cpw.mods.fml.client.event.ConfigChangedEvent;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.common.config.Configuration;
 
 import java.io.File;
@@ -15,6 +12,8 @@ public class ConfigHandler {
     public static int smallTankCapacity;
     public static int mediumTankCapacity;
     public static int largeTankCapacity;
+
+    public static boolean debugMode;
 
     public static int[] damageToCapacity;
 
@@ -32,6 +31,7 @@ public class ConfigHandler {
         smallTankCapacity = configuration.get(Configuration.CATEGORY_GENERAL, "smallTankCapacity", 8000).getInt();
         mediumTankCapacity = configuration.get(Configuration.CATEGORY_GENERAL, "mediumTankCapacity", 16000).getInt();
         largeTankCapacity = configuration.get(Configuration.CATEGORY_GENERAL, "largeTankCapacity", 32000).getInt();
+        debugMode = configuration.get(Configuration.CATEGORY_GENERAL, "enableDebugMode", false, "Enable this only if you know what you are doing").getBoolean();
         damageToCapacity = new int[]{ConfigHandler.smallTankCapacity, ConfigHandler.mediumTankCapacity, ConfigHandler.largeTankCapacity};
 
         if(configuration.hasChanged()) {
