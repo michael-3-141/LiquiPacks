@@ -2,6 +2,7 @@ package com.michael.e.liquislots.block;
 
 import com.michael.e.liquislots.Liquislots;
 import com.michael.e.liquislots.Reference;
+import com.michael.e.liquislots.config.ConfigHandler;
 import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -60,11 +61,13 @@ public class BlockLiquipackIO extends BlockContainer {
         if(!world.isRemote){
             FMLNetworkHandler.openGui(player, Liquislots.INSTANCE, 1, world, x, y, z);
         }else{
-            if(player.isSneaking())
+            if(player.isSneaking() && ConfigHandler.debugMode)
             {
                 TileEntityLiquipackIO te = (TileEntityLiquipackIO) world.getTileEntity(x, y, z);
-                if(te.buffer.getFluid() != null) {
+                if(te.buffer.getFluid() != null && te.buffer.getFluid().getFluid() != null) {
                     player.addChatComponentMessage(new ChatComponentText(te.buffer.getFluid().getFluid().getName() + " " + te.buffer.getFluid().amount));
+                }else if(te.buffer.getFluid() != null){
+                    player.addChatComponentMessage(new ChatComponentText(te.buffer.getFluid().fluidID + " " + te.buffer.getFluid().amount));
                 }
                 player.addChatComponentMessage(new ChatComponentText(te.isDrainingMode() + " " + te.getTank()));
             }
