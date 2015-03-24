@@ -83,8 +83,44 @@ public class ModelLiquipack extends ModelBiped {
 
     @Override
     public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
+        if(entity.isSneaking()){
+            tank11.rotateAngleX = 0.5F;
+            tank12.rotateAngleX = 0.5F;
+            tank21.rotateAngleX = 0.5F;
+            tank22.rotateAngleX = 0.5F;
+            tank31.rotateAngleX = 0.5F;
+            tank32.rotateAngleX = 0.5F;
+            tank41.rotateAngleX = 0.5F;
+            tank42.rotateAngleX = 0.5F;
+            strap1.rotateAngleX = 0.5F;
+            strap2.rotateAngleX = 0.5F;
+            strap3.rotateAngleX = 0.5F;
+            pipeleft1.rotateAngleX = 0.5F;
+            pipeleft2.rotateAngleX = 0.5F;
+            pipeleft3.rotateAngleX = 0.5F;
+            piperight1.rotateAngleX = 0.5F;
+            piperight2.rotateAngleX = 0.5F;
+            piperight3.rotateAngleX = 0.5F;
+        }
+        else{
+            tank11.rotateAngleX = 0F;
+            tank12.rotateAngleX = 0F;
+            tank21.rotateAngleX = 0F;
+            tank22.rotateAngleX = 0F;
+            tank31.rotateAngleX = 0F;
+            tank32.rotateAngleX = 0F;
+            tank41.rotateAngleX = 0F;
+            tank42.rotateAngleX = 0F;
+            strap1.rotateAngleX = 0F;
+            strap2.rotateAngleX = 0F;
+            strap3.rotateAngleX = 0F;
+            pipeleft1.rotateAngleX = 0F;
+            pipeleft2.rotateAngleX = 0F;
+            pipeleft3.rotateAngleX = 0F;
+            piperight1.rotateAngleX = 0F;
+            piperight2.rotateAngleX = 0F;
+            piperight3.rotateAngleX = 0F;
+        }
         super.render(entity, f, f1, f2, f3, f4, 0.0525F);
-        this.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-
     }
 }
