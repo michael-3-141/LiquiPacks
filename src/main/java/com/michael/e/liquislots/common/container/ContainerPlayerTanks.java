@@ -68,7 +68,7 @@ public class ContainerPlayerTanks extends Container implements OnInventoryChange
             int i = 0;
             for(LiquipackTank prevTank : prevTanks){
                 LiquipackTank currentTank = tanks.getTank(i);
-                if(prevTank != null && !prevTank.equals(currentTank)){
+                if(prevTank != null && !prevTank.equals(currentTank) && currentTank.getFluid() != null){
                     player.sendProgressBarUpdate(this, (i*2), currentTank.getFluid().fluidID);
                     player.sendProgressBarUpdate(this, (i*2)+1, currentTank.getFluid().amount);
                 }

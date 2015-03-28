@@ -7,14 +7,20 @@ item.liquipackArmorIron.name=Iron Liquipack Armor
 item.liquipackArmorDiamond.name=Diamond Liquipack Armor
 item.jetpackUpgrade.name=Liquipack Upgrade: Water Jetpack
 item.liquidXPUpgrade.name=Liquipack Upgrade: Liquid XP
+
 tile.liquipackIO.name=Liquipack Pipe Interface
+tile.liquipackWorkbench.name=Liquipack Workbench
+
 key.liquipackinv=Open Liquipack Inventory
+
+liquipackbucket.mode.0=Automatic
 liquipackbucket.mode.1=Pick up liquids into liquipack
-liquipackbucket.mode.0=Place liquids from liquipack
+liquipackbucket.mode.2=Place liquids from liquipack
+
 liquidxp.mode.0=Disabled
 liquidxp.mode.1=Drain Player XP Into Tank
 liquidxp.mode.2=Drain Tank Into Player XP
+
 liquipackupgrade.jetpack=Water Jetpack
 liquipackupgrade.LIQUID_XP=Liquid XP
 itemGroup.tabLiquipacks=LiquiPacks
-tile.liquipackWorkbench.name=Liquipack Workbench

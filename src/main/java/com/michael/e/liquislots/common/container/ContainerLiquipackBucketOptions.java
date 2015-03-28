@@ -42,7 +42,7 @@ public class ContainerLiquipackBucketOptions extends Container {
     public void addCraftingToCrafters(ICrafting player) {
         crafters.add(player);
         player.sendProgressBarUpdate(this, 0, ItemLiquipackBucket.getSelectedTank(bucket));
-        player.sendProgressBarUpdate(this, 1, ItemLiquipackBucket.isDrainingMode(bucket) ? 1 : 0);
+        player.sendProgressBarUpdate(this, 1, ItemLiquipackBucket.getMode(bucket));
     }
 
     @Override
@@ -66,7 +66,7 @@ public class ContainerLiquipackBucketOptions extends Container {
                 ItemLiquipackBucket.setSelectedTank(bucket, data);
                 break;
             case 1:
-                ItemLiquipackBucket.setDrainingMode(bucket, data == 1);
+                ItemLiquipackBucket.setMode(bucket, data);
         }
     }
 }

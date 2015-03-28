@@ -17,7 +17,7 @@ public class ChangeTankOptionsMessageHandler implements IMessageHandler<ChangeTa
         ItemStack stack = ctx.getServerHandler().playerEntity.getHeldItem();
         if(container instanceof ContainerLiquipackBucketOptions && stack.getItem() instanceof ItemLiquipackBucket){
             ItemLiquipackBucket.setSelectedTank(stack, message.tank);
-            ItemLiquipackBucket.setDrainingMode(stack, message.isDrainMode);
+            ItemLiquipackBucket.setMode(stack, message.mode);
         }
         return null;
     }
@@ -28,24 +28,24 @@ public class ChangeTankOptionsMessageHandler implements IMessageHandler<ChangeTa
 
         }
 
-        public ChangeTankOptionsMessage(int tank, boolean isDrainMode) {
+        public ChangeTankOptionsMessage(int tank, int mode) {
             this.tank = tank;
-            this.isDrainMode = isDrainMode;
+            this.mode = mode;
         }
 
         public int tank;
-        public boolean isDrainMode;
+        public int mode;
 
         @Override
         public void fromBytes(ByteBuf buf) {
             tank = buf.readInt();
-            isDrainMode = buf.readBoolean();
+            mode = buf.readInt();
         }
 
         @Override
         public void toBytes(ByteBuf buf) {
             buf.writeInt(tank);
-            buf.writeBoolean(isDrainMode);
+            buf.writeInt(mode);
         }
     }
 }

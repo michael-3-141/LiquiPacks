@@ -26,6 +26,10 @@ import java.util.List;
 
 public class ItemLiquipackBucket extends ItemLiquipacksBase {
 
+    public static final int MODE_PICK_UP = 1;
+    public static final int MODE_PLACE = 2;
+    public static final int MODE_AUTOMATIC = 0;
+
     public ItemLiquipackBucket() {
         super();
         setUnlocalizedName("liquipackBucket");
@@ -44,7 +48,7 @@ public class ItemLiquipackBucket extends ItemLiquipacksBase {
             list.add("<Press SHIFT for info>");
         }
         else {
-            list.add("Mode: " + StatCollector.translateToLocal("liquipackbucket.mode." + (isDrainingMode(stack) ? 1 : 0)));
+            list.add("Mode: " + StatCollector.translateToLocal("liquipackbucket.mode." + (getMode(stack))));
             list.add("Tank: " + (getSelectedTank(stack)+1));
             list.add(EnumChatFormatting.ITALIC + "Shift right click with the");
             list.add(EnumChatFormatting.ITALIC + "item in your hand to switch modes/tanks");
@@ -60,7 +64,7 @@ public class ItemLiquipackBucket extends ItemLiquipacksBase {
         }
 
         //Get right click position
-        MovingObjectPosition movingobjectposition = this.getMovingObjectPositionFromPlayer(world, player, isDrainingMode(stack));
+        MovingObjectPosition movingobjectposition = this.getMovingObjectPositionFromPlayer(world, player, true);
         FluidStack result = null;
         ItemStack liquipack = player.inventory.armorItemInSlot(2);
         LiquipackStack tanks = new LiquipackStack(liquipack);
@@ -85,8 +89,10 @@ public class ItemLiquipackBucket extends ItemLiquipacksBase {
                     return stack;
                 }
 
+                boolean shouldPickUp = getMode(stack) == MODE_PICK_UP || (getMode(stack) == MODE_AUTOMATIC && (block instanceof IFluidBlock || block.getMaterial() == Material.lava || block.getMaterial() == Material.water));
+
                 //Drain/Fill mode
-                if (isDrainingMode(stack)) {
+                if (shouldPickUp) {
                     //Check if canPlayerEdit
                     if (!player.canPlayerEdit(x, y, z, movingobjectposition.sideHit, stack)) {
                         return stack;
@@ -161,7 +167,7 @@ public class ItemLiquipackBucket extends ItemLiquipacksBase {
      */
     public boolean tryPlaceContainedLiquid(World world, int x, int y, int z, ItemStack stack, FluidStack fluidStack)
     {
-        if (isDrainingMode(stack)) //Is empty
+        if (getMode(stack) == MODE_PICK_UP) //Is empty
         {
             return false;
         }
@@ -203,14 +209,14 @@ public class ItemLiquipackBucket extends ItemLiquipacksBase {
         }
     }
 
-    public static boolean isDrainingMode(ItemStack stack){
+    public static int getMode(ItemStack stack){
         NBTTagCompound compound = safeGetStackCompound(stack);
-        return compound.getBoolean("isDrainingMode");
+        return compound.getInteger("mode");
     }
 
-    public static ItemStack setDrainingMode(ItemStack stack, boolean drainingMode){
+    public static ItemStack setMode(ItemStack stack, int mode){
         NBTTagCompound compound = safeGetStackCompound(stack);
-        compound.setBoolean("isDrainingMode", drainingMode);
+        compound.setInteger("mode", mode);
         stack.setTagCompound(compound);
         return stack;
     }

@@ -130,13 +130,13 @@ public class GuiHandler implements IGuiHandler{
         private ItemStack stack;
 
         public GuiModeLiquipackBucket(ItemStack stack) {
-            super(StatCollector.translateToLocal("liquipackbucket.mode.1"), StatCollector.translateToLocal("liquipackbucket.mode.0"));
+            super(StatCollector.translateToLocal("liquipackbucket.mode.0"), StatCollector.translateToLocal("liquipackbucket.mode.1"), StatCollector.translateToLocal("liquipackbucket.mode.2"));
             this.stack = stack;
         }
 
         @Override
         public void actionPerformed() {
-            Liquislots.INSTANCE.netHandler.sendToServer(new ChangeTankOptionsMessageHandler.ChangeTankOptionsMessage(ItemLiquipackBucket.getSelectedTank(stack), ItemLiquipackBucket.isDrainingMode(stack)));
+            Liquislots.INSTANCE.netHandler.sendToServer(new ChangeTankOptionsMessageHandler.ChangeTankOptionsMessage(ItemLiquipackBucket.getSelectedTank(stack), ItemLiquipackBucket.getMode(stack)));
         }
 
         @Override
@@ -151,12 +151,12 @@ public class GuiHandler implements IGuiHandler{
 
         @Override
         public int getMode() {
-            return ItemLiquipackBucket.isDrainingMode(stack) ? 0 : 1;
+            return ItemLiquipackBucket.getMode(stack);
         }
 
         @Override
         public void setMode(int mode) {
-            ItemLiquipackBucket.setDrainingMode(stack, mode == 0);
+            ItemLiquipackBucket.setMode(stack, mode);
         }
 
     }
