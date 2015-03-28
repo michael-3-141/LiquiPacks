@@ -60,6 +60,7 @@ public class RecipeLiquipack implements IRecipe {
             }
             if (foundTanks == 0 && foundProtectors == 0 && foundUpgrades == 1 && foundOthers == 0) {
                 LiquipackStack liquipackStack = new LiquipackStack(foundLiquipack.copy());
+                if(liquipackStack.hasUpgrade(((ILiquipackUpgrade)foundUpgrade.getItem()).getUpgradeForStack(foundUpgrade).getType()))return false;
                 result = liquipackStack.addUpgrade(((ILiquipackUpgrade)foundUpgrade.getItem()).getUpgradeForStack(foundUpgrade));
                 return true;
             }

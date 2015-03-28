@@ -1,6 +1,7 @@
 package com.michael.e.liquislots.common.util;
 
 import com.michael.e.liquislots.common.upgrade.LiquipackUpgrade;
+import com.michael.e.liquislots.common.upgrade.LiquipackUpgradeType;
 import com.michael.e.liquislots.item.ILiquipackArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -113,5 +114,14 @@ public class LiquipackStack {
         if(upgrade == null)return stack;
         getUpgradeList().add(upgrade.writeToNBT(new NBTTagCompound()));
         return stack;
+    }
+
+    public boolean hasUpgrade(LiquipackUpgradeType type) {
+        for(LiquipackUpgrade upgrade : getUpgrades()){
+            if(upgrade.getType() == LiquipackUpgradeType.LIQUID_XP){
+                return true;
+            }
+        }
+        return false;
     }
 }
