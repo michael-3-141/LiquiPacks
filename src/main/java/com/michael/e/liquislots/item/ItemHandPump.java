@@ -152,7 +152,7 @@ public class ItemHandPump extends ItemLiquipacksBase {
                         return stack;
                     }
                     //Try to place
-                    if(tank.drain(FluidContainerRegistry.BUCKET_VOLUME, false) != null && tank.drain(FluidContainerRegistry.BUCKET_VOLUME, false).amount == FluidContainerRegistry.BUCKET_VOLUME) {
+                    if(tank.drain(FluidContainerRegistry.BUCKET_VOLUME, false) != null && tank.drain(FluidContainerRegistry.BUCKET_VOLUME, false).amount == FluidContainerRegistry.BUCKET_VOLUME && tank.drain(FluidContainerRegistry.BUCKET_VOLUME, false).getFluid().getBlock() != null) {
                         this.tryPlaceContainedLiquid(world, x, y, z, stack, tank.drain(FluidContainerRegistry.BUCKET_VOLUME, true));
                         tanks.setTank(tank, getSelectedTank(stack));
                     }
