@@ -61,7 +61,7 @@ public class RecipeHandler {
                 't', new ItemStack(ItemsRef.tank, 1, 0)
         ));
 
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemsRef.liquipackBucket),
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemsRef.handPump),
                 "rtr",
                 " b ",
 
@@ -106,7 +106,7 @@ public class RecipeHandler {
                     "rrr",
 
                     'i', "ingotIron",
-                    'b', new ItemStack(ItemsRef.liquipackBucket),
+                    'b', new ItemStack(ItemsRef.handPump),
                     'r', "dustRedstone"
             ));
         }

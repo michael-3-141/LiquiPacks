@@ -1,7 +1,7 @@
 package com.michael.e.liquislots.network.message;
 
 import com.michael.e.liquislots.common.container.ContainerLiquipackBucketOptions;
-import com.michael.e.liquislots.item.ItemLiquipackBucket;
+import com.michael.e.liquislots.item.ItemHandPump;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
@@ -15,9 +15,9 @@ public class ChangeTankOptionsMessageHandler implements IMessageHandler<ChangeTa
     public IMessage onMessage(ChangeTankOptionsMessage message, MessageContext ctx) {
         Container container = ctx.getServerHandler().playerEntity.openContainer;
         ItemStack stack = ctx.getServerHandler().playerEntity.getHeldItem();
-        if(container instanceof ContainerLiquipackBucketOptions && stack.getItem() instanceof ItemLiquipackBucket){
-            ItemLiquipackBucket.setSelectedTank(stack, message.tank);
-            ItemLiquipackBucket.setMode(stack, message.mode);
+        if(container instanceof ContainerLiquipackBucketOptions && stack.getItem() instanceof ItemHandPump){
+            ItemHandPump.setSelectedTank(stack, message.tank);
+            ItemHandPump.setMode(stack, message.mode);
         }
         return null;
     }

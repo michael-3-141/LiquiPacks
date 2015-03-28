@@ -9,7 +9,7 @@ public class ItemsRef {
 
     public static Item liquipack;
     public static Item tank;
-    public static Item liquipackBucket;
+    public static Item handPump;
 
     public static Item liquipackArmorIron;
     public static Item liquipackArmorDiamond;
@@ -25,8 +25,8 @@ public class ItemsRef {
         tank = new ItemTank();
         regItem(tank);
 
-        liquipackBucket = new ItemLiquipackBucket();
-        regItem(liquipackBucket);
+        handPump = new ItemHandPump();
+        regItem(handPump);
 
         liquipackArmorIron = new ItemLiquipackArmor(6D / 25D, 240).setUnlocalizedName("liquipackArmorIron").setTextureName(Reference.MOD_ID + ":liquipackArmorIron");
         regItem(liquipackArmorIron);

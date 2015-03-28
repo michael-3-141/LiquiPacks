@@ -24,13 +24,13 @@ import org.lwjgl.input.Keyboard;
 
 import java.util.List;
 
-public class ItemLiquipackBucket extends ItemLiquipacksBase {
+public class ItemHandPump extends ItemLiquipacksBase {
 
     public static final int MODE_PICK_UP = 1;
     public static final int MODE_PLACE = 2;
     public static final int MODE_AUTOMATIC = 0;
 
-    public ItemLiquipackBucket() {
+    public ItemHandPump() {
         super();
         setUnlocalizedName("liquipackBucket");
         setTextureName(Reference.MOD_ID + ":" + getUnlocalizedName().substring(5));

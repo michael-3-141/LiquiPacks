@@ -1,6 +1,6 @@
 package com.michael.e.liquislots.common.container;
 
-import com.michael.e.liquislots.item.ItemLiquipackBucket;
+import com.michael.e.liquislots.item.ItemHandPump;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -41,8 +41,8 @@ public class ContainerLiquipackBucketOptions extends Container {
     @Override
     public void addCraftingToCrafters(ICrafting player) {
         crafters.add(player);
-        player.sendProgressBarUpdate(this, 0, ItemLiquipackBucket.getSelectedTank(bucket));
-        player.sendProgressBarUpdate(this, 1, ItemLiquipackBucket.getMode(bucket));
+        player.sendProgressBarUpdate(this, 0, ItemHandPump.getSelectedTank(bucket));
+        player.sendProgressBarUpdate(this, 1, ItemHandPump.getMode(bucket));
     }
 
     @Override
@@ -63,10 +63,10 @@ public class ContainerLiquipackBucketOptions extends Container {
     public void updateProgressBar(int id, int data) {
         switch (id){
             case 0:
-                ItemLiquipackBucket.setSelectedTank(bucket, data);
+                ItemHandPump.setSelectedTank(bucket, data);
                 break;
             case 1:
-                ItemLiquipackBucket.setMode(bucket, data);
+                ItemHandPump.setMode(bucket, data);
         }
     }
 }

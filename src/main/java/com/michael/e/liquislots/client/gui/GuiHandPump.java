@@ -2,7 +2,7 @@ package com.michael.e.liquislots.client.gui;
 
 import com.michael.e.liquislots.Liquislots;
 import com.michael.e.liquislots.common.container.ContainerLiquipackBucketOptions;
-import com.michael.e.liquislots.item.ItemLiquipackBucket;
+import com.michael.e.liquislots.item.ItemHandPump;
 import com.michael.e.liquislots.network.message.ChangeTankOptionsMessageHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -21,26 +21,26 @@ public class GuiHandPump extends GuiTankOptions{
 
     @Override
     public void actionPerformed() {
-        Liquislots.INSTANCE.netHandler.sendToServer(new ChangeTankOptionsMessageHandler.ChangeTankOptionsMessage(ItemLiquipackBucket.getSelectedTank(stack), ItemLiquipackBucket.getMode(stack)));
+        Liquislots.INSTANCE.netHandler.sendToServer(new ChangeTankOptionsMessageHandler.ChangeTankOptionsMessage(ItemHandPump.getSelectedTank(stack), ItemHandPump.getMode(stack)));
     }
 
     @Override
     public int getTank() {
-        return ItemLiquipackBucket.getSelectedTank(stack);
+        return ItemHandPump.getSelectedTank(stack);
     }
 
     @Override
     public void setTank(int tank) {
-        ItemLiquipackBucket.setSelectedTank(stack, tank);
+        ItemHandPump.setSelectedTank(stack, tank);
     }
 
     @Override
     public int getMode() {
-        return ItemLiquipackBucket.getMode(stack);
+        return ItemHandPump.getMode(stack);
     }
 
     @Override
     public void setMode(int mode) {
-        ItemLiquipackBucket.setMode(stack, mode);
+        ItemHandPump.setMode(stack, mode);
     }
 }
