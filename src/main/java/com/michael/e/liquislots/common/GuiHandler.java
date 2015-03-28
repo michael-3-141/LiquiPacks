@@ -1,30 +1,12 @@
 package com.michael.e.liquislots.common;
 
-import com.michael.e.liquislots.Liquislots;
 import com.michael.e.liquislots.block.TileEntityLiquipackIO;
 import com.michael.e.liquislots.block.TileEntityLiquipackWorkbench;
-import com.michael.e.liquislots.client.gui.GuiLiquipackWorkbench;
-import com.michael.e.liquislots.client.gui.GuiPlayerTanks;
-import com.michael.e.liquislots.client.gui.GuiTank;
-import com.michael.e.liquislots.client.gui.GuiTankOptions;
+import com.michael.e.liquislots.client.gui.*;
 import com.michael.e.liquislots.common.container.*;
-import com.michael.e.liquislots.common.upgrade.LiquidXPUpgrade;
-import com.michael.e.liquislots.common.util.LiquipackStack;
-import com.michael.e.liquislots.common.upgrade.LiquipackUpgrade;
-import com.michael.e.liquislots.item.ItemLiquipackBucket;
-import com.michael.e.liquislots.network.message.ChangeLiquidXPOptionsMessageHandler;
-import com.michael.e.liquislots.network.message.ChangeLiquipackIOOptionsMessageHandler;
-import com.michael.e.liquislots.network.message.ChangeTankOptionsMessageHandler;
 import cpw.mods.fml.common.network.IGuiHandler;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.FluidStack;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class GuiHandler implements IGuiHandler{
     @Override
@@ -54,22 +36,21 @@ public class GuiHandler implements IGuiHandler{
                 return new GuiPlayerTanks(player);
             case 1:
                 if(world.getTileEntity(x, y, z) instanceof TileEntityLiquipackIO) {
-                    TileEntityLiquipackIO te = (TileEntityLiquipackIO) world.getTileEntity(x, y, z);
-                    return new GuiTankOptions(player, new GuiModeIO(te), new ContainerLiquipackIO(player, te));
+                    return new GuiLiquipackIO(player, (TileEntityLiquipackIO) world.getTileEntity(x, y, z));
                 }
             case 2:
-                return new GuiTankOptions(player, new GuiModeLiquipackBucket(player.getHeldItem()), new ContainerLiquipackBucketOptions(player, player.getHeldItem()));
+                return new GuiHandPump(player, player.getHeldItem());
             case 3:
                 if(world.getTileEntity(x, y, z) instanceof TileEntityLiquipackWorkbench)
                     return new GuiLiquipackWorkbench((TileEntityLiquipackWorkbench) world.getTileEntity(x, y, z), player);
             case 4:
-                return new GuiTankOptions(player, new GuiModeLiquidXp(player.inventory.armorItemInSlot(2)), new ContainerLiquidXPConfig(player, x));
+                return new GuiLiquidXpUpgrade(player, x, player.inventory.armorItemInSlot(2));
             default:
                 return null;
         }
     }
 
-    public static class GuiModeIO extends GuiTankOptions.GuiMode{
+    /*public static class GuiModeIO extends GuiTankOptions.GuiMode{
 
         private TileEntityLiquipackIO te;
         private GuiTank tank;
@@ -210,5 +191,5 @@ public class GuiHandler implements IGuiHandler{
         @Override
         public void onGuiClosed() {
         }
-    }
+    }*/
 }

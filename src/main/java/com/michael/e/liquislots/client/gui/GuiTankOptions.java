@@ -16,11 +16,12 @@ public class GuiTankOptions extends GuiContainer{
     private GuiArrowButton btnBack;
     private GuiArrowButton btnNext;
     private GuiToggleButton btnToggle;
-    private GuiMode mode;
 
-    public GuiTankOptions(EntityPlayer player, GuiMode mode, Container container){
+    protected String[] toggleOptions;
+
+    public GuiTankOptions(EntityPlayer player, Container container, String... toggleOptions){
         super(container);
-        this.mode = mode;
+        this.toggleOptions = toggleOptions;
 
         xSize = 176;
         ySize = 189;
@@ -32,7 +33,7 @@ public class GuiTankOptions extends GuiContainer{
         super.initGui();
         btnBack = new GuiArrowButton(1, guiLeft + 10, guiTop + 20, false);
         btnNext = new GuiArrowButton(2, guiLeft + 60, guiTop + 20, true);
-        btnToggle = new GuiToggleButton(3, guiLeft + 10, guiTop + 50, 20, mode.toggleOptions);
+        btnToggle = new GuiToggleButton(3, guiLeft + 10, guiTop + 50, 20, toggleOptions);
 
         buttonList.add(btnBack);
         buttonList.add(btnNext);
@@ -45,9 +46,9 @@ public class GuiTankOptions extends GuiContainer{
     protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
         Minecraft.getMinecraft().renderEngine.bindTexture(texture);
         drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
-        mode.drawBackground(guiLeft, guiTop, this);
+        drawBackgroundLayer();
         fontRendererObj.drawString("Tank:", guiLeft + 28, guiTop + 10, 4210752);
-        fontRendererObj.drawString(Integer.toString(mode.getTank()+1), guiLeft + 38, guiTop + 25, 4210752);
+        fontRendererObj.drawString(Integer.toString(getTank()+1), guiLeft + 38, guiTop + 25, 4210752);
 
         refreshButtons();
     }
@@ -55,32 +56,31 @@ public class GuiTankOptions extends GuiContainer{
     @Override
     protected void drawGuiContainerForegroundLayer(int x, int y) {
         super.drawGuiContainerForegroundLayer(x, y);
-        mode.drawForeground(x, y, guiLeft, guiTop, this);
     }
 
     @Override
     protected void actionPerformed(GuiButton button) {
         if(button.id == btnBack.id){
-            mode.setTank(mode.getTank() - 1);
+            setTank(getTank() - 1);
         }
         else if(button.id == btnNext.id){
-            mode.setTank(mode.getTank() + 1);
+            setTank(getTank() + 1);
         }
         else if(button.id == btnToggle.id){
             btnToggle.actionPerfomed();
-            mode.setMode(btnToggle.getState());
+            setMode(btnToggle.getState());
         }
 
-        mode.actionPerformed();
+        actionPerformed();
         refreshButtons();
     }
 
     private void refreshButtons(){
-        if(mode.getTank() == 0){
+        if(getTank() == 0){
             btnBack.enabled = false;
             btnNext.enabled = true;
         }
-        else if(mode.getTank() == 3){
+        else if(getTank() == 3){
             btnBack.enabled = true;
             btnNext.enabled = false;
         }
@@ -89,41 +89,22 @@ public class GuiTankOptions extends GuiContainer{
             btnNext.enabled = true;
         }
 
-        btnToggle.setState(mode.getMode());
+        btnToggle.setState(getMode());
     }
 
-    @Override
-    public void onGuiClosed() {
-        mode.onGuiClosed();
-    }
-
-    public void drawTooltip(List text, int x, int y){
+    protected void drawTooltip(List text, int x, int y){
         drawHoveringText(text, x, y, fontRendererObj);
     }
 
-    public abstract static class GuiMode {
+    protected void actionPerformed(){}
+    
+    protected int getTank(){return 0;}
 
-        public String[] toggleOptions;
+    protected void setTank(int tank){}
 
-        public GuiMode(String... toggleOptions) {
-            this.toggleOptions = toggleOptions;
-        }
+    protected int getMode(){return 0;}
 
-        public void actionPerformed(){}
+    protected void setMode(int mode) {}
 
-        public int getTank(){return 0;}
-
-        public void setTank(int tank){}
-
-        public int getMode(){return 0;}
-
-        public void setMode(int mode) {}
-
-        public void drawBackground(int guiLeft, int guiTop, GuiTankOptions guiTankOptions){}
-
-        public void drawForeground(int x, int y, int guiLeft, int guiTop, GuiTankOptions guiTankOptions){}
-
-        public void onGuiClosed() {
-        }
-    }
+    protected void drawBackgroundLayer() {}
 }
