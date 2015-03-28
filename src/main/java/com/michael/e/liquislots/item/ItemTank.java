@@ -9,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
@@ -85,9 +86,9 @@ public class ItemTank extends ItemLiquipacksBase {
     public void addInformation(ItemStack stack, EntityPlayer player, List info, boolean debug) {
         LiquipackTank tank = getTankForStack(stack);
         if(tank != null) {
-            info.add("Tank capacity: " + getTankForStack(stack).getCapacity() + "mb");
+            info.add(EnumChatFormatting.BLUE + "Tank capacity: " + getTankForStack(stack).getCapacity() + "mb");
             if (tank.getFluid() != null){
-                info.add("Contains: " + tank.getFluidAmount() + "x" + tank.getFluid().getFluid().getLocalizedName(tank.getFluid()));
+                info.add(EnumChatFormatting.DARK_AQUA + "Contains: " + tank.getFluidAmount() + "x" + tank.getFluid().getFluid().getLocalizedName(tank.getFluid()));
             }
         }
     }

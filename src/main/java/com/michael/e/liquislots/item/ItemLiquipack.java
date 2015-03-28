@@ -64,7 +64,7 @@ public class ItemLiquipack extends ItemArmor implements ISpecialArmor{
             return;
         }
         if(!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
-            info.add("<Press SHIFT for more info>");
+            info.add(EnumChatFormatting.AQUA.toString() + EnumChatFormatting.ITALIC + "<Press SHIFT for more info>");
         }
         else {
             LiquipackStack liquipackStack = new LiquipackStack(stack);
@@ -72,9 +72,9 @@ public class ItemLiquipack extends ItemArmor implements ISpecialArmor{
             LiquipackUpgrade[] upgrades = liquipackStack.getUpgrades();
 
             if(liquipackStack.getTankCount() == 0){
-                info.add("This item is useless without any tanks");
-                info.add("Add tanks by putting them in a crafting");
-                info.add("table with the liquipack");
+                info.add(EnumChatFormatting.RED + "This item is useless without any tanks");
+                info.add(EnumChatFormatting.RED + "Add tanks by putting them in a crafting");
+                info.add(EnumChatFormatting.RED + "table with the liquipack");
             }
 
             int i = -1;
@@ -82,19 +82,19 @@ public class ItemLiquipack extends ItemArmor implements ISpecialArmor{
                 i++;
                 if (tank != null) {
                     String containsText = tank.getFluid() == null ? "Nothing" : tank.getFluidAmount() + "x" + tank.getFluid().getFluid().getLocalizedName(tank.getFluid());
-                    info.add("Tank " + (i + 1) + " | Capacity: " + tank.getCapacity() + "mb | Contains: " + containsText);
+                    info.add(EnumChatFormatting.DARK_AQUA + "Tank " + (i + 1) + " | Capacity: " + tank.getCapacity() + "mb | Contains: " + containsText);
                 }
             }
 
             ItemStack protection = liquipackStack.getArmor();
             if(protection != null){
-                info.add("Installed Armor: " + protection.getDisplayName() + " | Damage: " + (protection.getMaxDamage() - protection.getItemDamage()) + "/" + protection.getMaxDamage());
+                info.add(EnumChatFormatting.DARK_GREEN + "Installed Armor: " + protection.getDisplayName() + " | Damage: " + (protection.getMaxDamage() - protection.getItemDamage()) + "/" + protection.getMaxDamage());
             }
 
             if(upgrades.length > 0) {
-                info.add("Installed Upgrades:");
+                info.add(EnumChatFormatting.BLUE + "Installed Upgrades:");
                 for (LiquipackUpgrade upgrade : upgrades) {
-                    info.add("- " + StatCollector.translateToLocal("liquipackupgrade." + upgrade.getType().name()));
+                    info.add(EnumChatFormatting.BLUE + "- " + StatCollector.translateToLocal("liquipackupgrade." + upgrade.getType().name()));
                 }
             }
         }

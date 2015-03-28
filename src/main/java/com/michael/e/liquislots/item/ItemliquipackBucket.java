@@ -45,11 +45,11 @@ public class ItemLiquipackBucket extends ItemLiquipacksBase {
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean debug) {
         if(!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
-            list.add("<Press SHIFT for info>");
+            list.add(EnumChatFormatting.AQUA.toString() + EnumChatFormatting.ITALIC + "<Press SHIFT for info>");
         }
         else {
-            list.add("Mode: " + StatCollector.translateToLocal("liquipackbucket.mode." + (getMode(stack))));
-            list.add("Tank: " + (getSelectedTank(stack)+1));
+            list.add(EnumChatFormatting.BLUE + "Mode: " + StatCollector.translateToLocal("liquipackbucket.mode." + (getMode(stack))));
+            list.add(EnumChatFormatting.DARK_GREEN + "Tank: " + (getSelectedTank(stack)+1));
             list.add(EnumChatFormatting.ITALIC + "Shift right click with the");
             list.add(EnumChatFormatting.ITALIC + "item in your hand to switch modes/tanks");
         }

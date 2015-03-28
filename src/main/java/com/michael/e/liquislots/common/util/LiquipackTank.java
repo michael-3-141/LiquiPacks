@@ -96,7 +96,7 @@ public class LiquipackTank extends FluidTank {
 
     @Override
     public void setFluid(FluidStack fluid) {
-        if(fluid != null && fluid.getFluid() == null){
+        if(fluid != null && fluid.getFluid() == null && fluid.amount != 0){
             this.fluid = null;
         }
         else {
