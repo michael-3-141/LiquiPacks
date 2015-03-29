@@ -28,6 +28,7 @@ public enum LiquipackUpgradeType{
             if(tank != null) {
                 if(liquidXPUpgrade.getMode() == LiquidXPUpgrade.MODE_DRAIN_XP) {
                     int liquidAmount = EnchantmentUtils.XPToLiquidRatio(EnchantmentUtils.getPlayerXP(player));
+                    if(liquidAmount == 0)return;
                     FluidStack xpStack = OpenBlocks.XP_FLUID.copy();
                     xpStack.amount = liquidAmount;
                     int filled = tank.fill(xpStack, true);
