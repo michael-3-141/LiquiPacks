@@ -26,6 +26,8 @@ public class ContainerLiquipackWorkbench extends Container {
         InventoryPlayer invPlayer = player.inventory;
         liquipackInventory = new LiquipackInventory(tileEntity);
 
+        addSlotToContainer(new ArmorSlot(invPlayer, 38, 179, 24, 1));
+
         for (int i = 0; i < 9; ++i)
         {
             this.addSlotToContainer(new SafeSlot(invPlayer, i, 8 + i * 18, 146));
@@ -38,8 +40,6 @@ public class ContainerLiquipackWorkbench extends Container {
                 this.addSlotToContainer(new SafeSlot(invPlayer, j + i * 9 + 9, 8 + j * 18, i * 18 + 88));
             }
         }
-
-        addSlotToContainer(new ArmorSlot(invPlayer, 38, 179, 24, 1));
 
         addSlotToContainer(new SafeSlot(tileEntity, 0, 79, 14));
 
@@ -166,7 +166,7 @@ public class ContainerLiquipackWorkbench extends Container {
             ItemStack stack = slot.getStack();
             ItemStack result = stack.copy();
 
-            if (i >= 36) {
+            if (i >= 37) {
                 if (!mergeItemStack(stack, 0, 37, false)) {
                     return null;
                 }

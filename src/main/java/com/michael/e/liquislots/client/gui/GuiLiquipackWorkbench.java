@@ -15,7 +15,7 @@ public class GuiLiquipackWorkbench extends GuiContainer{
 
     public GuiLiquipackWorkbench(TileEntityLiquipackWorkbench tileEntity, EntityPlayer player) {
         super(new ContainerLiquipackWorkbench(tileEntity, player));
-        xSize = 176;
+        xSize = 203;
         ySize = 170;
     }
 
