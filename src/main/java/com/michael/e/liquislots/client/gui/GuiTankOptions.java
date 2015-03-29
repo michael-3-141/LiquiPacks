@@ -24,7 +24,7 @@ public class GuiTankOptions extends GuiContainer{
         this.toggleOptions = toggleOptions;
 
         xSize = 176;
-        ySize = 189;
+        ySize = 85;
     }
 
     @SuppressWarnings("unchecked")

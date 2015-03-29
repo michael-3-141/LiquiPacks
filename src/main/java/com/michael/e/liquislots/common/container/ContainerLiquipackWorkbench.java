@@ -5,12 +5,16 @@ import com.michael.e.liquislots.common.util.LiquipackStack;
 import com.michael.e.liquislots.common.util.LiquipackTank;
 import com.michael.e.liquislots.item.ItemTank;
 import com.michael.e.liquislots.item.ItemsRef;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 
 public class ContainerLiquipackWorkbench extends Container {
 
@@ -35,11 +39,14 @@ public class ContainerLiquipackWorkbench extends Container {
             }
         }
 
+        addSlotToContainer(new ArmorSlot(invPlayer, 38, 179, 24, 1));
+
         addSlotToContainer(new SafeSlot(tileEntity, 0, 79, 14));
 
         for(int i = 0; i < 4; i++){
             addSlotToContainer(new SafeSlot(liquipackInventory, i, 52 + i * 18, 60));
         }
+
     }
 
     @Override
@@ -160,10 +167,10 @@ public class ContainerLiquipackWorkbench extends Container {
             ItemStack result = stack.copy();
 
             if (i >= 36) {
-                if (!mergeItemStack(stack, 0, 36, false)) {
+                if (!mergeItemStack(stack, 0, 37, false)) {
                     return null;
                 }
-            }else if(!mergeItemStack(stack, 36, 41, false)) {
+            }else if(!mergeItemStack(stack, 37, 42, false)) {
                 return null;
             }
 
@@ -260,6 +267,41 @@ public class ContainerLiquipackWorkbench extends Container {
         @Override
         public boolean isItemValid(ItemStack stack) {
             return inventory.isItemValidForSlot(getSlotIndex(), stack);
+        }
+    }
+
+    public class ArmorSlot extends Slot {
+
+        private int armorType;
+
+        public ArmorSlot(IInventory inventory, int index, int x, int y, int armorType) {
+            super(inventory, index, x, y);
+            this.armorType = armorType;
+        }
+
+        /**
+         * Returns the maximum stack size for a given slot (usually the same as getInventoryStackLimit(), but 1
+         * in the case of armor slots)
+         */
+        public int getSlotStackLimit()
+        {
+            return 1;
+        }
+        /**
+         * Check if the stack is a valid item for this slot. Always true beside for the armor slots.
+         */
+        public boolean isItemValid(ItemStack p_75214_1_)
+        {
+            if (p_75214_1_ == null) return false;
+            return p_75214_1_.getItem().isValidArmor(p_75214_1_, armorType, null);
+        }
+        /**
+         * Returns the icon index on items.png that is used as background image of the slot.
+         */
+        @SideOnly(Side.CLIENT)
+        public IIcon getBackgroundIconIndex()
+        {
+            return ItemArmor.func_94602_b(armorType);
         }
     }
 }

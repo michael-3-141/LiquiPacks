@@ -2,12 +2,9 @@ package com.michael.e.liquislots.common.container;
 
 import com.michael.e.liquislots.common.upgrade.LiquidXPUpgrade;
 import com.michael.e.liquislots.common.util.LiquipackStack;
-import com.michael.e.liquislots.common.upgrade.LiquipackUpgrade;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
-import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 public class ContainerLiquidXPConfig extends Container {
@@ -26,21 +23,6 @@ public class ContainerLiquidXPConfig extends Container {
         }catch (ClassCastException e){
             player.closeScreen();
             return;
-        }
-
-        InventoryPlayer invPlayer = player.inventory;
-
-        for (int i = 0; i < 3; ++i)
-        {
-            for (int j = 0; j < 9; ++j)
-            {
-                this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, i * 18 + 107));
-            }
-        }
-
-        for (int i = 0; i < 9; ++i)
-        {
-            this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 165));
         }
     }
 

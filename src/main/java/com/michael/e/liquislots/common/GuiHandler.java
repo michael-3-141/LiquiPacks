@@ -16,9 +16,9 @@ public class GuiHandler implements IGuiHandler{
                 return new ContainerPlayerTanks(player);
             case 1:
                 if(world.getTileEntity(x, y, z) instanceof TileEntityLiquipackIO)
-                return new ContainerLiquipackIO(player, (TileEntityLiquipackIO) world.getTileEntity(x, y, z));
+                return new ContainerLiquipackIO((TileEntityLiquipackIO) world.getTileEntity(x, y, z));
             case 2:
-                return new ContainerLiquipackBucketOptions(player, player.getHeldItem());
+                return new ContainerLiquipackBucketOptions(player.getHeldItem());
             case 3:
                 if(world.getTileEntity(x, y, z) instanceof TileEntityLiquipackWorkbench)
                     return new ContainerLiquipackWorkbench((TileEntityLiquipackWorkbench) world.getTileEntity(x, y, z), player);

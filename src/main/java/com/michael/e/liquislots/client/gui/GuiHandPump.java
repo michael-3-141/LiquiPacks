@@ -12,7 +12,7 @@ public class GuiHandPump extends GuiTankOptions{
     private ItemStack stack;
 
     public GuiHandPump(EntityPlayer player, ItemStack stack) {
-        super(player, new ContainerLiquipackBucketOptions(player, stack),
+        super(player, new ContainerLiquipackBucketOptions(stack),
                 StatCollector.translateToLocal("liquipackbucket.mode.0"),
                 StatCollector.translateToLocal("liquipackbucket.mode.1"),
                 StatCollector.translateToLocal("liquipackbucket.mode.2"));

@@ -17,7 +17,7 @@ public class GuiLiquipackIO extends GuiTankOptions{
     private GuiTank tank;
 
     public GuiLiquipackIO(EntityPlayer player, TileEntityLiquipackIO te) {
-        super(player, new ContainerLiquipackIO(player, te), "Drain Liquipack", "Fill Liquipack");
+        super(player, new ContainerLiquipackIO(te), "Drain Liquipack", "Fill Liquipack");
         this.te = te;
         this.tank = new GuiTank(126, 21, 16, 58);
     }
