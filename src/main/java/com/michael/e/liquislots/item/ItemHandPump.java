@@ -67,6 +67,7 @@ public class ItemHandPump extends ItemLiquipacksBase {
         MovingObjectPosition movingobjectposition = this.getMovingObjectPositionFromPlayer(world, player, true);
         FluidStack result = null;
         ItemStack liquipack = player.inventory.armorItemInSlot(2);
+        if(liquipack == null || liquipack.getItem() != ItemsRef.liquipack)return stack;
         LiquipackStack tanks = new LiquipackStack(liquipack);
         LiquipackTank tank = tanks.getTank(getSelectedTank(stack));
         if(tank == null){
