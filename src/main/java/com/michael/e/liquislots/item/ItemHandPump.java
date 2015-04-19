@@ -4,6 +4,7 @@ import com.michael.e.liquislots.Liquislots;
 import com.michael.e.liquislots.Reference;
 import com.michael.e.liquislots.common.util.LiquipackStack;
 import com.michael.e.liquislots.common.util.LiquipackTank;
+import com.michael.e.liquislots.config.ConfigHandler;
 import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -44,6 +45,7 @@ public class ItemHandPump extends ItemLiquipacksBase {
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean debug) {
+        if(debug && ConfigHandler.debugMode)list.add(stack.getTagCompound() != null ? stack.getTagCompound().toString() : "Null");
         if(!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
             list.add(EnumChatFormatting.AQUA.toString() + EnumChatFormatting.ITALIC + "<Press SHIFT for info>");
         }
@@ -58,7 +60,7 @@ public class ItemHandPump extends ItemLiquipacksBase {
 
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
         //Change modes if player is shifting
-        if(player.isSneaking()){
+        if(!world.isRemote && player.isSneaking()){
             FMLNetworkHandler.openGui(player, Liquislots.INSTANCE, 2, player.worldObj, 0, 0, 0);
             return stack;
         }

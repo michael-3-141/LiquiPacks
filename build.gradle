@@ -78,5 +78,6 @@ sourceSets {
 curse {
     projectId = '224371'
     apiKey = project.curseForgeApiKey
+    changelog ='- Fixed crash when pump is used with no liquipack on.'
     releaseType = 'release'
 }
