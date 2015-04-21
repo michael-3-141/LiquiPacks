@@ -43,7 +43,7 @@ public class ContainerLiquipackIO extends Container {
                 player.sendProgressBarUpdate(this, 1, te.isDrainingMode() ? 1 : 0);
             }
             if(!te.buffer.equals(prevBuffer) && te.buffer.getFluid() != null){
-                player.sendProgressBarUpdate(this, 2, te.buffer.getFluid().fluidID);
+                player.sendProgressBarUpdate(this, 2, te.buffer.getFluid().getFluidID());
                 player.sendProgressBarUpdate(this, 3, te.buffer.getFluid().amount);
             }
             prevTank = te.getTank();

@@ -11,6 +11,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.List;
@@ -69,7 +70,7 @@ public class ContainerPlayerTanks extends Container implements OnInventoryChange
             for(LiquipackTank prevTank : prevTanks){
                 LiquipackTank currentTank = tanks.getTank(i);
                 if(prevTank != null && !prevTank.equals(currentTank) && currentTank.getFluid() != null){
-                    player.sendProgressBarUpdate(this, (i*2), currentTank.getFluid().fluidID);
+                    player.sendProgressBarUpdate(this, (i*2), currentTank.getFluid().getFluidID());
                     player.sendProgressBarUpdate(this, (i*2)+1, currentTank.getFluid().amount);
                 }
                 prevTanks[i] = currentTank.copy();
@@ -88,7 +89,7 @@ public class ContainerPlayerTanks extends Container implements OnInventoryChange
         else if(id % 2 == 1){
             int tankId = id/2;
             LiquipackTank tank = tanks.getTank(tankId);
-            tank.setFluid(new FluidStack(tempFluidId, data));
+            tank.setFluid(new FluidStack(FluidRegistry.getFluid(tempFluidId), data));
             tanks.setTank(tank, tankId);
         }
     }

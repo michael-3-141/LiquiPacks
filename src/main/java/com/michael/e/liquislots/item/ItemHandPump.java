@@ -60,8 +60,10 @@ public class ItemHandPump extends ItemLiquipacksBase {
 
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
         //Change modes if player is shifting
-        if(!world.isRemote && player.isSneaking()){
-            FMLNetworkHandler.openGui(player, Liquislots.INSTANCE, 2, player.worldObj, 0, 0, 0);
+        if(player.isSneaking()){
+            if(!world.isRemote) {
+                FMLNetworkHandler.openGui(player, Liquislots.INSTANCE, 2, player.worldObj, 0, 0, 0);
+            }
             return stack;
         }
 

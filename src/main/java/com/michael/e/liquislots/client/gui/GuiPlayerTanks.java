@@ -2,14 +2,11 @@ package com.michael.e.liquislots.client.gui;
 
 import com.michael.e.liquislots.Liquislots;
 import com.michael.e.liquislots.Reference;
-import com.michael.e.liquislots.common.upgrade.LiquipackUpgradeType;
-import com.michael.e.liquislots.common.util.LiquipackStack;
 import com.michael.e.liquislots.common.container.ContainerPlayerTanks;
-import com.michael.e.liquislots.common.upgrade.LiquipackUpgrade;
+import com.michael.e.liquislots.common.util.LiquipackStack;
 import com.michael.e.liquislots.network.message.SelectedTankChangeMessageHandler;
 import com.michael.e.liquislots.network.message.UpgradeButtonClickMessageHandler;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;

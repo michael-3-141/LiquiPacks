@@ -67,7 +67,7 @@ public class BlockLiquipackIO extends BlockContainer {
                 if(te.buffer.getFluid() != null && te.buffer.getFluid().getFluid() != null) {
                     player.addChatComponentMessage(new ChatComponentText(te.buffer.getFluid().getFluid().getName() + " " + te.buffer.getFluid().amount));
                 }else if(te.buffer.getFluid() != null){
-                    player.addChatComponentMessage(new ChatComponentText(te.buffer.getFluid().fluidID + " " + te.buffer.getFluid().amount));
+                    player.addChatComponentMessage(new ChatComponentText(te.buffer.getFluid().getFluidID() + " " + te.buffer.getFluid().amount));
                 }
                 player.addChatComponentMessage(new ChatComponentText(te.isDrainingMode() + " " + te.getTank()));
             }
