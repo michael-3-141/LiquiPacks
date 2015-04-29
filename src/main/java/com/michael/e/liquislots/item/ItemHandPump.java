@@ -1,13 +1,13 @@
 package com.michael.e.liquislots.item;
 
-import com.michael.e.liquislots.Liquislots;
 import com.michael.e.liquislots.Reference;
+import com.michael.e.liquislots.client.gui.GuiHandPump;
 import com.michael.e.liquislots.common.util.LiquipackStack;
 import com.michael.e.liquislots.common.util.LiquipackTank;
 import com.michael.e.liquislots.config.ConfigHandler;
-import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -61,8 +61,8 @@ public class ItemHandPump extends ItemLiquipacksBase {
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
         //Change modes if player is shifting
         if(player.isSneaking()){
-            if(!world.isRemote) {
-                FMLNetworkHandler.openGui(player, Liquislots.INSTANCE, 2, player.worldObj, 0, 0, 0);
+            if(world.isRemote) {
+                Minecraft.getMinecraft().displayGuiScreen(new GuiHandPump(player, stack));
             }
             return stack;
         }

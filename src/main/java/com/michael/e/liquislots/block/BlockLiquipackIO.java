@@ -2,12 +2,13 @@ package com.michael.e.liquislots.block;
 
 import com.michael.e.liquislots.Liquislots;
 import com.michael.e.liquislots.Reference;
+import com.michael.e.liquislots.client.gui.GuiLiquipackIO;
 import com.michael.e.liquislots.config.ConfigHandler;
-import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -58,19 +59,19 @@ public class BlockLiquipackIO extends BlockContainer {
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-        if(!world.isRemote){
-            FMLNetworkHandler.openGui(player, Liquislots.INSTANCE, 1, world, x, y, z);
-        }else{
-            if(player.isSneaking() && ConfigHandler.debugMode)
-            {
-                TileEntityLiquipackIO te = (TileEntityLiquipackIO) world.getTileEntity(x, y, z);
-                if(te.buffer.getFluid() != null && te.buffer.getFluid().getFluid() != null) {
-                    player.addChatComponentMessage(new ChatComponentText(te.buffer.getFluid().getFluid().getName() + " " + te.buffer.getFluid().amount));
-                }else if(te.buffer.getFluid() != null){
-                    player.addChatComponentMessage(new ChatComponentText(te.buffer.getFluid().getFluidID() + " " + te.buffer.getFluid().amount));
-                }
-                player.addChatComponentMessage(new ChatComponentText(te.isDrainingMode() + " " + te.getTank()));
+        if(world.isRemote){
+            Minecraft.getMinecraft().displayGuiScreen(new GuiLiquipackIO(player, (TileEntityLiquipackIO) world.getTileEntity(x, y, z)));
+        }
+
+        if(!world.isRemote && player.isSneaking() && ConfigHandler.debugMode)
+        {
+            TileEntityLiquipackIO te = (TileEntityLiquipackIO) world.getTileEntity(x, y, z);
+            if(te.buffer.getFluid() != null && te.buffer.getFluid().getFluid() != null) {
+                player.addChatComponentMessage(new ChatComponentText(te.buffer.getFluid().getFluid().getName() + " " + te.buffer.getFluid().amount));
+            }else if(te.buffer.getFluid() != null){
+                player.addChatComponentMessage(new ChatComponentText(te.buffer.getFluid().getFluidID() + " " + te.buffer.getFluid().amount));
             }
+            player.addChatComponentMessage(new ChatComponentText(te.isDrainingMode() + " " + te.getTank()));
         }
         return true;
     }

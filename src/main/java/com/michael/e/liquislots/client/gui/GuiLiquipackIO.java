@@ -2,8 +2,8 @@ package com.michael.e.liquislots.client.gui;
 
 import com.michael.e.liquislots.Liquislots;
 import com.michael.e.liquislots.block.TileEntityLiquipackIO;
-import com.michael.e.liquislots.common.container.ContainerLiquipackIO;
 import com.michael.e.liquislots.network.message.ChangeLiquipackIOOptionsMessageHandler;
+import com.michael.e.liquislots.network.message.LiquipackIOSyncMessageHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fluids.FluidStack;
@@ -17,14 +17,20 @@ public class GuiLiquipackIO extends GuiTankOptions{
     private GuiTank tank;
 
     public GuiLiquipackIO(EntityPlayer player, TileEntityLiquipackIO te) {
-        super(player, new ContainerLiquipackIO(te), "Drain Liquipack", "Fill Liquipack");
+        super(player, "Drain Liquipack", "Fill Liquipack");
         this.te = te;
         this.tank = new GuiTank(126, 21, 16, 58);
     }
 
     @Override
+    public void initGui() {
+        super.initGui();
+        Liquislots.INSTANCE.netHandler.sendToServer(new LiquipackIOSyncMessageHandler.LiquipackIOSyncMessage(te.xCoord, te.yCoord, te.zCoord));
+    }
+
+    @Override
     public void actionPerformed() {
-        Liquislots.INSTANCE.netHandler.sendToServer(new ChangeLiquipackIOOptionsMessageHandler.ChangeLiquipackIOOptionsMessage(te.getTank(), te.isDrainingMode()));
+        Liquislots.INSTANCE.netHandler.sendToServer(new ChangeLiquipackIOOptionsMessageHandler.ChangeLiquipackIOOptionsMessage(te.getTank(), te.isDrainingMode(), te.xCoord, te.yCoord, te.zCoord));
     }
 
     @Override

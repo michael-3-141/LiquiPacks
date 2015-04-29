@@ -1,9 +1,9 @@
 package com.michael.e.liquislots.common.upgrade;
 
-import com.michael.e.liquislots.Liquislots;
+import com.michael.e.liquislots.client.gui.GuiLiquidXpUpgrade;
 import com.michael.e.liquislots.common.util.LiquipackStack;
 import com.michael.e.liquislots.common.util.LiquipackTank;
-import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -16,8 +16,8 @@ public enum LiquipackUpgradeType{
     LIQUID_XP(new UpgradeButton(0, 0, 16, 0)){
         @Override
         public void onClicked(EntityPlayer player, World world, int upgradeIndex) {
-            if(!world.isRemote) {
-                FMLNetworkHandler.openGui(player, Liquislots.INSTANCE, 4, world, upgradeIndex, 0, 0);
+            if(world.isRemote) {
+                Minecraft.getMinecraft().displayGuiScreen(new GuiLiquidXpUpgrade(player, upgradeIndex, player.inventory.armorItemInSlot(2)));
             }
         }
 

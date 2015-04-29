@@ -1,7 +1,6 @@
 package com.michael.e.liquislots.client.gui;
 
 import com.michael.e.liquislots.Liquislots;
-import com.michael.e.liquislots.common.container.ContainerLiquipackBucketOptions;
 import com.michael.e.liquislots.item.ItemHandPump;
 import com.michael.e.liquislots.network.message.ChangeTankOptionsMessageHandler;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,7 +11,7 @@ public class GuiHandPump extends GuiTankOptions{
     private ItemStack stack;
 
     public GuiHandPump(EntityPlayer player, ItemStack stack) {
-        super(player, new ContainerLiquipackBucketOptions(stack),
+        super(player,
                 StatCollector.translateToLocal("liquipackbucket.mode.0"),
                 StatCollector.translateToLocal("liquipackbucket.mode.1"),
                 StatCollector.translateToLocal("liquipackbucket.mode.2"));

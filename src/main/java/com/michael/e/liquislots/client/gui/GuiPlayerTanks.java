@@ -5,7 +5,6 @@ import com.michael.e.liquislots.Reference;
 import com.michael.e.liquislots.common.container.ContainerPlayerTanks;
 import com.michael.e.liquislots.common.util.LiquipackStack;
 import com.michael.e.liquislots.network.message.SelectedTankChangeMessageHandler;
-import com.michael.e.liquislots.network.message.UpgradeButtonClickMessageHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
@@ -110,7 +109,7 @@ public class GuiPlayerTanks extends GuiContainer{
         i = 0;
         for(GuiUpgradeButton button : guiUpgradeButtons){
             if(button.isMouseInBounds(x-guiLeft,y-guiTop)){
-                Liquislots.INSTANCE.netHandler.sendToServer(new UpgradeButtonClickMessageHandler.UpgradeButtonClickMessage(button.getUpgradeIndex()));
+                liquipackStack.getUpgrade(button.getUpgradeIndex()).getType().onClicked(player, player.worldObj, button.getUpgradeIndex());
             }
             i++;
         }

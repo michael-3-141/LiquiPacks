@@ -1,7 +1,6 @@
 package com.michael.e.liquislots.client.gui;
 
 import com.michael.e.liquislots.Liquislots;
-import com.michael.e.liquislots.common.container.ContainerLiquidXPConfig;
 import com.michael.e.liquislots.common.upgrade.LiquidXPUpgrade;
 import com.michael.e.liquislots.common.util.LiquipackStack;
 import com.michael.e.liquislots.network.message.ChangeLiquidXPOptionsMessageHandler;
@@ -16,7 +15,7 @@ public class GuiLiquidXpUpgrade extends GuiTankOptions{
     private int upgradeIndex;
 
     public GuiLiquidXpUpgrade(EntityPlayer player, int upgradeIndex, ItemStack stack) {
-        super(player, new ContainerLiquidXPConfig(player, upgradeIndex),
+        super(player,
                 StatCollector.translateToLocal("liquidxp.mode.0"),
                 StatCollector.translateToLocal("liquidxp.mode.1"),
                 StatCollector.translateToLocal("liquidxp.mode.2"));

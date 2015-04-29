@@ -3,24 +3,30 @@ package com.michael.e.liquislots.client.gui;
 import com.michael.e.liquislots.Reference;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 import java.util.List;
 
-public class GuiTankOptions extends GuiContainer{
+public class GuiTankOptions extends GuiScreen{
 
     public static ResourceLocation texture = new ResourceLocation(Reference.MOD_ID, "textures/gui/liquipackIO.png");
     private GuiArrowButton btnBack;
     private GuiArrowButton btnNext;
     private GuiToggleButton btnToggle;
 
+    protected int xSize;
+    protected int ySize;
+    protected int guiLeft;
+    protected int guiTop;
+
     protected String[] toggleOptions;
 
-    public GuiTankOptions(EntityPlayer player, Container container, String... toggleOptions){
-        super(container);
+    public GuiTankOptions(EntityPlayer player, String... toggleOptions){
         this.toggleOptions = toggleOptions;
 
         xSize = 176;
@@ -31,6 +37,10 @@ public class GuiTankOptions extends GuiContainer{
     @Override
     public void initGui() {
         super.initGui();
+
+        guiLeft = (width - xSize) / 2;
+        guiTop = (height - ySize) / 2;
+
         btnBack = new GuiArrowButton(1, guiLeft + 10, guiTop + 20, false);
         btnNext = new GuiArrowButton(2, guiLeft + 60, guiTop + 20, true);
         btnToggle = new GuiToggleButton(3, guiLeft + 10, guiTop + 50, 20, toggleOptions);
@@ -43,6 +53,28 @@ public class GuiTankOptions extends GuiContainer{
     }
 
     @Override
+    public void drawScreen(int x, int y, float f) {
+        this.drawGradientRect(0, 0, this.width, this.height, -1072689136, -804253680);
+
+        this.drawGuiContainerBackgroundLayer(f, x, y);
+        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+        RenderHelper.disableStandardItemLighting();
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_DEPTH_TEST);
+        super.drawScreen(x, y, f);
+        RenderHelper.enableGUIStandardItemLighting();
+        GL11.glPushMatrix();
+        GL11.glTranslatef((float)guiLeft, (float)guiTop, 0.0F);
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+
+        drawGuiContainerForegroundLayer(x, y);
+
+        GL11.glPopMatrix();
+    }
+
+    protected void drawGuiContainerForegroundLayer(int x, int y) {}
+
     protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
         Minecraft.getMinecraft().renderEngine.bindTexture(texture);
         drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
@@ -54,8 +86,8 @@ public class GuiTankOptions extends GuiContainer{
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(int x, int y) {
-        super.drawGuiContainerForegroundLayer(x, y);
+    public boolean doesGuiPauseGame() {
+        return false;
     }
 
     @Override
