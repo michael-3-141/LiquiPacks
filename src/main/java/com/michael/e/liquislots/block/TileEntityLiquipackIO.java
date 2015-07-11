@@ -45,7 +45,7 @@ public class TileEntityLiquipackIO extends TileEntity implements IFluidHandler{
 
     @Override
     public boolean canFill(ForgeDirection from, Fluid fluid) {
-        return buffer.getFluid().getFluid() == fluid;
+        return buffer.getFluidType() == fluid;
     }
 
     @Override
@@ -90,20 +90,20 @@ public class TileEntityLiquipackIO extends TileEntity implements IFluidHandler{
             if(player.inventory.armorItemInSlot(2) != null && player.inventory.armorItemInSlot(2).getItem() instanceof ItemLiquipack && tile instanceof TileEntityLiquipackIO){
                 ItemStack stack = player.inventory.armorItemInSlot(2);
                 LiquipackStack liquipack = new LiquipackStack(stack);
-                LiquipackTank fluidTank = liquipack.getTank(this.tank);
-                if(fluidTank == null)return;
+                LiquipackTank liquipackTank = liquipack.getTank(this.tank);
+                if(liquipackTank == null)return;
                 if(isDrainingMode) {
-                    if (fluidTank.getFluid() != null) {
-                        int left = fluidTank.getFluid().amount - ((TileEntityLiquipackIO) tile).buffer.fill(fluidTank.getFluid(), true);
-                        fluidTank.setFluid(left == 0 ? null : new FluidStack(fluidTank.getFluid().getFluid(), left));
-                        liquipack.setTank(fluidTank, this.tank);
+                    if (liquipackTank.getFluid() != null) {
+                        int left = liquipackTank.getFluid().amount - ((TileEntityLiquipackIO) tile).buffer.fill(liquipackTank.getFluid(), true);
+                        liquipackTank.setFluid(left == 0 ? null : new FluidStack(liquipackTank.getFluidType(), left));
+                        liquipack.setTank(liquipackTank, this.tank);
                     }
                 }
                 else{
-                    if(fluidTank.fill(buffer.getFluid(), false) > 0){
-                        int left = buffer.getFluid().amount - fluidTank.fill(buffer.getFluid(), true);
-                        buffer.setFluid(new FluidStack(buffer.getFluidAmount(), left));
-                        liquipack.setTank(fluidTank, this.tank);
+                    if(liquipackTank.fill(buffer.getFluid(), false) > 0){
+                        int left = buffer.getFluid().amount - liquipackTank.fill(buffer.getFluid(), true);
+                        buffer.setFluid(new FluidStack(buffer.getFluid(), left));
+                        liquipack.setTank(liquipackTank, this.tank);
                     }
                 }
             }

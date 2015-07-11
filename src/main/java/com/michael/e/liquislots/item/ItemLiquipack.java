@@ -81,7 +81,7 @@ public class ItemLiquipack extends ItemArmor implements ISpecialArmor{
             for (LiquipackTank tank : tanks) {
                 i++;
                 if (tank != null) {
-                    String containsText = tank.getFluid() == null ? "Nothing" : tank.getFluidAmount() + "x" + tank.getFluid().getFluid().getLocalizedName(tank.getFluid());
+                    String containsText = tank.getFluid() == null ? "Nothing" : tank.getFluidAmount() + "x" + tank.getFluidType().getLocalizedName(tank.getFluid());
                     info.add(EnumChatFormatting.DARK_AQUA + "Tank " + (i + 1) + " | Capacity: " + tank.getCapacity() + "mb | Contains: " + containsText);
                 }
             }

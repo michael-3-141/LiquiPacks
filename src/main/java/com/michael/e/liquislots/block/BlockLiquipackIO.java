@@ -66,8 +66,8 @@ public class BlockLiquipackIO extends BlockContainer {
         if(!world.isRemote && player.isSneaking() && ConfigHandler.debugMode)
         {
             TileEntityLiquipackIO te = (TileEntityLiquipackIO) world.getTileEntity(x, y, z);
-            if(te.buffer.getFluid() != null && te.buffer.getFluid().getFluid() != null) {
-                player.addChatComponentMessage(new ChatComponentText(te.buffer.getFluid().getFluid().getName() + " " + te.buffer.getFluid().amount));
+            if(te.buffer.getFluid() != null && te.buffer.getFluidType() != null) {
+                player.addChatComponentMessage(new ChatComponentText(te.buffer.getFluidType().getName() + " " + te.buffer.getFluid().amount));
             }else if(te.buffer.getFluid() != null){
                 player.addChatComponentMessage(new ChatComponentText(te.buffer.getFluid().getFluidID() + " " + te.buffer.getFluid().amount));
             }

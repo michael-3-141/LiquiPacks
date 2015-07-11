@@ -80,7 +80,7 @@ public class LiquipackTank extends FluidTank {
     }
 
     public LiquipackTank copy() {
-        return this.fluid == null || this.getFluid().getFluid() == null ? new LiquipackTank(capacity) : new LiquipackTank(fluid.getFluid(), fluid.amount, capacity);
+        return this.fluid == null || this.getFluidType() == null ? new LiquipackTank(capacity) : new LiquipackTank(fluid.getFluid(), fluid.amount, capacity);
     }
 
     public void setFluidAmount(int amount){
@@ -102,5 +102,9 @@ public class LiquipackTank extends FluidTank {
         else {
             this.fluid = fluid;
         }
+    }
+
+    public Fluid getFluidType(){
+        return fluid == null || fluid.getFluid() == null ? null : fluid.getFluid();
     }
 }

@@ -88,7 +88,7 @@ public class ItemTank extends ItemLiquipacksBase {
         if(tank != null) {
             info.add(EnumChatFormatting.BLUE + "Tank capacity: " + getTankForStack(stack).getCapacity() + "mb");
             if (tank.getFluid() != null){
-                info.add(EnumChatFormatting.DARK_AQUA + "Contains: " + tank.getFluidAmount() + "x" + tank.getFluid().getFluid().getLocalizedName(tank.getFluid()));
+                info.add(EnumChatFormatting.DARK_AQUA + "Contains: " + tank.getFluidAmount() + "x" + tank.getFluidType().getLocalizedName(tank.getFluid()));
             }
         }
     }

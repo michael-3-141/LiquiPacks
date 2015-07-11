@@ -1,15 +1,13 @@
 package com.michael.e.liquislots.network.message;
 
-import com.michael.e.liquislots.common.container.ContainerLiquipackBucketOptions;
 import com.michael.e.liquislots.common.upgrade.LiquidXPUpgrade;
-import com.michael.e.liquislots.common.util.LiquipackStack;
 import com.michael.e.liquislots.common.upgrade.LiquipackUpgrade;
+import com.michael.e.liquislots.common.util.LiquipackStack;
 import com.michael.e.liquislots.item.ItemLiquipack;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 
 public class ChangeLiquidXPOptionsMessageHandler implements IMessageHandler<ChangeLiquidXPOptionsMessageHandler.ChangeLiquidXPOptionsMessage, IMessage> {
