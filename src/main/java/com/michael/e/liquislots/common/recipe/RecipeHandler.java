@@ -11,44 +11,44 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 public class RecipeHandler {
 
     public static void init(){
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemsRef.tank, 1, 0),
-                "ggg",
-                "gig",
-                "ggg",
 
-                'i', "blockIron",
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemsRef.tank, 1, 0),
+                "ii",
+                "gg",
+                "ii",
+
+                'i', "ingotIron",
                 'g', "blockGlass"
         ));
 
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemsRef.tank, 1, 1),
-                "gig",
+                "glg",
                 "gtg",
-                "gig",
+                "glg",
 
-                'i', "blockIron",
-                'g', "blockGlass",
+                'g', "ingotGold",
+                'l', "blockGlass",
                 't', new ItemStack(ItemsRef.tank, 1, 0)
         ));
 
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemsRef.tank, 1, 2),
-                "gig",
-                "dtd",
-                "gig",
+                "dgd",
+                "gtg",
+                "dgd",
 
-                'i', "blockIron",
                 'g', "blockGlass",
                 'd', "gemDiamond",
                 't', new ItemStack(ItemsRef.tank, 1, 1)
         ));
 
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemsRef.liquipack, 1 , 0),
+                "glg",
+                "gig",
                 "ili",
-                "ibi",
-                "lll",
 
                 'i', "ingotIron",
                 'l', new ItemStack(Items.leather),
-                'b', "blockIron"
+                'b', "ingotIron"
         ));
 
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlocksRef.liquipackIO),
@@ -80,12 +80,12 @@ public class RecipeHandler {
         ));
 
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemsRef.liquipackArmorDiamond),
-                "dgd",
-                "ggg",
-                "gdg",
+                "d d",
+                "dad",
+                "ddd",
 
                 'd', "gemDiamond",
-                'g', "blockGlass"
+                'a', new ItemStack(ItemsRef.liquipackArmorIron)
         ));
 
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlocksRef.liquipackWorkbench),
