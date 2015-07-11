@@ -23,7 +23,7 @@ group= "com.michael.e.liquislots" // http://maven.apache.org/guides/mini/guide-n
 archivesBaseName = "Liquipacks"
 
 minecraft {
-    version = "10.13.3.1387-1.7.10"
+    version = "10.13.3.1420-1.7.10"
     runDir = "eclipse/assets"
 
     replace "@MOD-VERSION@", project.version
