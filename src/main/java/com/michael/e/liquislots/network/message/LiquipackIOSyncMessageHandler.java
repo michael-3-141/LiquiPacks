@@ -14,7 +14,7 @@ public class LiquipackIOSyncMessageHandler implements IMessageHandler<LiquipackI
         TileEntity te = ctx.getServerHandler().playerEntity.worldObj.getTileEntity(message.x, message.y, message.z);
         if(te instanceof TileEntityLiquipackIO) {
             TileEntityLiquipackIO teLio = (TileEntityLiquipackIO) te;
-            return new ChangeLiquipackIOOptionsMessageHandler.ChangeLiquipackIOOptionsMessage(teLio.getTank(), teLio.isDrainingMode(), teLio.xCoord, teLio.yCoord, teLio.zCoord);
+            return new ChangeLiquipackIOOptionsMessageHandler.ChangeLiquipackIOOptionsMessage(teLio);
         }
         return null;
     }

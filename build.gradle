@@ -40,13 +40,12 @@ dependencies {
     //compile "some.group:artifact:version"
       
     // real examples
-    //compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
+    //compile 'com.mod-buildcraft:buildcraft:7.0.16:dev'  // adds buildcraft to the dev env
     //compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
 
     // for more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
-    //runtime 'com.mod-buildcraft:buildcraft:7.0.1:dev'
 }
 
 processResources

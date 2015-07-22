@@ -1,8 +1,11 @@
 package com.michael.e.liquislots.block;
 
+import com.michael.e.liquislots.Liquislots;
 import com.michael.e.liquislots.common.util.LiquipackStack;
 import com.michael.e.liquislots.common.util.LiquipackTank;
 import com.michael.e.liquislots.item.ItemLiquipack;
+import com.michael.e.liquislots.network.message.ChangeLiquipackIOOptionsMessageHandler;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -30,16 +33,25 @@ public class TileEntityLiquipackIO extends TileEntity implements IFluidHandler{
 
     @Override
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+        if(doFill){
+            sendUpdate();
+        }
         return buffer.fill(resource, doFill);
     }
 
     @Override
     public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+        if(doDrain){
+            sendUpdate();
+        }
         return buffer.drain(resource.amount, doDrain);
     }
 
     @Override
     public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+        if(doDrain){
+            sendUpdate();
+        }
         return buffer.drain(maxDrain, doDrain);
     }
 
@@ -50,7 +62,7 @@ public class TileEntityLiquipackIO extends TileEntity implements IFluidHandler{
 
     @Override
     public boolean canDrain(ForgeDirection from, Fluid fluid) {
-        return true;
+        return buffer.getFluid() != null;
     }
 
     @Override
@@ -124,5 +136,9 @@ public class TileEntityLiquipackIO extends TileEntity implements IFluidHandler{
 
     public void setDrainingMode(boolean isDrainingMode) {
         this.isDrainingMode = isDrainingMode;
+    }
+
+    private void sendUpdate(){
+        Liquislots.INSTANCE.netHandler.sendToAllAround(new ChangeLiquipackIOOptionsMessageHandler.ChangeLiquipackIOOptionsMessage(this), new NetworkRegistry.TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 10));
     }
 }

@@ -10,6 +10,8 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 public class ChangeLiquipackIOOptionsMessageHandler implements IMessageHandler<ChangeLiquipackIOOptionsMessageHandler.ChangeLiquipackIOOptionsMessage, IMessage> {
 
@@ -21,6 +23,7 @@ public class ChangeLiquipackIOOptionsMessageHandler implements IMessageHandler<C
             TileEntityLiquipackIO teLio = (TileEntityLiquipackIO) te;
             teLio.setTank(message.tank);
             teLio.setDrainingMode(message.isDrainMode);
+            teLio.buffer.setFluid(message.fluidId != -1 ? new FluidStack(FluidRegistry.getFluid(message.fluidId), message.fluidAmount) : null);
 
             if(ctx.side.isServer()){
                 Liquislots.INSTANCE.netHandler.sendToAllAround(message.copy(), new NetworkRegistry.TargetPoint(player.dimension, message.x, message.y, message.z, 10));
@@ -35,16 +38,24 @@ public class ChangeLiquipackIOOptionsMessageHandler implements IMessageHandler<C
 
         }
 
-        public ChangeLiquipackIOOptionsMessage(int tank, boolean isDrainMode, int x, int y, int z) {
+        public ChangeLiquipackIOOptionsMessage(int tank, boolean isDrainMode, int fluidId, int fluidAmount, int x, int y, int z) {
             this.tank = tank;
             this.isDrainMode = isDrainMode;
+            this.fluidId = fluidId;
+            this.fluidAmount = fluidAmount;
             this.x = x;
             this.y = y;
             this.z = z;
         }
 
+        public ChangeLiquipackIOOptionsMessage(TileEntityLiquipackIO teLio){
+            this(teLio.getTank(), teLio.isDrainingMode(), teLio.buffer.getFluidType() == null ? -1 : teLio.buffer.getFluidType().getID(), teLio.buffer.getFluidAmount(), teLio.xCoord, teLio.yCoord, teLio.zCoord);
+        }
+
         public int tank;
         public boolean isDrainMode;
+        public int fluidId;
+        public int fluidAmount;
         public int x;
         public int y;
         public int z;
@@ -53,6 +64,8 @@ public class ChangeLiquipackIOOptionsMessageHandler implements IMessageHandler<C
         public void fromBytes(ByteBuf buf) {
             tank = buf.readInt();
             isDrainMode = buf.readBoolean();
+            fluidId = buf.readInt();
+            fluidAmount = buf.readInt();
             x = buf.readInt();
             y = buf.readInt();
             z = buf.readInt();
@@ -62,13 +75,15 @@ public class ChangeLiquipackIOOptionsMessageHandler implements IMessageHandler<C
         public void toBytes(ByteBuf buf) {
             buf.writeInt(tank);
             buf.writeBoolean(isDrainMode);
+            buf.writeInt(fluidId);
+            buf.writeInt(fluidAmount);
             buf.writeInt(x);
             buf.writeInt(y);
             buf.writeInt(z);
         }
 
         public ChangeLiquipackIOOptionsMessage copy(){
-            return new ChangeLiquipackIOOptionsMessage(tank, isDrainMode, x, y, z);
+            return new ChangeLiquipackIOOptionsMessage(tank, isDrainMode, fluidId, fluidAmount, x, y, z);
         }
     }
 }

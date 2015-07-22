@@ -30,7 +30,7 @@ public class GuiLiquipackIO extends GuiTankOptions{
 
     @Override
     public void actionPerformed() {
-        Liquislots.INSTANCE.netHandler.sendToServer(new ChangeLiquipackIOOptionsMessageHandler.ChangeLiquipackIOOptionsMessage(te.getTank(), te.isDrainingMode(), te.xCoord, te.yCoord, te.zCoord));
+        Liquislots.INSTANCE.netHandler.sendToServer(new ChangeLiquipackIOOptionsMessageHandler.ChangeLiquipackIOOptionsMessage(te));
     }
 
     @Override
