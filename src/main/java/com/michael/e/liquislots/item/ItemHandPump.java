@@ -12,15 +12,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidBlock;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.*;
 import org.lwjgl.input.Keyboard;
 
 import java.util.List;
@@ -30,6 +29,7 @@ public class ItemHandPump extends ItemLiquipacksBase {
     public static final int MODE_PICK_UP = 1;
     public static final int MODE_PLACE = 2;
     public static final int MODE_AUTOMATIC = 0;
+    private static final int[] sideHitToForgeDirection = {0,1,5,4,2,3};
 
     public ItemHandPump() {
         super();
@@ -45,38 +45,58 @@ public class ItemHandPump extends ItemLiquipacksBase {
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean debug) {
-        if(debug && ConfigHandler.debugMode)list.add(stack.getTagCompound() != null ? stack.getTagCompound().toString() : "Null");
-        if(!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
+        if (debug && ConfigHandler.debugMode)
+            list.add(stack.getTagCompound() != null ? stack.getTagCompound().toString() : "Null");
+        if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
             list.add(EnumChatFormatting.AQUA.toString() + EnumChatFormatting.ITALIC + "<Press SHIFT for info>");
-        }
-        else {
+        } else {
             list.add(EnumChatFormatting.BLUE + "Mode: " + StatCollector.translateToLocal("liquipackbucket.mode." + (getMode(stack))));
-            list.add(EnumChatFormatting.DARK_GREEN + "Tank: " + (getSelectedTank(stack)+1));
+            list.add(EnumChatFormatting.DARK_GREEN + "Tank: " + (getSelectedTank(stack) + 1));
             list.add(EnumChatFormatting.ITALIC + "Shift right click with the");
             list.add(EnumChatFormatting.ITALIC + "item in your hand to switch modes/tanks");
         }
-
     }
 
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-        //Change modes if player is shifting
-        if(player.isSneaking()){
-            if(world.isRemote) {
-                Minecraft.getMinecraft().displayGuiScreen(new GuiHandPump(player, stack));
-            }
-            return stack;
-        }
 
         //Get right click position
         MovingObjectPosition movingobjectposition = this.getMovingObjectPositionFromPlayer(world, player, true);
         FluidStack result = null;
         ItemStack liquipack = player.inventory.armorItemInSlot(2);
-        if(liquipack == null || liquipack.getItem() != ItemsRef.liquipack)return stack;
+        if(liquipack == null || liquipack.getItem() != ItemsRef.liquipack) return stack;
         LiquipackStack tanks = new LiquipackStack(liquipack);
         LiquipackTank tank = tanks.getTank(getSelectedTank(stack));
         if(tank == null){
             if(!world.isRemote){
                 player.addChatComponentMessage(new ChatComponentText("You don't have any tank in slot " + (getSelectedTank(stack) + 1) + " of your liquipack."));
+            }
+            return stack;
+        }
+
+        //Special Behavior if Sneaking
+        if(player.isSneaking()){
+            //Try to drain into tank
+            if(movingobjectposition != null && movingobjectposition.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK){
+                TileEntity te = world.getTileEntity(movingobjectposition.blockX, movingobjectposition.blockY, movingobjectposition.blockZ);
+                if(te instanceof IFluidHandler){
+                    IFluidHandler handler = (IFluidHandler) te;
+                    if(handler.canFill(ForgeDirection.getOrientation(sideHitToForgeDirection[movingobjectposition.sideHit]), tank.getFluidType())){
+                        int filled = handler.fill(ForgeDirection.getOrientation(sideHitToForgeDirection[movingobjectposition.sideHit]), tank.getFluid(), true);
+                        if(tank.getFluidAmount() == filled){
+                            tank.setFluid(null);
+                        }
+                        else{
+                            tank.setFluidAmount(tank.getFluidAmount() - filled);
+                        }
+                    }
+                    tanks.setTank(tank, getSelectedTank(stack));
+                    return stack;
+                }
+            }
+
+            //Open Config GUI
+            if (world.isRemote) {
+                Minecraft.getMinecraft().displayGuiScreen(new GuiHandPump(player, stack));
             }
             return stack;
         }
