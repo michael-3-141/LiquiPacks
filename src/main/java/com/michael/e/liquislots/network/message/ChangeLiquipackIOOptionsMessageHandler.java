@@ -1,8 +1,6 @@
 package com.michael.e.liquislots.network.message;
 
-import com.michael.e.liquislots.Liquislots;
 import com.michael.e.liquislots.block.TileEntityLiquipackIO;
-import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
@@ -26,7 +24,7 @@ public class ChangeLiquipackIOOptionsMessageHandler implements IMessageHandler<C
             teLio.buffer.setFluid(message.fluidId != -1 ? new FluidStack(FluidRegistry.getFluid(message.fluidId), message.fluidAmount) : null);
 
             if(ctx.side.isServer()){
-                Liquislots.INSTANCE.netHandler.sendToAllAround(message.copy(), new NetworkRegistry.TargetPoint(player.dimension, message.x, message.y, message.z, 10));
+                ((TileEntityLiquipackIO) te).container.sendUpdateToPlayers(message.copy());
             }
         }
         return null;

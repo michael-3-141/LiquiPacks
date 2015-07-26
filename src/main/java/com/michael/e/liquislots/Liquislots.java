@@ -53,7 +53,8 @@ public class Liquislots {
         netHandler.registerMessage(ChangeTankOptionsMessageHandler.class, ChangeTankOptionsMessageHandler.ChangeTankOptionsMessage.class, 3, Side.SERVER);
         netHandler.registerMessage(ChangeLiquidXPOptionsMessageHandler.class, ChangeLiquidXPOptionsMessageHandler.ChangeLiquidXPOptionsMessage.class, 4, Side.SERVER);
         netHandler.registerMessage(UpgradeButtonClickMessageHandler.class, UpgradeButtonClickMessageHandler.UpgradeButtonClickMessage.class, 5, Side.SERVER);
-        netHandler.registerMessage(LiquipackIOSyncMessageHandler.class, LiquipackIOSyncMessageHandler.LiquipackIOSyncMessage.class, 6, Side.SERVER);
+        netHandler.registerMessage(LiquipackIOGuiEventMessageHandler.class, LiquipackIOGuiEventMessageHandler.LiquipackIOGuiEventMessage.class, 6, Side.SERVER);
+        netHandler.registerMessage(LiquipackIOGuiEventMessageHandler.class, LiquipackIOGuiEventMessageHandler.LiquipackIOGuiEventMessage.class, 6, Side.CLIENT);
         //netHandler.registerMessage(FlySyncMessageHandler.class, FlySyncMessageHandler.FlySyncMessage.class, 5, Side.SERVER);
 
         FMLCommonHandler.instance().bus().register(new LiquislotClientEventHandler());

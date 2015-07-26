@@ -2,13 +2,12 @@ package com.michael.e.liquislots.block;
 
 import com.michael.e.liquislots.Liquislots;
 import com.michael.e.liquislots.Reference;
-import com.michael.e.liquislots.client.gui.GuiLiquipackIO;
 import com.michael.e.liquislots.config.ConfigHandler;
+import com.michael.e.liquislots.network.message.LiquipackIOGuiEventMessageHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -60,7 +59,7 @@ public class BlockLiquipackIO extends BlockContainer {
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
         if(world.isRemote){
-            Minecraft.getMinecraft().displayGuiScreen(new GuiLiquipackIO(player, (TileEntityLiquipackIO) world.getTileEntity(x, y, z)));
+            Liquislots.INSTANCE.netHandler.sendToServer(new LiquipackIOGuiEventMessageHandler.LiquipackIOGuiEventMessage(x, y, z, true));
         }
 
         if(!world.isRemote && player.isSneaking() && ConfigHandler.debugMode)

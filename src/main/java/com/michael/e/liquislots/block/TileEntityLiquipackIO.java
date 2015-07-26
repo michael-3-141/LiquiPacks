@@ -1,11 +1,10 @@
 package com.michael.e.liquislots.block;
 
-import com.michael.e.liquislots.Liquislots;
+import com.michael.e.liquislots.common.container.ContainerLiquipackIO;
 import com.michael.e.liquislots.common.util.LiquipackStack;
 import com.michael.e.liquislots.common.util.LiquipackTank;
 import com.michael.e.liquislots.item.ItemLiquipack;
 import com.michael.e.liquislots.network.message.ChangeLiquipackIOOptionsMessageHandler;
-import cpw.mods.fml.common.network.NetworkRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -24,35 +23,40 @@ public class TileEntityLiquipackIO extends TileEntity implements IFluidHandler{
     public LiquipackTank buffer;
     private int tank;
     private boolean isDrainingMode;
+    public ContainerLiquipackIO container;
 
     public TileEntityLiquipackIO() {
         buffer = new LiquipackTank(10000);
         tank = 0;
         isDrainingMode = true;
+        container = new ContainerLiquipackIO();
     }
 
     @Override
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+        int result = buffer.fill(resource, doFill);;
         if(doFill){
             sendUpdate();
         }
-        return buffer.fill(resource, doFill);
+        return result;
     }
 
     @Override
     public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+        FluidStack result = buffer.drain(resource.amount, doDrain);
         if(doDrain){
             sendUpdate();
         }
-        return buffer.drain(resource.amount, doDrain);
+        return result;
     }
 
     @Override
     public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+        FluidStack result = buffer.drain(maxDrain, doDrain);
         if(doDrain){
             sendUpdate();
         }
-        return buffer.drain(maxDrain, doDrain);
+        return result;
     }
 
     @Override
@@ -114,7 +118,7 @@ public class TileEntityLiquipackIO extends TileEntity implements IFluidHandler{
                 else{
                     if(liquipackTank.fill(buffer.getFluid(), false) > 0){
                         int left = buffer.getFluid().amount - liquipackTank.fill(buffer.getFluid(), true);
-                        buffer.setFluid(new FluidStack(buffer.getFluid(), left));
+                        buffer.setFluid(left == 0 ? null : new FluidStack(buffer.getFluid(), left));
                         liquipack.setTank(liquipackTank, this.tank);
                     }
                 }
@@ -139,6 +143,6 @@ public class TileEntityLiquipackIO extends TileEntity implements IFluidHandler{
     }
 
     private void sendUpdate(){
-        Liquislots.INSTANCE.netHandler.sendToAllAround(new ChangeLiquipackIOOptionsMessageHandler.ChangeLiquipackIOOptionsMessage(this), new NetworkRegistry.TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 10));
+        container.sendUpdateToPlayers(new ChangeLiquipackIOOptionsMessageHandler.ChangeLiquipackIOOptionsMessage(this));
     }
 }

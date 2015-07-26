@@ -3,10 +3,11 @@ package com.michael.e.liquislots.client.gui;
 import com.michael.e.liquislots.Liquislots;
 import com.michael.e.liquislots.block.TileEntityLiquipackIO;
 import com.michael.e.liquislots.network.message.ChangeLiquipackIOOptionsMessageHandler;
-import com.michael.e.liquislots.network.message.LiquipackIOSyncMessageHandler;
+import com.michael.e.liquislots.network.message.LiquipackIOGuiEventMessageHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fluids.FluidStack;
+import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,14 @@ public class GuiLiquipackIO extends GuiTankOptions{
     @Override
     public void initGui() {
         super.initGui();
-        Liquislots.INSTANCE.netHandler.sendToServer(new LiquipackIOSyncMessageHandler.LiquipackIOSyncMessage(te.xCoord, te.yCoord, te.zCoord));
+    }
+
+    @Override
+    protected void keyTyped(char c, int key) {
+        if(key == Keyboard.KEY_ESCAPE || key == Minecraft.getMinecraft().gameSettings.keyBindInventory.getKeyCode()){
+            Liquislots.INSTANCE.netHandler.sendToServer(
+                            new LiquipackIOGuiEventMessageHandler.LiquipackIOGuiEventMessage(te.xCoord, te.yCoord, te.zCoord, false));
+        }
     }
 
     @Override
@@ -58,7 +66,7 @@ public class GuiLiquipackIO extends GuiTankOptions{
         Minecraft.getMinecraft().renderEngine.bindTexture(GuiTankOptions.texture);
         drawTexturedModalRect(guiLeft + 125, guiTop + 20, 176, 0, 18, 60);
         Minecraft.getMinecraft().fontRenderer.drawString("Buffer:", guiLeft + 125, guiTop + 10, 4210752);
-        float level = te.buffer.getFluidAmount() / ((float) te.buffer.getCapacity()) * 58;
+        float level = Math.max(te.buffer.getFluidAmount() / ((float) te.buffer.getCapacity()) * 58, 1);
         tank.render(te.buffer.getFluid(), (int) level, guiLeft, guiTop);
     }
 
