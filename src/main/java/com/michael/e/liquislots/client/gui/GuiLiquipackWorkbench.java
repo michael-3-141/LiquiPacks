@@ -9,7 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
-public class GuiLiquipackWorkbench extends GuiContainer{
+public class GuiLiquipackWorkbench extends GuiContainer {
 
     ResourceLocation texture = new ResourceLocation(Reference.MOD_ID, "textures/gui/liquipackWorkbench.png");
 

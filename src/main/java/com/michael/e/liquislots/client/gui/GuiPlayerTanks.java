@@ -12,10 +12,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.opengl.GL11;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuiPlayerTanks extends GuiContainer{
+public class GuiPlayerTanks extends GuiContainer {
 
     private static final ResourceLocation texture = new ResourceLocation(Reference.MOD_ID, "textures/gui/tankinv.png");
     private EntityPlayer player;
@@ -92,7 +93,7 @@ public class GuiPlayerTanks extends GuiContainer{
     }
 
     @Override
-    protected void mouseClicked(int x, int y, int btn) {
+    protected void mouseClicked(int x, int y, int btn) throws IOException {
         super.mouseClicked(x, y, btn);
         int i = 0;
         for(GuiTank tank : guiTanks){

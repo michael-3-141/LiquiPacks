@@ -1,0 +1,42 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "map": "liquislots:blocks/liquipackIO",
+      "particle": "liquislots:blocks/liquipackIO"
+    },
+    "model": "liquislots:liquipackIOBase"
+  },
+  "variants": {
+    "pipenorth": {
+      "true": {
+        "submodel": "liquislots:liquipackIOPanel"
+      },
+      "false": {}
+    },
+    "pipeeast": {
+      "true": {
+        //"submodel": {"model": "liquislots:liquipackIOPanel", "y": 180}
+        "submodel": "liquislots:liquipackIOPanel",
+        "y": 90
+      },
+      "false": {}
+    },
+    "pipesouth": {
+      "true": {
+        //"submodel": {"model": "liquislots:liquipackIOPanel", "y": 270}
+        "submodel": "liquislots:liquipackIOPanel",
+        "y": 180
+      },
+      "false": {}
+    },
+    "pipewest": {
+      "true": {
+        //"submodel": {"model": "liquislots:liquipackIOPanel", "y": 90}
+        "submodel": "liquislots:liquipackIOPanel",
+        "y": 270
+      },
+      "false": {}
+    }
+  }
+}

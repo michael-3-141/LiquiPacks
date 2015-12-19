@@ -1,20 +1,23 @@
 package com.michael.e.liquislots.network.message;
 
 import com.michael.e.liquislots.common.container.ContainerPlayerTanks;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.world.WorldServer;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class SelectedTankChangeMessageHandler implements IMessageHandler<SelectedTankChangeMessageHandler.SelectedTankChangeMessage, IMessage> {
 
     @Override
     public IMessage onMessage(SelectedTankChangeMessage message, MessageContext ctx) {
-
-        if(ctx.getServerHandler().playerEntity.openContainer instanceof ContainerPlayerTanks){
-            ((ContainerPlayerTanks) ctx.getServerHandler().playerEntity.openContainer).selectedTank = message.newId;
-            ((ContainerPlayerTanks) ctx.getServerHandler().playerEntity.openContainer).onInventoryChanged();
-        }
+        WorldServer ws = ctx.getServerHandler().playerEntity.getServerForPlayer();
+        ws.addScheduledTask(() -> {
+            if (ctx.getServerHandler().playerEntity.openContainer instanceof ContainerPlayerTanks) {
+                ((ContainerPlayerTanks) ctx.getServerHandler().playerEntity.openContainer).selectedTank = message.newId;
+                ((ContainerPlayerTanks) ctx.getServerHandler().playerEntity.openContainer).onInventoryChanged();
+            }
+        });
         return null;
     }
 

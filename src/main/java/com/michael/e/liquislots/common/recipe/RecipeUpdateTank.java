@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
 
-public class RecipeUpdateTank implements IRecipe{
+public class RecipeUpdateTank implements IRecipe {
 
     ItemStack result;
 
@@ -47,5 +47,10 @@ public class RecipeUpdateTank implements IRecipe{
     @Override
     public ItemStack getRecipeOutput() {
         return result;
+    }
+
+    @Override
+    public ItemStack[] getRemainingItems(InventoryCrafting inv) {
+        return new ItemStack[inv.getSizeInventory()];
     }
 }

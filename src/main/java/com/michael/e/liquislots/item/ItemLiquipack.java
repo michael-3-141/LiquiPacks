@@ -5,8 +5,6 @@ import com.michael.e.liquislots.Reference;
 import com.michael.e.liquislots.common.upgrade.LiquipackUpgrade;
 import com.michael.e.liquislots.common.util.LiquipackStack;
 import com.michael.e.liquislots.common.util.LiquipackTank;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -19,20 +17,23 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.common.util.EnumHelper;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 
 import java.util.Collections;
 import java.util.List;
 
-public class ItemLiquipack extends ItemArmor implements ISpecialArmor{
+public class ItemLiquipack extends ItemArmor implements ISpecialArmor {
 
-    public static ArmorMaterial liquipackMaterial = EnumHelper.addArmorMaterial("liquipackMaterial", 100, new int[]{0,0,0,0}, 0);
+    public static ArmorMaterial liquipackMaterial = EnumHelper.addArmorMaterial("liquipackMaterial", "", 100, new int[]{0,0,0,0}, 0);
 
     public ItemLiquipack() {
         super(liquipackMaterial, 0, 1);
+        GameRegistry.registerItem(this, "liquipack");
         setUnlocalizedName("liquipack");
         setCreativeTab(Liquislots.INSTANCE.tabLiquipacks);
-        setTextureName(Reference.MOD_ID + ":liquipack1");
     }
 
     @Override
@@ -43,7 +44,7 @@ public class ItemLiquipack extends ItemArmor implements ISpecialArmor{
 
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
-        return Reference.MOD_ID + ":models/armor/liquipackNew.png";
+        return Reference.MOD_ID + ":textures/models/armor/liquipackNew.png";
     }
 
     public static boolean isOldFormat(ItemStack stack){
@@ -141,7 +142,7 @@ public class ItemLiquipack extends ItemArmor implements ISpecialArmor{
     @Override
     public double getDurabilityForDisplay(ItemStack stack) {
         ItemStack protection = new LiquipackStack(stack).getArmor();
-        return protection != null ? 1.0 - (protection.getItemDamageForDisplay() / protection.getItemDamage()) : 0;
+        return protection != null ? 1.0 - protection.getItemDamage() : 0;
     }
 
     @Override

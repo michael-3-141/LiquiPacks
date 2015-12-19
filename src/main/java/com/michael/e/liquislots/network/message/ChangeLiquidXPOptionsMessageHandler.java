@@ -4,31 +4,35 @@ import com.michael.e.liquislots.common.upgrade.LiquidXPUpgrade;
 import com.michael.e.liquislots.common.upgrade.LiquipackUpgrade;
 import com.michael.e.liquislots.common.util.LiquipackStack;
 import com.michael.e.liquislots.item.ItemLiquipack;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.WorldServer;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class ChangeLiquidXPOptionsMessageHandler implements IMessageHandler<ChangeLiquidXPOptionsMessageHandler.ChangeLiquidXPOptionsMessage, IMessage> {
 
     @Override
     public IMessage onMessage(ChangeLiquidXPOptionsMessage message, MessageContext ctx) {
-        ItemStack stack = ctx.getServerHandler().playerEntity.inventory.armorItemInSlot(2);
-        if(stack.getItem() instanceof ItemLiquipack){
-            LiquipackStack liquipack = new LiquipackStack(stack);
-            int i = 0;
-            for(LiquipackUpgrade upgrade : liquipack.getUpgrades()){
-                if(LiquidXPUpgrade.isLiquidXPUpgrade(upgrade)){
-                    LiquidXPUpgrade XPUpgrade = LiquidXPUpgrade.fromLiquipackUpgrade(upgrade);
-                    XPUpgrade.setMode(message.mode);
-                    XPUpgrade.setTank(message.tank);
-                    liquipack.setUpgrade(XPUpgrade, i);
-                    break;
+        WorldServer ws = ctx.getServerHandler().playerEntity.getServerForPlayer();
+        ws.addScheduledTask(() -> {
+            ItemStack stack = ctx.getServerHandler().playerEntity.inventory.armorItemInSlot(2);
+            if(stack.getItem() instanceof ItemLiquipack){
+                LiquipackStack liquipack = new LiquipackStack(stack);
+                int i = 0;
+                for(LiquipackUpgrade upgrade : liquipack.getUpgrades()){
+                    if(LiquidXPUpgrade.isLiquidXPUpgrade(upgrade)){
+                        LiquidXPUpgrade XPUpgrade = LiquidXPUpgrade.fromLiquipackUpgrade(upgrade);
+                        XPUpgrade.setMode(message.mode);
+                        XPUpgrade.setTank(message.tank);
+                        liquipack.setUpgrade(XPUpgrade, i);
+                        break;
+                    }
+                    i++;
                 }
-                i++;
             }
-        }
+        });
         return null;
     }
 

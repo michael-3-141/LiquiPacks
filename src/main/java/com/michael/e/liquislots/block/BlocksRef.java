@@ -1,8 +1,11 @@
 package com.michael.e.liquislots.block;
 
 import com.michael.e.liquislots.Reference;
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
+import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.item.Item;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class BlocksRef {
 
@@ -12,15 +15,18 @@ public class BlocksRef {
     public static void init(){
 
         liquipackIO = new BlockLiquipackIO();
-        registerBlock(liquipackIO);
-        GameRegistry.registerTileEntity(TileEntityLiquipackIO.class, "te" + liquipackIO.getUnlocalizedName());
+        GameRegistry.registerTileEntity(TileEntityLiquipackIO.class, "te" + liquipackIO.getUnlocalizedName().substring(5));
 
         liquipackWorkbench = new BlockLiquipackWorkbench();
-        registerBlock(liquipackWorkbench);
-        GameRegistry.registerTileEntity(TileEntityLiquipackWorkbench.class, "te" + liquipackWorkbench.getUnlocalizedName());
+        GameRegistry.registerTileEntity(TileEntityLiquipackWorkbench.class, "te" + liquipackWorkbench.getUnlocalizedName().substring(5));
     }
 
-    private static void registerBlock(Block block){
-        GameRegistry.registerBlock(block, Reference.MOD_ID + "_" + block.getUnlocalizedName().substring(5));
+    private static void registerBlockTextures(Block block){
+        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(Reference.MOD_ID + ":" + block.getUnlocalizedName().substring(5), "inventory"));
+    }
+
+    public static void registerTextures(){
+        registerBlockTextures(liquipackWorkbench);
+        registerBlockTextures(liquipackIO);
     }
 }

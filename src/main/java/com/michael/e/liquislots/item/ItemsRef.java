@@ -1,12 +1,16 @@
 package com.michael.e.liquislots.item;
 
 import com.michael.e.liquislots.Reference;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.client.resources.model.ModelBakery;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class ItemsRef {
 
+    private static Side side;
     public static Item liquipack;
     public static Item tank;
     public static Item handPump;
@@ -20,30 +24,42 @@ public class ItemsRef {
     public static void init()
     {
         liquipack = new ItemLiquipack();
-        regItem(liquipack);
 
         tank = new ItemTank();
-        regItem(tank);
 
         handPump = new ItemHandPump();
-        regItem(handPump);
 
-        liquipackArmorIron = new ItemLiquipackArmor(6D / 25D, 240).setUnlocalizedName("liquipackArmorIron").setTextureName(Reference.MOD_ID + ":liquipackArmorIron");
-        regItem(liquipackArmorIron);
+        liquipackArmorIron = new ItemLiquipackArmor("liquipackArmorIron", 6D / 25D, 240);
 
-        liquipackArmorDiamond = new ItemLiquipackArmor(8D / 25D, 528).setUnlocalizedName("liquipackArmorDiamond").setTextureName(Reference.MOD_ID + ":liquipackArmorDiamond");
-        regItem(liquipackArmorDiamond);
+        liquipackArmorDiamond = new ItemLiquipackArmor("liquipackArmorDiamond", 8D / 25D, 528);
 
         //upgradeJetpack = new ItemJetpackUpgrade();
-        //regItem(upgradeJetpack);
-        if(Loader.isModLoaded("OpenBlocks")) {
-            upgradeLiquidXP = new ItemLiquidXPUpgrade();
-            regItem(upgradeLiquidXP);
-        }
+        //regItemTexture(upgradeJetpack);
+        //if(Loader.isModLoaded("OpenBlocks")) {
+        upgradeLiquidXP = new ItemLiquidXPUpgrade();
+        //}
     }
 
-    public static void regItem(Item item)
+    private static void regItemTexture(Item item, int meta)
     {
-        GameRegistry.registerItem(item, Reference.MOD_ID + "_" + item.getUnlocalizedName().substring(5));
+        regItemTexture(item, meta, item.getUnlocalizedName().substring(5));
+    }
+
+    private static void regItemTexture(Item item, int meta, String modelName)
+    {
+        ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(Reference.MOD_ID + ":" + modelName, "inventory"));
+    }
+
+    public static void registerTextures(){
+        regItemTexture(handPump, 0);
+        regItemTexture(upgradeLiquidXP, 0);
+        for(int i=0; i<ItemTank.subitems.length; i++){
+            String name = tank.getUnlocalizedName(new ItemStack(tank, 1, i)).substring(5);
+            regItemTexture(tank, i, name);
+            ModelBakery.addVariantName(tank, Reference.MOD_ID + ":" + name);
+        }
+        regItemTexture(liquipackArmorIron, 0);
+        regItemTexture(liquipackArmorDiamond, 0);
+        regItemTexture(liquipack, 0);
     }
 }

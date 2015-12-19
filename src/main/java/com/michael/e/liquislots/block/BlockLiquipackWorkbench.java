@@ -1,62 +1,57 @@
 package com.michael.e.liquislots.block;
 
 import com.michael.e.liquislots.Liquislots;
-import com.michael.e.liquislots.Reference;
-import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class BlockLiquipackWorkbench extends BlockContainer {
 
-    @SideOnly(Side.CLIENT)
-    private IIcon texture_top;
-    private IIcon texture_side;
-    private IIcon texture_bottom;
-    private IIcon texture_front;
+    public static final PropertyDirection PROPERTY_FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
     protected BlockLiquipackWorkbench() {
         super(Material.iron);
-        setBlockName("liquipackWorkbench");
+        setUnlocalizedName("liquipackWorkbench");
+        setDefaultState(this.blockState.getBaseState().withProperty(PROPERTY_FACING, EnumFacing.NORTH));
         setCreativeTab(Liquislots.INSTANCE.tabLiquipacks);
-        setHardness(2.0F);
+
+        GameRegistry.registerBlock(this, this.getUnlocalizedName().substring(5));
+
         setResistance(7.0F);
+        setHardness(2.0F);
+
+    }
+
+    protected BlockState createBlockState()
+    {
+        return new BlockState(this, PROPERTY_FACING);
     }
 
     @Override
-    public void registerBlockIcons(IIconRegister register) {
-        texture_top = register.registerIcon(Reference.MOD_ID + ":" + getUnlocalizedName().substring(5) + "_top");
-        texture_side = register.registerIcon(Reference.MOD_ID + ":" + getUnlocalizedName().substring(5) + "_side");
-        texture_bottom = register.registerIcon(Reference.MOD_ID + ":" + getUnlocalizedName().substring(5) + "_bottom");
-        texture_front = register.registerIcon(Reference.MOD_ID + ":" + getUnlocalizedName().substring(5) + "_front");
+    public IBlockState getStateFromMeta(int meta) {
+        return this.getDefaultState().withProperty(PROPERTY_FACING, EnumFacing.getHorizontal(meta));
     }
 
-    private static int[] directionToSide = new int[]{2, 5, 3, 4};
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return state.getValue(PROPERTY_FACING).getHorizontalIndex();
+    }
 
     @Override
-    public IIcon getIcon(int side, int meta) {
-        switch (side){
-            case 0:
-                return texture_bottom;
-            case 1:
-                return texture_top;
-            default:
-                if(side == directionToSide[meta])
-                    return texture_front;
-                else
-                    return texture_side;
-        }
+    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+        return this.getDefaultState().withProperty(PROPERTY_FACING, placer.getHorizontalFacing().getOpposite());
     }
 
     @Override
@@ -65,28 +60,28 @@ public class BlockLiquipackWorkbench extends BlockContainer {
     }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumFacing side, float hitX, float hitY, float hitZ) {
         if(!world.isRemote){
-            FMLNetworkHandler.openGui(player, Liquislots.INSTANCE, 1, world, x, y, z);
+            FMLNetworkHandler.openGui(player, Liquislots.INSTANCE, 1, world, pos.getX(), pos.getY(), pos.getZ());
         }
         return true;
     }
 
     @Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack) {
-        world.setBlockMetadataWithNotify(x, y, z, (MathHelper.floor_double((entity.rotationYaw * 4 / 360) + 0.5) & 3), 2);
-    }
-
-    @Override
-    public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
-        TileEntity te = world.getTileEntity(x, y, z);
+    public void breakBlock(World world, BlockPos pos, IBlockState block) {
+        TileEntity te = world.getTileEntity(pos);
         if(te != null && te instanceof TileEntityLiquipackWorkbench){
             ItemStack stack = ((TileEntityLiquipackWorkbench) te).getStackInSlot(0);
             if(stack != null) {
-                EntityItem drop = new EntityItem(world, x, y, z, ((TileEntityLiquipackWorkbench) te).getStackInSlot(0));
+                EntityItem drop = new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), ((TileEntityLiquipackWorkbench) te).getStackInSlot(0));
                 world.spawnEntityInWorld(drop);
             }
         }
-        super.breakBlock(world, x, y, z, block, meta);
+        super.breakBlock(world, pos, block);
+    }
+
+    @Override
+    public int getRenderType() {
+        return 3;
     }
 }

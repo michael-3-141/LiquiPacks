@@ -5,8 +5,6 @@ import com.michael.e.liquislots.common.util.LiquipackStack;
 import com.michael.e.liquislots.common.util.LiquipackTank;
 import com.michael.e.liquislots.item.ItemTank;
 import com.michael.e.liquislots.item.ItemsRef;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -14,7 +12,10 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.IChatComponent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ContainerLiquipackWorkbench extends Container {
 
@@ -54,7 +55,7 @@ public class ContainerLiquipackWorkbench extends Container {
         return tileEntity.isUseableByPlayer(player);
     }
 
-    public class LiquipackInventory implements IInventory{
+    public static class LiquipackInventory implements IInventory {
 
         TileEntityLiquipackWorkbench tileEntity;
 
@@ -105,7 +106,7 @@ public class ContainerLiquipackWorkbench extends Container {
         }
 
         @Override
-        public ItemStack getStackInSlotOnClosing(int p_70304_1_) {
+        public ItemStack removeStackFromSlot(int index) {
             return null;
         }
 
@@ -118,24 +119,12 @@ public class ContainerLiquipackWorkbench extends Container {
         }
 
         @Override
-        public String getInventoryName() {
-            return "liquipackWorkbenchContents";
-        }
-
-        @Override
-        public boolean hasCustomInventoryName() {
-            return false;
-        }
-
-        @Override
         public int getInventoryStackLimit() {
             return 1;
         }
 
         @Override
-        public void markDirty() {
-
-        }
+        public void markDirty() {}
 
         @Override
         public boolean isUseableByPlayer(EntityPlayer player) {
@@ -143,18 +132,49 @@ public class ContainerLiquipackWorkbench extends Container {
         }
 
         @Override
-        public void openInventory() {
-
-        }
+        public void openInventory(EntityPlayer player) {}
 
         @Override
-        public void closeInventory() {
-
-        }
+        public void closeInventory(EntityPlayer player) {}
 
         @Override
         public boolean isItemValidForSlot(int i, ItemStack stack) {
             return tileEntity.getStackInSlot(0) != null && itemStackToTank(stack) != null;
+        }
+
+        @Override
+        public int getField(int id) {
+            return 0;
+        }
+
+        @Override
+        public void setField(int id, int value) {
+
+        }
+
+        @Override
+        public int getFieldCount() {
+            return 0;
+        }
+
+        @Override
+        public void clear() {
+
+        }
+
+        @Override
+        public String getName() {
+            return "";
+        }
+
+        @Override
+        public boolean hasCustomName() {
+            return false;
+        }
+
+        @Override
+        public IChatComponent getDisplayName() {
+            return new ChatComponentText("liquipackWorkbenchContents");
         }
     }
 
@@ -258,7 +278,7 @@ public class ContainerLiquipackWorkbench extends Container {
         return slotFound;
     }
 
-    public class SafeSlot extends Slot{
+    public static class SafeSlot extends Slot {
 
         public SafeSlot(IInventory inventory, int index, int x, int y) {
             super(inventory, index, x, y);
@@ -270,7 +290,7 @@ public class ContainerLiquipackWorkbench extends Container {
         }
     }
 
-    public class ArmorSlot extends Slot {
+    public static class ArmorSlot extends Slot {
 
         private int armorType;
 
@@ -299,9 +319,9 @@ public class ContainerLiquipackWorkbench extends Container {
          * Returns the icon index on items.png that is used as background image of the slot.
          */
         @SideOnly(Side.CLIENT)
-        public IIcon getBackgroundIconIndex()
+        public String getSlotTexture()
         {
-            return ItemArmor.func_94602_b(armorType);
+            return ItemArmor.EMPTY_SLOT_NAMES[armorType];
         }
     }
 }

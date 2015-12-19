@@ -8,19 +8,17 @@ import com.michael.e.liquislots.config.ConfigHandler;
 import com.michael.e.liquislots.item.ItemsRef;
 import com.michael.e.liquislots.network.message.*;
 import com.michael.e.liquislots.network.proxy.CommonProxy;
-import com.michael.e.liquislots.server.LiquislotServerEventHandler;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-import cpw.mods.fml.relauncher.Side;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import net.minecraftforge.fml.relauncher.Side;
 import org.apache.logging.log4j.Logger;
 
 @Mod(modid = Reference.MOD_ID, name = Reference.NAME, version = Reference.VERSION, guiFactory = "com.michael.e.liquislots.config.GuiFactory")
@@ -43,7 +41,7 @@ public class Liquislots {
         ItemsRef.init();
         BlocksRef.init();
 
-        NetworkRegistry.INSTANCE.registerGuiHandler(this.INSTANCE, new GuiHandler());
+        NetworkRegistry.INSTANCE.registerGuiHandler(INSTANCE, new GuiHandler());
 
         netHandler = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.MOD_ID);
         netHandler.registerMessage(KeyPressMessageHandler.class, KeyPressMessageHandler.KeyPressMessage.class, 0, Side.SERVER);
@@ -55,11 +53,13 @@ public class Liquislots {
         netHandler.registerMessage(UpgradeButtonClickMessageHandler.class, UpgradeButtonClickMessageHandler.UpgradeButtonClickMessage.class, 5, Side.SERVER);
         netHandler.registerMessage(LiquipackIOGuiEventMessageHandler.class, LiquipackIOGuiEventMessageHandler.LiquipackIOGuiEventMessage.class, 6, Side.SERVER);
         netHandler.registerMessage(LiquipackIOGuiEventMessageHandler.class, LiquipackIOGuiEventMessageHandler.LiquipackIOGuiEventMessage.class, 6, Side.CLIENT);
+        netHandler.registerMessage(PlayerTanksFluidUpdateMessageHandler.class, PlayerTanksFluidUpdateMessageHandler.PlayerTanksFluidUpdateMessage.class, 7, Side.SERVER);
         //netHandler.registerMessage(FlySyncMessageHandler.class, FlySyncMessageHandler.FlySyncMessage.class, 5, Side.SERVER);
 
-        FMLCommonHandler.instance().bus().register(new LiquislotClientEventHandler());
-        MinecraftForge.EVENT_BUS.register(new LiquislotServerEventHandler());
+        MinecraftForge.EVENT_BUS.register(new LiquislotClientEventHandler());
         logger = e.getModLog();
+
+        proxy.initModels();
     }
 
     @Mod.EventHandler
@@ -79,7 +79,7 @@ public class Liquislots {
     public CreativeTabs tabLiquipacks = new CreativeTabs("tabLiquipacks") {
         @Override
         public Item getTabIconItem() {
-            return ItemsRef.liquipack;
+            return ItemsRef.handPump;
         }
     };
 

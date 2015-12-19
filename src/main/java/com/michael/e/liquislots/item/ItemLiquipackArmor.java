@@ -3,12 +3,12 @@ package com.michael.e.liquislots.item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.ISpecialArmor;
 
-public class ItemLiquipackArmor extends ItemLiquipacksBase implements ILiquipackArmor {
+public class ItemLiquipackArmor extends ItemLiquipacksBase implements ILiquipackArmor{
 
     private double absorbAmount;
 
-    public ItemLiquipackArmor(double absorbAmount, int maxDamage) {
-        super();
+    public ItemLiquipackArmor(String name, double absorbAmount, int maxDamage) {
+        super(name);
         setMaxDamage(maxDamage);
         this.absorbAmount = absorbAmount;
     }

@@ -1,10 +1,11 @@
 .gradle
 gradle.properties
 build/
-eclipse/
+run/
 out/
 .idea/
 *.iml
 *.iws
 *.ipr
 **/Thumbs.db
+*.hprof

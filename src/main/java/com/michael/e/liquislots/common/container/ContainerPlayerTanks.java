@@ -1,20 +1,22 @@
 package com.michael.e.liquislots.common.container;
 
+import com.michael.e.liquislots.Liquislots;
 import com.michael.e.liquislots.common.util.LiquipackStack;
 import com.michael.e.liquislots.common.util.LiquipackTank;
+import com.michael.e.liquislots.network.message.PlayerTanksFluidUpdateMessageHandler;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IChatComponent;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-
-import java.util.List;
 
 public class ContainerPlayerTanks extends Container implements OnInventoryChangedListener{
 
@@ -54,24 +56,24 @@ public class ContainerPlayerTanks extends Container implements OnInventoryChange
         return true;
     }
 
-    @Override
-    @SuppressWarnings("unchecked")
-    public void addCraftingToCrafters(ICrafting player) {
-        super.addCraftingToCrafters(player);
-    }
-
     private LiquipackTank[] prevTanks;
 
     @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
-        for(ICrafting player : (List<ICrafting>)crafters){
+        for(ICrafting player : crafters){
             int i = 0;
             for(LiquipackTank prevTank : prevTanks){
                 LiquipackTank currentTank = tanks.getTank(i);
-                if(prevTank != null && !prevTank.equals(currentTank) && currentTank.getFluid() != null){
-                    player.sendProgressBarUpdate(this, (i*2), currentTank.getFluid().getFluidID());
-                    player.sendProgressBarUpdate(this, (i*2)+1, currentTank.getFluid().amount);
+                if(prevTank != null && !prevTank.equals(currentTank)){
+                    //If the fluid type hasn't changed, the new fluid amount can be sent using the container.
+                    if(prevTank.areFluidTypesEqual(currentTank)){
+                        player.sendProgressBarUpdate(this, i, currentTank.getFluidAmount());
+                    }
+                    //If the fluid type has changed, a custom packet must be used to send the new fluid type
+                    else{
+                        Liquislots.INSTANCE.netHandler.sendTo(new PlayerTanksFluidUpdateMessageHandler.PlayerTanksFluidUpdateMessage(currentTank.getFluid(), i), (EntityPlayerMP) player);
+                    }
                 }
                 prevTanks[i] = currentTank.copy();
                 i++;
@@ -195,7 +197,7 @@ public class ContainerPlayerTanks extends Container implements OnInventoryChange
         }
     }
 
-    private class InventoryTankInterface implements IInventory{
+    private class InventoryTankInterface implements IInventory {
 
         ItemStack[] stacks = new ItemStack[2];
         OnInventoryChangedListener listener;
@@ -234,7 +236,7 @@ public class ContainerPlayerTanks extends Container implements OnInventoryChange
         }
 
         @Override
-        public ItemStack getStackInSlotOnClosing(int var1) {
+        public ItemStack removeStackFromSlot(int index) {
             return null;
         }
 
@@ -248,16 +250,6 @@ public class ContainerPlayerTanks extends Container implements OnInventoryChange
             }
 
             markDirty();
-        }
-
-        @Override
-        public String getInventoryName() {
-            return "tankIO";
-        }
-
-        @Override
-        public boolean hasCustomInventoryName() {
-            return false;
         }
 
         @Override
@@ -276,16 +268,38 @@ public class ContainerPlayerTanks extends Container implements OnInventoryChange
         }
 
         @Override
-        public void openInventory() {
+        public void openInventory(EntityPlayer player) {
+
         }
 
         @Override
-        public void closeInventory() {
+        public void closeInventory(EntityPlayer player) {
+
         }
 
         @Override
         public boolean isItemValidForSlot(int i, ItemStack stack) {
             return true;
+        }
+
+        @Override
+        public int getField(int id) {
+            return 0;
+        }
+
+        @Override
+        public void setField(int id, int value) {
+
+        }
+
+        @Override
+        public int getFieldCount() {
+            return 0;
+        }
+
+        @Override
+        public void clear() {
+
         }
 
         public boolean incrStackSize(int i, int j, boolean markDirty) {
@@ -305,9 +319,24 @@ public class ContainerPlayerTanks extends Container implements OnInventoryChange
             }
             return false;
         }
+
+        @Override
+        public String getName() {
+            return null;
+        }
+
+        @Override
+        public boolean hasCustomName() {
+            return false;
+        }
+
+        @Override
+        public IChatComponent getDisplayName() {
+            return null;
+        }
     }
 
-    public static class BucketSlot extends Slot{
+    public static class BucketSlot extends Slot {
 
         public BucketSlot(IInventory p_i1824_1_, int p_i1824_2_, int p_i1824_3_, int p_i1824_4_) {
             super(p_i1824_1_, p_i1824_2_, p_i1824_3_, p_i1824_4_);
@@ -319,7 +348,7 @@ public class ContainerPlayerTanks extends Container implements OnInventoryChange
         }
     }
 
-    public static class BucketResultSlot extends Slot{
+    public static class BucketResultSlot extends Slot {
 
         public BucketResultSlot(IInventory p_i1824_1_, int p_i1824_2_, int p_i1824_3_, int p_i1824_4_) {
             super(p_i1824_1_, p_i1824_2_, p_i1824_3_, p_i1824_4_);

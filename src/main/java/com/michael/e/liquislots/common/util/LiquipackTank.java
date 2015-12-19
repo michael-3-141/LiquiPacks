@@ -79,6 +79,10 @@ public class LiquipackTank extends FluidTank {
         return false;
     }
 
+    public boolean areFluidTypesEqual(LiquipackTank tank){
+        return this.getFluidType() == tank.getFluidType();
+    }
+
     public LiquipackTank copy() {
         return this.fluid == null || this.getFluidType() == null ? new LiquipackTank(capacity) : new LiquipackTank(fluid.getFluid(), fluid.amount, capacity);
     }

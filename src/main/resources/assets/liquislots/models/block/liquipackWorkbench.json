@@ -1,0 +1,9 @@
+{
+  "parent": "block/orientable",
+  "textures": {
+    "bottom": "liquislots:blocks/liquipackWorkbench_bottom",
+    "top": "liquislots:blocks/liquipackWorkbench_top",
+    "front": "liquislots:blocks/liquipackWorkbench_front",
+    "side": "liquislots:blocks/liquipackWorkbench_side"
+  }
+}

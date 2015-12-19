@@ -12,7 +12,7 @@ import org.lwjgl.opengl.GL12;
 
 import java.util.List;
 
-public class GuiTankOptions extends GuiScreen{
+public class GuiTankOptions extends GuiScreen {
 
     public static ResourceLocation texture = new ResourceLocation(Reference.MOD_ID, "textures/gui/liquipackIO.png");
     private GuiArrowButton btnBack;

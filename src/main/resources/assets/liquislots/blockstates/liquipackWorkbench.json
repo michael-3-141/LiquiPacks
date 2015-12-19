@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "liquislots:liquipackWorkbench" },
+        "facing=south": { "model": "liquislots:liquipackWorkbench", "y": 180 },
+        "facing=west":  { "model": "liquislots:liquipackWorkbench", "y": 270 },
+        "facing=east":  { "model": "liquislots:liquipackWorkbench", "y": 90 }
+    }
+}

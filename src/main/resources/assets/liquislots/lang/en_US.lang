@@ -1,7 +1,7 @@
 item.liquipack.name=Liquipack
-item.tank.0.name=Small Tank
-item.tank.1.name=Medium Tank
-item.tank.2.name=Big Tank
+item.tank.small.name=Small Tank
+item.tank.medium.name=Medium Tank
+item.tank.large.name=Large Tank
 item.liquipackBucket.name=Hand Pump
 item.liquipackArmorIron.name=Iron Liquipack Armor
 item.liquipackArmorDiamond.name=Diamond Liquipack Armor

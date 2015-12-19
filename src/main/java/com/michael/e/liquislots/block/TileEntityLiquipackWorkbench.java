@@ -6,8 +6,10 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.IChatComponent;
 
-public class TileEntityLiquipackWorkbench extends TileEntity implements IInventory{
+public class TileEntityLiquipackWorkbench extends TileEntity implements IInventory {
 
     private ItemStack stack;
 
@@ -58,7 +60,7 @@ public class TileEntityLiquipackWorkbench extends TileEntity implements IInvento
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int p_70304_1_) {
+    public ItemStack removeStackFromSlot(int index) {
         return null;
     }
 
@@ -68,37 +70,58 @@ public class TileEntityLiquipackWorkbench extends TileEntity implements IInvento
     }
 
     @Override
-    public String getInventoryName() {
-        return "lpWorkbench";
-    }
-
-    @Override
-    public boolean hasCustomInventoryName() {
-        return false;
-    }
-
-    @Override
     public int getInventoryStackLimit() {
         return 1;
     }
 
     @Override
     public boolean isUseableByPlayer(EntityPlayer player) {
-        return player.getDistanceSq(xCoord, yCoord, zCoord) < 60;
+        return player.getDistanceSq(getPos()) < 60;
     }
 
     @Override
-    public void openInventory() {
-
-    }
+    public void openInventory(EntityPlayer player) {}
 
     @Override
-    public void closeInventory() {
-
-    }
+    public void closeInventory(EntityPlayer player) {}
 
     @Override
     public boolean isItemValidForSlot(int i, ItemStack stack) {
         return stack.getItem() instanceof ItemLiquipack;
+    }
+
+    @Override
+    public int getField(int id) {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value) {
+
+    }
+
+    @Override
+    public int getFieldCount() {
+        return 0;
+    }
+
+    @Override
+    public void clear() {
+
+    }
+
+    @Override
+    public String getName() {
+        return null;
+    }
+
+    @Override
+    public boolean hasCustomName() {
+        return false;
+    }
+
+    @Override
+    public IChatComponent getDisplayName() {
+        return new ChatComponentText("lpWorkbench");
     }
 }

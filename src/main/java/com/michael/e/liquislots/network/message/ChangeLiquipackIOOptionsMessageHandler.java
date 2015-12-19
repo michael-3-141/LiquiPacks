@@ -1,32 +1,45 @@
 package com.michael.e.liquislots.network.message;
 
 import com.michael.e.liquislots.block.TileEntityLiquipackIO;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import com.michael.e.liquislots.common.util.MiscUtil;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.IThreadListener;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class ChangeLiquipackIOOptionsMessageHandler implements IMessageHandler<ChangeLiquipackIOOptionsMessageHandler.ChangeLiquipackIOOptionsMessage, IMessage> {
 
     @Override
     public IMessage onMessage(ChangeLiquipackIOOptionsMessage message, MessageContext ctx) {
-        EntityPlayer player = ctx.side.isServer() ? ctx.getServerHandler().playerEntity : Minecraft.getMinecraft().thePlayer;
-        TileEntity te = player.worldObj.getTileEntity(message.x, message.y, message.z);
-        if(te instanceof TileEntityLiquipackIO) {
-            TileEntityLiquipackIO teLio = (TileEntityLiquipackIO) te;
-            teLio.setTank(message.tank);
-            teLio.setDrainingMode(message.isDrainMode);
-            teLio.buffer.setFluid(message.fluidId != -1 ? new FluidStack(FluidRegistry.getFluid(message.fluidId), message.fluidAmount) : null);
-
-            if(ctx.side.isServer()){
-                ((TileEntityLiquipackIO) te).container.sendUpdateToPlayers(message.copy());
-            }
+        IThreadListener listener;
+        if(ctx.side.isServer()) {
+             listener = ctx.getServerHandler().playerEntity.getServerForPlayer();
         }
+        else {
+            listener = Minecraft.getMinecraft();
+        }
+        listener.addScheduledTask(() -> {
+            EntityPlayer player = ctx.side.isServer() ? ctx.getServerHandler().playerEntity : Minecraft.getMinecraft().thePlayer;
+            TileEntity te = player.worldObj.getTileEntity(message.blockPos);
+            if (te instanceof TileEntityLiquipackIO) {
+                TileEntityLiquipackIO teLio = (TileEntityLiquipackIO) te;
+                teLio.setTank(message.tank);
+                teLio.setDrainingMode(message.isDrainMode);
+                teLio.buffer.setFluid(!message.fluidId.equals("") ? new FluidStack(FluidRegistry.getFluid(message.fluidId), message.fluidAmount) : null);
+
+                if (ctx.side.isServer()) {
+                    ((TileEntityLiquipackIO) te).container.sendUpdateToPlayers(message.copy());
+                }
+            }
+        });
         return null;
     }
 
@@ -36,52 +49,44 @@ public class ChangeLiquipackIOOptionsMessageHandler implements IMessageHandler<C
 
         }
 
-        public ChangeLiquipackIOOptionsMessage(int tank, boolean isDrainMode, int fluidId, int fluidAmount, int x, int y, int z) {
+        public ChangeLiquipackIOOptionsMessage(int tank, boolean isDrainMode, String fluidId, int fluidAmount, BlockPos pos) {
             this.tank = tank;
             this.isDrainMode = isDrainMode;
-            this.fluidId = fluidId;
             this.fluidAmount = fluidAmount;
-            this.x = x;
-            this.y = y;
-            this.z = z;
+            this.blockPos = pos;
+            this.fluidId = fluidId;
         }
 
         public ChangeLiquipackIOOptionsMessage(TileEntityLiquipackIO teLio){
-            this(teLio.getTank(), teLio.isDrainingMode(), teLio.buffer.getFluidType() == null ? -1 : teLio.buffer.getFluidType().getID(), teLio.buffer.getFluidAmount(), teLio.xCoord, teLio.yCoord, teLio.zCoord);
+            this(teLio.getTank(), teLio.isDrainingMode(), teLio.buffer.getFluidType() == null ? "" : teLio.buffer.getFluidType().getName(), teLio.buffer.getFluidAmount(), teLio.getPos());
         }
 
         public int tank;
         public boolean isDrainMode;
-        public int fluidId;
+        public String fluidId;
         public int fluidAmount;
-        public int x;
-        public int y;
-        public int z;
+        public BlockPos blockPos;
 
         @Override
         public void fromBytes(ByteBuf buf) {
             tank = buf.readInt();
             isDrainMode = buf.readBoolean();
-            fluidId = buf.readInt();
+            fluidId = ByteBufUtils.readUTF8String(buf);
             fluidAmount = buf.readInt();
-            x = buf.readInt();
-            y = buf.readInt();
-            z = buf.readInt();
+            blockPos = MiscUtil.bytesToBlockPos(buf);
         }
 
         @Override
         public void toBytes(ByteBuf buf) {
             buf.writeInt(tank);
             buf.writeBoolean(isDrainMode);
-            buf.writeInt(fluidId);
+            ByteBufUtils.writeUTF8String(buf, fluidId);
             buf.writeInt(fluidAmount);
-            buf.writeInt(x);
-            buf.writeInt(y);
-            buf.writeInt(z);
+            MiscUtil.blockPosToBytes(blockPos, buf);
         }
 
         public ChangeLiquipackIOOptionsMessage copy(){
-            return new ChangeLiquipackIOOptionsMessage(tank, isDrainMode, fluidId, fluidAmount, x, y, z);
+            return new ChangeLiquipackIOOptionsMessage(tank, isDrainMode, fluidId, fluidAmount, blockPos);
         }
     }
 }

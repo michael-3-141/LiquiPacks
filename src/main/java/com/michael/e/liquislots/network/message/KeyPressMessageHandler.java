@@ -1,23 +1,24 @@
 package com.michael.e.liquislots.network.message;
 
 import com.michael.e.liquislots.Liquislots;
-import com.michael.e.liquislots.common.upgrade.LiquidXPUpgrade;
-import com.michael.e.liquislots.common.util.LiquipackStack;
 import com.michael.e.liquislots.item.ItemLiquipack;
-import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.world.WorldServer;
+import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class KeyPressMessageHandler implements IMessageHandler<KeyPressMessageHandler.KeyPressMessage, IMessage> {
 
     @Override
     public IMessage onMessage(KeyPressMessage message, MessageContext ctx) {
-        if(message.key == 'l' && !ItemLiquipack.isOldFormat(ctx.getServerHandler().playerEntity.inventory.armorItemInSlot(2)))
-        {
-            FMLNetworkHandler.openGui(ctx.getServerHandler().playerEntity, Liquislots.INSTANCE, 0, ctx.getServerHandler().playerEntity.worldObj, 0,0,0);
-        }
+        WorldServer ws = ctx.getServerHandler().playerEntity.getServerForPlayer();
+        ws.addScheduledTask(() -> {
+            if (message.key == 'l' && !ItemLiquipack.isOldFormat(ctx.getServerHandler().playerEntity.inventory.armorItemInSlot(2))) {
+                FMLNetworkHandler.openGui(ctx.getServerHandler().playerEntity, Liquislots.INSTANCE, 0, ctx.getServerHandler().playerEntity.worldObj, 0, 0, 0);
+            }
+        });
         /*else if(message.key == 'j' && !ItemLiquipack.isOldFormat(ctx.getServerHandler().playerEntity.inventory.armorItemInSlot(2))){
             LiquipacksExtendedPlayer player = LiquipacksExtendedPlayer.get(ctx.getServerHandler().playerEntity);
             if(player != null){

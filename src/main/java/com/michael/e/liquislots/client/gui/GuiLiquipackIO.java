@@ -32,7 +32,7 @@ public class GuiLiquipackIO extends GuiTankOptions{
     protected void keyTyped(char c, int key) {
         if(key == Keyboard.KEY_ESCAPE || key == Minecraft.getMinecraft().gameSettings.keyBindInventory.getKeyCode()){
             Liquislots.INSTANCE.netHandler.sendToServer(
-                            new LiquipackIOGuiEventMessageHandler.LiquipackIOGuiEventMessage(te.xCoord, te.yCoord, te.zCoord, false));
+                            new LiquipackIOGuiEventMessageHandler.LiquipackIOGuiEventMessage(te.getPos(), false));
         }
     }
 
@@ -65,7 +65,7 @@ public class GuiLiquipackIO extends GuiTankOptions{
     protected void drawBackgroundLayer() {
         Minecraft.getMinecraft().renderEngine.bindTexture(GuiTankOptions.texture);
         drawTexturedModalRect(guiLeft + 125, guiTop + 20, 176, 0, 18, 60);
-        Minecraft.getMinecraft().fontRenderer.drawString("Buffer:", guiLeft + 125, guiTop + 10, 4210752);
+        Minecraft.getMinecraft().fontRendererObj.drawString("Buffer:", guiLeft + 125, guiTop + 10, 4210752);
         float level = Math.max(te.buffer.getFluidAmount() / ((float) te.buffer.getCapacity()) * 58, 1);
         tank.render(te.buffer.getFluid(), (int) level, guiLeft, guiTop);
     }

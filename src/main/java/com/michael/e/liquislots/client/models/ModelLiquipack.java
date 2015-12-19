@@ -83,7 +83,7 @@ public class ModelLiquipack extends ModelBiped {
 
     @Override
     public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        if(entity.isSneaking()){
+        /*if(entity.isSneaking()){
             tank11.rotateAngleX = 0.5F;
             tank12.rotateAngleX = 0.5F;
             tank21.rotateAngleX = 0.5F;
@@ -120,7 +120,7 @@ public class ModelLiquipack extends ModelBiped {
             piperight1.rotateAngleX = 0F;
             piperight2.rotateAngleX = 0F;
             piperight3.rotateAngleX = 0F;
-        }
-        super.render(entity, f, f1, f2, f3, f4, 0.0525F);
+        }*/
+        super.render(entity, f, f1, f2, f3, f4, f5);
     }
 }

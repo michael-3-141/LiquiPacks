@@ -1,6 +1,5 @@
 package com.michael.e.liquislots.common.upgrade;
 
-import com.michael.e.liquislots.common.util.LiquipackTank;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class LiquidXPUpgrade extends LiquipackUpgrade {

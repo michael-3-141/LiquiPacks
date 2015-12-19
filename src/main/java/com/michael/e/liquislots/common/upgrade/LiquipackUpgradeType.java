@@ -2,14 +2,10 @@ package com.michael.e.liquislots.common.upgrade;
 
 import com.michael.e.liquislots.client.gui.GuiLiquidXpUpgrade;
 import com.michael.e.liquislots.common.util.LiquipackStack;
-import com.michael.e.liquislots.common.util.LiquipackTank;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.FluidStack;
-import openblocks.OpenBlocks;
-import openmods.utils.EnchantmentUtils;
 
 public enum LiquipackUpgradeType{
 
@@ -20,7 +16,7 @@ public enum LiquipackUpgradeType{
                 Minecraft.getMinecraft().displayGuiScreen(new GuiLiquidXpUpgrade(player, upgradeIndex, player.inventory.armorItemInSlot(2)));
             }
         }
-
+        /*
         @Override
         public void tick(World world, EntityPlayer player, LiquipackStack stack, LiquipackUpgrade upgrade) {
             LiquidXPUpgrade liquidXPUpgrade = LiquidXPUpgrade.fromLiquipackUpgrade(upgrade);
@@ -42,7 +38,7 @@ public enum LiquipackUpgradeType{
                     stack.setTank(tank, liquidXPUpgrade.getTank());
                 }
             }
-        }
+        }*/
     };
 
     private UpgradeButton button;

@@ -5,11 +5,11 @@ import com.michael.e.liquislots.Reference;
 import com.michael.e.liquislots.config.ConfigHandler;
 import com.michael.e.liquislots.item.ItemLiquipack;
 import com.michael.e.liquislots.network.message.KeyPressMessageHandler;
-import cpw.mods.fml.client.event.ConfigChangedEvent;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.InputEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ChatComponentText;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.InputEvent;
 import org.lwjgl.input.Keyboard;
 
 public class LiquislotClientEventHandler{

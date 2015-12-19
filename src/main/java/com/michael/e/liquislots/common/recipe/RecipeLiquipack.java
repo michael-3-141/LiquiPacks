@@ -82,4 +82,9 @@ public class RecipeLiquipack implements IRecipe {
     public ItemStack getRecipeOutput() {
         return result;
     }
+
+    @Override
+    public ItemStack[] getRemainingItems(InventoryCrafting inv) {
+        return new ItemStack[inv.getSizeInventory()];
+    }
 }

@@ -1,14 +1,13 @@
 package com.michael.e.liquislots.client.gui;
 
 import com.michael.e.liquislots.Reference;
-import com.michael.e.liquislots.common.upgrade.LiquipackUpgrade;
 import com.michael.e.liquislots.common.upgrade.LiquipackUpgradeType;
 import com.michael.e.liquislots.common.util.LiquipackStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.util.ResourceLocation;
 
-public class GuiUpgradeButton extends Gui{
+public class GuiUpgradeButton extends Gui {
 
     private static final ResourceLocation buttonTexture = new ResourceLocation(Reference.MOD_ID, "textures/gui/upgrades.png");
 

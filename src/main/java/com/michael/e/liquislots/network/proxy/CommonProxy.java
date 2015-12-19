@@ -26,4 +26,8 @@ public class CommonProxy{
     public void reCreateModel() {
 
     }
+
+    public void initModels() {
+
+    }
 }

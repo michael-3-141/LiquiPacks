@@ -1,16 +1,11 @@
 package com.michael.e.liquislots.client.gui;
 
 import com.michael.e.liquislots.Reference;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
-import org.lwjgl.opengl.GL11;
 
-public class GuiTank extends Gui{
+public class GuiTank extends Gui {
 
     private int x;
     private int y;
@@ -28,12 +23,12 @@ public class GuiTank extends Gui{
     }
 
     public void render(FluidStack fluid, int level, int guiLeft, int guiTop) {
-        if (fluid == null || fluid.getFluid() == null) {
+        /*if (fluid == null || fluid.getFluid() == null) {
             return;
         }
         int x = this.x + guiLeft;
         int y = this.y + guiTop;
-        IIcon icon = fluid.getFluid().getIcon(fluid);
+        ResourceLocation resourceLocation = fluid.getFluid().getStill();
         Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationBlocksTexture);
         setGLColorFromInt(fluid.getFluid().getColor(fluid));
         int fullX = width / 16;
@@ -60,18 +55,18 @@ public class GuiTank extends Gui{
         drawCutIcon(icon, x + fullX * 16, y + fullY * 16, lastX, lastY, fullLvl == fullY ? lastLvl : 0);
 
         Minecraft.getMinecraft().renderEngine.bindTexture(tankOverlayTexture);
-        drawTexturedModalRect(x, y, 0, 0, 16, 58);
+        drawTexturedModalRect(x, y, 0, 0, 16, 58);*/
     }
 
-    //The magic is here
-    private void drawCutIcon(IIcon icon, int x, int y, int width, int height, int cut) {
-        Tessellator tess = Tessellator.instance;
-        tess.startDrawingQuads();
-        tess.addVertexWithUV(x, y + height, 0, icon.getMinU(), icon.getInterpolatedV(height));
-        tess.addVertexWithUV(x + width, y + height, 0, icon.getInterpolatedU(width), icon.getInterpolatedV(height));
-        tess.addVertexWithUV(x + width, y + cut, 0, icon.getInterpolatedU(width), icon.getInterpolatedV(cut));
-        tess.addVertexWithUV(x, y + cut, 0, icon.getMinU(), icon.getInterpolatedV(cut));
-        tess.draw();
+    /*The magic is here
+    private void drawCutIcon(ResourceLocation icon, int x, int y, int width, int height, int cut) {
+        WorldRenderer renderer = Tessellator.getInstance().getWorldRenderer();
+        renderer.begin(GL11.GL_QUADS, renderer.getVertexFormat());
+        renderer.addVertexWithUV(x, y + height, 0, icon.getMinU(), icon.getInterpolatedV(height));
+        renderer.addVertexWithUV(x + width, y + height, 0, icon.getInterpolatedU(width), icon.getInterpolatedV(height));
+        renderer.addVertexWithUV(x + width, y + cut, 0, icon.getInterpolatedU(width), icon.getInterpolatedV(cut));
+        renderer.addVertexWithUV(x, y + cut, 0, icon.getMinU(), icon.getInterpolatedV(cut));
+        renderer.draw();
     }
 
     private static void setGLColorFromInt(int color) {
@@ -79,7 +74,7 @@ public class GuiTank extends Gui{
         float green = (color >> 8 & 255) / 255.0F;
         float blue = (color & 255) / 255.0F;
         GL11.glColor4f(red, green, blue, 1.0F);
-    }
+    }*/
 
     public boolean isMouseInBounds(int mouseX, int mouseY){
         return (mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height);

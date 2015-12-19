@@ -1,10 +1,10 @@
 package com.michael.e.liquislots.config;
 
 import com.michael.e.liquislots.Reference;
-import cpw.mods.fml.client.config.GuiConfig;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.client.config.GuiConfig;
 
 public class LiquislotsGuiConfig extends GuiConfig {
 

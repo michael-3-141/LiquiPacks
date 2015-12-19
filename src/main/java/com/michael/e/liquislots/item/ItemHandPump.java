@@ -1,24 +1,19 @@
 package com.michael.e.liquislots.item;
 
-import com.michael.e.liquislots.Reference;
-import com.michael.e.liquislots.client.gui.GuiHandPump;
 import com.michael.e.liquislots.common.util.LiquipackStack;
 import com.michael.e.liquislots.common.util.LiquipackTank;
 import com.michael.e.liquislots.config.ConfigHandler;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 import org.lwjgl.input.Keyboard;
 
@@ -29,12 +24,9 @@ public class ItemHandPump extends ItemLiquipacksBase {
     public static final int MODE_PICK_UP = 1;
     public static final int MODE_PLACE = 2;
     public static final int MODE_AUTOMATIC = 0;
-    private static final int[] sideHitToForgeDirection = {0,1,5,4,2,3};
 
     public ItemHandPump() {
-        super();
-        setUnlocalizedName("liquipackBucket");
-        setTextureName(Reference.MOD_ID + ":" + getUnlocalizedName().substring(5));
+        super("liquipackBucket");
         setMaxStackSize(1);
     }
 
@@ -77,11 +69,11 @@ public class ItemHandPump extends ItemLiquipacksBase {
         if(player.isSneaking()){
             //Try to drain into tank
             if(movingobjectposition != null && movingobjectposition.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK){
-                TileEntity te = world.getTileEntity(movingobjectposition.blockX, movingobjectposition.blockY, movingobjectposition.blockZ);
+                TileEntity te = world.getTileEntity(movingobjectposition.getBlockPos());
                 if(te instanceof IFluidHandler){
                     IFluidHandler handler = (IFluidHandler) te;
-                    if(handler.canFill(ForgeDirection.getOrientation(sideHitToForgeDirection[movingobjectposition.sideHit]), tank.getFluidType())){
-                        int filled = handler.fill(ForgeDirection.getOrientation(sideHitToForgeDirection[movingobjectposition.sideHit]), tank.getFluid(), true);
+                    if(handler.canFill(movingobjectposition.sideHit, tank.getFluidType())){
+                        int filled = handler.fill(movingobjectposition.sideHit, tank.getFluid(), true);
                         if(tank.getFluidAmount() == filled){
                             tank.setFluid(null);
                         }
@@ -96,21 +88,19 @@ public class ItemHandPump extends ItemLiquipacksBase {
 
             //Open Config GUI
             if (world.isRemote) {
-                Minecraft.getMinecraft().displayGuiScreen(new GuiHandPump(player, stack));
+                //Minecraft.getMinecraft().displayGuiScreen(new GuiHandPump(player, stack));
             }
             return stack;
         }
 
         if (movingobjectposition != null) {
             if (movingobjectposition.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
-                //Store coords in local vars for easy access
-                int x = movingobjectposition.blockX;
-                int y = movingobjectposition.blockY;
-                int z = movingobjectposition.blockZ;
-                Block block = world.getBlock(x, y, z);
+                //Store coords in local var for easy access
+                BlockPos coords = movingobjectposition.getBlockPos();
+                Block block = world.getBlockState(coords).getBlock();
 
                 //Check if canMineBlock
-                if (!world.canMineBlock(player, x, y, z)) {
+                if (!world.canMineBlockBody(player, coords)) {
                     return stack;
                 }
 
@@ -119,7 +109,7 @@ public class ItemHandPump extends ItemLiquipacksBase {
                 //Drain/Fill mode
                 if (shouldPickUp) {
                     //Check if canPlayerEdit
-                    if (!player.canPlayerEdit(x, y, z, movingobjectposition.sideHit, stack)) {
+                    if (!player.canPlayerEdit(coords, movingobjectposition.sideHit, stack)) {
                         return stack;
                     }
 
@@ -130,13 +120,13 @@ public class ItemHandPump extends ItemLiquipacksBase {
                     else{
                         //If its a vannila fluid, handle it
                         Material material = block.getMaterial();
-                        int meta = world.getBlockMetadata(x, y, z);
+                        IBlockState state = world.getBlockState(coords);
 
-                        if (material == Material.water && meta == 0) {
+                        if (material == Material.water && (Integer)state.getValue(BlockLiquid.LEVEL) == 0) {
                             result = new FluidStack(FluidRegistry.WATER, FluidContainerRegistry.BUCKET_VOLUME);
                         }
 
-                        if (material == Material.lava && meta == 0) {
+                        if (material == Material.lava && (Integer)state.getValue(BlockLiquid.LEVEL) == 0) {
                             result = new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME);
                         }
                     }
@@ -144,41 +134,20 @@ public class ItemHandPump extends ItemLiquipacksBase {
                     if(result != null && tank.fill(result, false) == FluidContainerRegistry.BUCKET_VOLUME){
                         tank.fill(result, true);
                         tanks.setTank(tank, getSelectedTank(stack));
-                        world.setBlockToAir(x, y, z);
+                        world.setBlockToAir(coords);
                     }
                 } else {
                     //Place handling
                     //Get the position for placement
-                    if (movingobjectposition.sideHit == 0) {
-                        --y;
-                    }
+                    BlockPos placeCoords = coords.offset(movingobjectposition.sideHit);
 
-                    if (movingobjectposition.sideHit == 1) {
-                        ++y;
-                    }
-
-                    if (movingobjectposition.sideHit == 2) {
-                        --z;
-                    }
-
-                    if (movingobjectposition.sideHit == 3) {
-                        ++z;
-                    }
-
-                    if (movingobjectposition.sideHit == 4) {
-                        --x;
-                    }
-
-                    if (movingobjectposition.sideHit == 5) {
-                        ++x;
-                    }
                     //Verify canPlayerEdit
-                    if (!player.canPlayerEdit(x, y, z, movingobjectposition.sideHit, stack)) {
+                    if (!player.canPlayerEdit(placeCoords, movingobjectposition.sideHit, stack)) {
                         return stack;
                     }
                     //Try to place
                     if(tank.drain(FluidContainerRegistry.BUCKET_VOLUME, false) != null && tank.drain(FluidContainerRegistry.BUCKET_VOLUME, false).amount == FluidContainerRegistry.BUCKET_VOLUME && tank.drain(FluidContainerRegistry.BUCKET_VOLUME, false).getFluid().getBlock() != null) {
-                        this.tryPlaceContainedLiquid(world, x, y, z, stack, tank.drain(FluidContainerRegistry.BUCKET_VOLUME, true));
+                        this.tryPlaceContainedLiquid(world, coords, stack, tank.drain(FluidContainerRegistry.BUCKET_VOLUME, true));
                         tanks.setTank(tank, getSelectedTank(stack));
                     }
                 }
@@ -188,11 +157,11 @@ public class ItemHandPump extends ItemLiquipacksBase {
     }
 
     /**
-     * Attempts to place the liquid contained inside the bucket.
+     * Attempts to place the liquid contained inside the bucket. (Modified version of the tryPlaceContainerLiquid in ItemBucket)
      */
-    public boolean tryPlaceContainedLiquid(World world, int x, int y, int z, ItemStack stack, FluidStack fluidStack)
+    public boolean tryPlaceContainedLiquid(World world, BlockPos pos, ItemStack stack, FluidStack fluidStack)
     {
-        if (getMode(stack) == MODE_PICK_UP) //Is empty
+        if (getMode(stack) == MODE_PICK_UP)
         {
             return false;
         }
@@ -200,33 +169,37 @@ public class ItemHandPump extends ItemLiquipacksBase {
         {
             if(fluidStack.getFluid().getBlock() == null)return false;
 
-            Material material = world.getBlock(x, y, z).getMaterial();
+            Material material = world.getBlockState(pos).getBlock().getMaterial();
             boolean flag = !material.isSolid();
 
-            if (!world.isAirBlock(x, y, z) && !flag)
+            if (!world.isAirBlock(pos) && !flag)
             {
                 return false;
             }
             else
             {
-                if (world.provider.isHellWorld && fluidStack.getFluid() == FluidRegistry.WATER)
+                if (world.provider.doesWaterVaporize() && fluidStack.getFluid() == FluidRegistry.WATER)
                 {
-                    world.playSoundEffect((double)((float)x + 0.5F), (double)((float)y + 0.5F), (double)((float)z + 0.5F), "random.fizz", 0.5F, 2.6F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8F);
+                    int i = pos.getX();
+                    int j = pos.getY();
+                    int k = pos.getZ();
+                    world.playSoundEffect((double)((float)i + 0.5F), (double)((float)j + 0.5F), (double)((float)k + 0.5F), "random.fizz", 0.5F, 2.6F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8F);
 
                     for (int l = 0; l < 8; ++l)
                     {
-                        world.spawnParticle("largesmoke", (double)x + Math.random(), (double)y + Math.random(), (double)z + Math.random(), 0.0D, 0.0D, 0.0D);
+                        world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, (double)i + Math.random(), (double)j + Math.random(), (double)k + Math.random(), 0.0D, 0.0D, 0.0D, new int[0]);
                     }
                 }
                 else
                 {
                     if (!world.isRemote && flag && !material.isLiquid())
                     {
-                        world.func_147480_a(x, y, z, true);
+                        world.destroyBlock(pos, true);
                     }
 
-                    world.setBlock(x, y, z, fluidStack.getFluid() == FluidRegistry.WATER ? Blocks.flowing_water : fluidStack.getFluid() == FluidRegistry.LAVA ? Blocks.flowing_lava : fluidStack.getFluid().getBlock(), 0, 3);
-                    world.markBlockForUpdate(x, y, z);
+                    world.setBlockState(pos, fluidStack.getFluid() == FluidRegistry.WATER ? Blocks.flowing_water.getDefaultState()
+                                           : fluidStack.getFluid() == FluidRegistry.LAVA ? Blocks.flowing_lava.getDefaultState()
+                                           : fluidStack.getFluid().getBlock().getDefaultState(), 3);
                 }
 
                 return true;
